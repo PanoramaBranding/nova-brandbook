@@ -63,7 +63,8 @@ para el nav Y el índice de Home (evita duplicar contenido).
 - [x] Nav sticky con acordeón + scroll-spy, validado en navegador (Home → Master Brand → Assets → Estrategia)
 - [x] Button component (spec extraída, no usado aún)
 - [x] Home completo (desktop) — hero, bienvenida, índice, footer
-- [ ] Home mobile (existe diseño en Figma — `528:1244` — pendiente)
+- [x] Nav mobile (hamburguesa + panel, diseño propio — ver nota abajo)
+- [x] Home/Estrategia/Master Brand/Assets responsive a 375px (reflow con Tailwind; no verificado pixel-perfect contra los frames "* - Mobile" de Figma todavía)
 - [x] Estrategia — contenido real completo (desktop), scroll-spy corregido (ver Notas técnicas)
 - [x] Master Brand — contenido real completo (desktop), placeholders explícitos en piezas visuales (diagramas, ejemplos de uso incorrecto)
 - [x] Assets — contenido real completo (desktop): paleta con swatches reales, tipografía viva (Plus Jakarta Sans), pilares de diseño completos, sistema fotográfico con prompts de IA incluidos (decisión de Sofia: sí van públicos); placeholders en piezas puramente visuales (diagramas de retícula, ejemplos de contraste, set de íconos, fotos de referencia)
@@ -95,13 +96,17 @@ construyendo con el contenido ya cacheado mientras tanto.
   robusto para secciones de cualquier largo. Validado en `/estrategia` navegando
   por las 5 etapas completas.
 
-## Pendiente: mobile del nav
-El nav sticky de 200px NO tiene todavía su versión mobile (Figma trae un patrón
-mobile distinto para Home/Estrategia/Master Brand que aún no extraje). Probado en
-375px: el sidebar fijo se come la mitad de la pantalla y el contenido se
-comprime — **no es una versión mobile real**, solo el desktop escalado por
-Tailwind. Construir el patrón mobile correcto requiere extraer los frames
-"* - Mobile" de Figma, bloqueado por el límite de llamadas de arriba.
+## Nav mobile (resuelto 2026-09-02 — diseño propio, no extraído de Figma)
+Verifiqué en el archivo cacheado que **ninguno de los frames mobile en Figma
+tiene equivalente del nav** (ni "Menu v1" ni un "Menu mobile" en la sección de
+Componentes) — el diseño mobile solo cubre el reflow del contenido, no la
+navegación. Igual que en el proyecto de portafolio, diseñé el patrón desde
+cero: barra superior sticky (logo + botón hamburguesa) que abre un panel
+pantalla completa con el mismo acordeón/scroll-spy del desktop. Construido y
+probado en `/`, `/estrategia`, `/master-brand`, `/assets` a 375px — el toggle,
+la navegación y el cierre automático al elegir un ítem funcionan bien.
+**Pendiente:** que el equipo de diseño valide este patrón (o traiga uno propio
+de Figma) cuando se retome el trabajo allá.
 
 ## Notas de contenido a verificar con el equipo de diseño (no corregidas por mi cuenta)
 - En la página 03 Assets, el título de sección "3.6 Jerarquías" aparece etiquetado

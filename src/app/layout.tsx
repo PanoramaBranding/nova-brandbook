@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es" className={`${plusJakartaSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex bg-white text-[color:var(--color-ink)]">
+      <body className="min-h-full flex flex-col md:flex-row bg-white text-[color:var(--color-ink)]">
         <Nav />
         <main className="flex-1 min-w-0">{children}</main>
       </body>
