@@ -65,8 +65,8 @@ para el nav Y el índice de Home (evita duplicar contenido).
 - [x] Home completo (desktop) — hero, bienvenida, índice, footer
 - [ ] Home mobile (existe diseño en Figma — `528:1244` — pendiente)
 - [x] Estrategia — contenido real completo (desktop), scroll-spy corregido (ver Notas técnicas)
-- [ ] Master Brand — contenido real (hoy: placeholder de estructura)
-- [ ] Assets — contenido real (hoy: placeholder de estructura, página muy larga: ~40 000px en Figma)
+- [x] Master Brand — contenido real completo (desktop), placeholders explícitos en piezas visuales (diagramas, ejemplos de uso incorrecto)
+- [x] Assets — contenido real completo (desktop): paleta con swatches reales, tipografía viva (Plus Jakarta Sans), pilares de diseño completos, sistema fotográfico con prompts de IA incluidos (decisión de Sofia: sí van públicos); placeholders en piezas puramente visuales (diagramas de retícula, ejemplos de contraste, set de íconos, fotos de referencia)
 - [ ] Mobile de Estrategia y Master Brand (Assets no tiene mobile — confirmado con Sofia)
 - [ ] `llms.txt` / `brand.json` con tokens de marca en texto plano
 - [ ] JSON-LD (schema.org) embebido por página
