@@ -1,26 +1,61 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Marca — principal */
+  --color-azul-1: #2b7df6; /* Azul I — principal (confirmado vs. Variables de Figma, ver PLAN.md) */
+  --color-azul-2: #0c67c1; /* Azul II */
+  --color-azul-3: #08335e; /* Azul III */
+  --color-azul-4: #9cceff; /* Azul IV */
+  --color-azul-tint: #dcefff; /* tono claro sin nombre propio en Figma (etiquetado "Azul I" por error) */
+
+  /* Neutros */
+  --color-blanco: #ffffff;
+  --color-gris-5: #f6f6f6;
+  --color-ink: #08335e; /* texto sobre blanco, reutiliza Azul III */
+
+  /* Complementarios — por categoría de producto */
+  --color-bienestar: #e397ca;
+  --color-hogar: #e85242;
+  --color-mascotas: #f09837;
+  --color-ninos: #fcf18e;
+  --color-despensa: #76b156;
+  --color-aseo-hogar: #4184f5;
+  --color-personal-care: #be8ff7;
+  --color-hotdays: #2b7df6;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-azul-1: var(--color-azul-1);
+  --color-azul-2: var(--color-azul-2);
+  --color-azul-3: var(--color-azul-3);
+  --color-azul-4: var(--color-azul-4);
+  --color-azul-tint: var(--color-azul-tint);
+  --color-blanco: var(--color-blanco);
+  --color-gris-5: var(--color-gris-5);
+  --color-ink: var(--color-ink);
+  --color-bienestar: var(--color-bienestar);
+  --color-hogar: var(--color-hogar);
+  --color-mascotas: var(--color-mascotas);
+  --color-ninos: var(--color-ninos);
+  --color-despensa: var(--color-despensa);
+  --color-aseo-hogar: var(--color-aseo-hogar);
+  --color-personal-care: var(--color-personal-care);
+  --color-hotdays: var(--color-hotdays);
+  --font-sans: var(--font-plus-jakarta-sans);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-blanco);
+  color: var(--color-ink);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
