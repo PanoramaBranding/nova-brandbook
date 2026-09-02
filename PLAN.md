@@ -64,7 +64,7 @@ para el nav Y el índice de Home (evita duplicar contenido).
 - [x] Button component (spec extraída, no usado aún)
 - [x] Home completo (desktop) — hero, bienvenida, índice, footer
 - [ ] Home mobile (existe diseño en Figma — `528:1244` — pendiente)
-- [ ] Estrategia — contenido real (hoy: placeholder de estructura)
+- [x] Estrategia — contenido real completo (desktop), scroll-spy corregido (ver Notas técnicas)
 - [ ] Master Brand — contenido real (hoy: placeholder de estructura)
 - [ ] Assets — contenido real (hoy: placeholder de estructura, página muy larga: ~40 000px en Figma)
 - [ ] Mobile de Estrategia y Master Brand (Assets no tiene mobile — confirmado con Sofia)
@@ -73,6 +73,35 @@ para el nav Y el índice de Home (evita duplicar contenido).
 - [ ] Favicon con la marca Nova (hoy usa el favicon por defecto de Next.js)
 - [ ] Repo en GitHub + conectar a Vercel para despliegue automático
 - [ ] QA de interacciones (hover, focus, mobile) con script tipo `qa.mjs` del portafolio
+
+## ⚠️ Bloqueo activo: límite de llamadas del MCP de Figma
+La cuenta diseno@panoramabranding.co está en plan **Starter**, que tiene un límite
+bajo de llamadas al MCP de Figma — se agotó el 2026-09-02 durante la construcción
+de Estrategia. Mientras siga activo, no puedo extraer más medidas/colores/capturas
+frescas de Figma (afecta sobre todo a Master Brand y Assets, que son mucho más
+grandes y van a necesitar muchas más llamadas que Estrategia). Opciones: subir de
+plan (link de Figma: team 1668749334268099081, "upgrade=mcp_rate_limit_paywall")
+o esperar el reset (no confirmado cada cuánto ocurre). Sofia decidió seguir
+construyendo con el contenido ya cacheado mientras tanto.
+
+## Notas técnicas
+- **Scroll-spy corregido (2026-09-02):** la primera versión usaba
+  `IntersectionObserver` con una banda delgada (`rootMargin: -15%/-70%`), que
+  fallaba en secciones largas (ej. "What", con 6 ítems) — el resaltado del nav se
+  quedaba pegado en la sección anterior porque la banda de detección salía de la
+  sección activa antes de entrar a la siguiente. Se cambió a un cálculo por
+  posición de scroll (`getBoundingClientRect().top` contra una línea fija de
+  160px, con `requestAnimationFrame` para no recalcular en cada frame) — más
+  robusto para secciones de cualquier largo. Validado en `/estrategia` navegando
+  por las 5 etapas completas.
+
+## Pendiente: mobile del nav
+El nav sticky de 200px NO tiene todavía su versión mobile (Figma trae un patrón
+mobile distinto para Home/Estrategia/Master Brand que aún no extraje). Probado en
+375px: el sidebar fijo se come la mitad de la pantalla y el contenido se
+comprime — **no es una versión mobile real**, solo el desktop escalado por
+Tailwind. Construir el patrón mobile correcto requiere extraer los frames
+"* - Mobile" de Figma, bloqueado por el límite de llamadas de arriba.
 
 ## Notas de contenido a verificar con el equipo de diseño (no corregidas por mi cuenta)
 - En la página 03 Assets, el título de sección "3.6 Jerarquías" aparece etiquetado

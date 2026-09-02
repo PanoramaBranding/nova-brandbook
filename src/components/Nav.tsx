@@ -32,20 +32,41 @@ export default function Nav() {
 
     if (elements.length === 0) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible.length > 0) {
-          setActiveId(visible[0].target.id);
-        }
-      },
-      { rootMargin: "-15% 0px -70% 0px", threshold: 0 }
-    );
+    // Scroll-position based (not IntersectionObserver delta events): a
+    // section stays "active" for its entire length, including when it's
+    // tall enough that no observer threshold band stays inside it the
+    // whole time. Active = the last section whose top has scrolled above
+    // the trigger line.
+    const TRIGGER_LINE = 160; // px from top of viewport
 
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    let ticking = false;
+    const updateActive = () => {
+      ticking = false;
+      let current = elements[0].id;
+      for (const el of elements) {
+        if (el.getBoundingClientRect().top <= TRIGGER_LINE) {
+          current = el.id;
+        } else {
+          break;
+        }
+      }
+      setActiveId(current);
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateActive);
+      }
+    };
+
+    updateActive();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, [activePage, pathname]);
 
   return (
