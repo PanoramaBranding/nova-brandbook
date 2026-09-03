@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Button from "@/components/Button";
+import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = { title: "02 · Master Brand" };
 
@@ -20,9 +21,9 @@ function SectionHeading({
     <div className="flex flex-col md:flex-row md:gap-16 gap-6">
       <div className="md:w-[280px] shrink-0">
         <p className="text-sm font-semibold text-azul-2">{number}</p>
-        <h2 className="text-2xl md:text-3xl font-bold text-azul-1">{title}</h2>
+        <h2 className="text-2xl md:text-[32px] font-bold text-azul-1">{title}</h2>
       </div>
-      <div className="text-azul-3/80 leading-relaxed max-w-[640px]">{children}</div>
+      <div className="text-azul-3/80 leading-6 max-w-[640px]">{children}</div>
     </div>
   );
 }
@@ -69,10 +70,7 @@ function MisuseGrid({ items }: { items: typeof MISUSE_2_9 }) {
 export default function MasterBrandPage() {
   return (
     <div className="flex flex-col">
-      <header className="bg-azul-1 px-6 md:px-[38px] pt-8 pb-16 md:pb-24 text-white">
-        <p className="text-sm font-semibold opacity-80">02</p>
-        <h1 className="text-4xl md:text-6xl font-bold">Master Brand</h1>
-      </header>
+      <PageHero image="/brand/heroes/hero-master-brand.png" number="02" title="Master Brand" />
 
       <section id="background" className="px-6 md:px-[38px] py-12 md:py-16 border-t border-azul-tint scroll-mt-8">
         <SectionHeading number="2.1" title="Background">
@@ -185,7 +183,7 @@ export default function MasterBrandPage() {
         <div className="mt-12 flex flex-col md:flex-row md:gap-16 gap-6">
           <p className="md:w-[280px] shrink-0 font-semibold text-azul-1">Marcas de nombre largo</p>
           <div className="max-w-[640px] flex flex-col gap-6">
-            <p className="text-azul-3/80 leading-relaxed">
+            <p className="text-azul-3/80 leading-6">
               Las submarcas de nombre largo mantienen a Nova como elemento
               principal y ubican el descriptor en una segunda línea para
               preservar la legibilidad y el equilibrio de la composición. Esta
@@ -200,7 +198,7 @@ export default function MasterBrandPage() {
         <div className="mt-12 flex flex-col md:flex-row md:gap-16 gap-6">
           <p className="md:w-[280px] shrink-0 font-semibold text-azul-1">Construcción horizontal de submarcas</p>
           <div className="max-w-[640px] flex flex-col gap-6">
-            <p className="text-azul-3/80 leading-relaxed">
+            <p className="text-azul-3/80 leading-6">
               Las submarcas pueden utilizar una composición horizontal en la que
               el descriptor se alinea a la derecha de Nova. La distancia,
               proporción y alineación entre ambos elementos son constantes y
@@ -214,7 +212,7 @@ export default function MasterBrandPage() {
         <div className="mt-12 flex flex-col md:flex-row md:gap-16 gap-6">
           <p className="md:w-[280px] shrink-0 font-semibold text-azul-1">Submarca de construcción especial</p>
           <div className="max-w-[640px] flex flex-col gap-6">
-            <p className="text-azul-3/80 leading-relaxed">
+            <p className="text-azul-3/80 leading-6">
               iNova es una excepción dentro del sistema de sub-marcas. A
               diferencia de las demás, no incorpora un descriptor independiente
               junto al logotipo de Nova, sino que integra la letra inicial

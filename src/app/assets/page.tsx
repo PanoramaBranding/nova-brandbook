@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import AssetPending from "@/components/AssetPending";
+import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = { title: "03 · Brand Assets" };
 
@@ -154,7 +155,7 @@ function SectionHeading({ number, title }: { number: string; title: string }) {
   return (
     <div className="mb-8">
       <p className="text-sm font-semibold text-azul-2">{number}</p>
-      <h2 className="text-2xl md:text-3xl font-bold text-azul-1">{title}</h2>
+      <h2 className="text-2xl md:text-[32px] font-bold text-azul-1">{title}</h2>
     </div>
   );
 }
@@ -162,10 +163,7 @@ function SectionHeading({ number, title }: { number: string; title: string }) {
 export default function AssetsPage() {
   return (
     <div className="flex flex-col">
-      <header className="bg-azul-1 px-6 md:px-[38px] pt-8 pb-16 md:pb-24 text-white">
-        <p className="text-sm font-semibold opacity-80">03</p>
-        <h1 className="text-4xl md:text-6xl font-bold">Brand Assets</h1>
-      </header>
+      <PageHero image="/brand/heroes/hero-assets.png" number="03" title="Brand Assets" />
 
       {/* Color */}
       <section
@@ -173,7 +171,7 @@ export default function AssetsPage() {
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.1" title="Paleta cromática principal" />
-        <p className="text-azul-3/80 leading-relaxed max-w-[640px] mb-8">
+        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-8">
           La paleta cromática principal establece los colores base de NovaVenta y
           define su aplicación dentro del sistema visual. Su uso debe mantener las
           combinaciones y proporciones definidas para asegurar reconocimiento,
@@ -194,7 +192,7 @@ export default function AssetsPage() {
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.2" title="Paleta complementaria" />
-        <p className="text-azul-3/80 leading-relaxed max-w-[640px] mb-8">
+        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-8">
           Colores complementarios por categoría de producto, para diferenciar
           secciones del catálogo manteniendo la relación con el sistema principal.
         </p>
@@ -210,7 +208,7 @@ export default function AssetsPage() {
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.3" title="Porcentajes de color" />
-        <p className="text-azul-3/80 leading-relaxed max-w-[640px] mb-8">
+        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-8">
           La distribución cromática organiza la presencia de cada grupo de color
           dentro del sistema visual. El azul principal concentra el 50% del uso,
           los colores secundarios el 30% y los complementarios el 20%,
@@ -241,7 +239,7 @@ export default function AssetsPage() {
       >
         <SectionHeading number="3.4" title="Uso de color" />
         <div className="max-w-[640px] flex flex-col gap-8">
-          <p className="text-azul-3/80 leading-relaxed">
+          <p className="text-azul-3/80 leading-6">
             El sistema cromático define combinaciones de contraste que aseguran
             legibilidad, jerarquía y consistencia en las distintas aplicaciones de
             NovaVenta. Los colores principales, secundarios y complementarios
@@ -265,7 +263,7 @@ export default function AssetsPage() {
           </div>
           <div>
             <p className="font-semibold text-azul-1 mb-2">Contrastes compuestos</p>
-            <p className="text-azul-3/80 leading-relaxed mb-2">
+            <p className="text-azul-3/80 leading-6 mb-2">
               Los contrastes compuestos combinan un color de fondo, un color
               tipográfico y uno o más colores complementarios dentro de una misma
               pieza. Se recomienda trabajar con escalas cromáticas controladas e
@@ -277,7 +275,7 @@ export default function AssetsPage() {
               <Fig src="/brand/assets/contraste-compuesto-3.png" alt="Ejemplo de contraste compuesto 3" aspect={4096 / 1493} />
             </div>
           </div>
-          <p className="text-azul-3/80 leading-relaxed">
+          <p className="text-azul-3/80 leading-6">
             El sistema permite incorporar variaciones adicionales siempre que se
             mantengan dentro de la misma familia tonal del color base. No deben
             introducirse colores que modifiquen el carácter general de la paleta o
@@ -292,7 +290,7 @@ export default function AssetsPage() {
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.5" title="Fuentes tipográficas" />
-        <p className="text-azul-3/80 leading-relaxed max-w-[640px] mb-10">
+        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-10">
           La tipografía principal de NovaVenta es Plus Jakarta Sans, seleccionada
           por su legibilidad, versatilidad y buen desempeño en aplicaciones
           impresas y digitales. El sistema utiliza sus diferentes pesos para
@@ -317,7 +315,7 @@ export default function AssetsPage() {
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.6" title="Jerarquías" />
-        <p className="text-azul-3/80 leading-relaxed max-w-[640px] mb-4">
+        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-4">
           La jerarquía tipográfica organiza la información de acuerdo con su nivel
           de importancia y facilita una lectura clara en todas las aplicaciones.
           Los tamaños, interlineados y espaciados deben construirse siempre sobre
@@ -361,7 +359,7 @@ export default function AssetsPage() {
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.7" title="Usos incorrectos" />
-        <p className="text-azul-3/80 leading-relaxed max-w-[640px] mb-6">
+        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-6">
           Para preservar la consistencia tipográfica de NovaVenta, deben
           respetarse las fuentes, pesos, jerarquías y criterios de composición
           definidos en el sistema. La prioridad es mantener siempre una lectura
@@ -382,7 +380,7 @@ export default function AssetsPage() {
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.8" title="Estilo fotográfico" />
-        <p className="text-azul-3/80 leading-relaxed max-w-[640px] mb-10">
+        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-10">
           El sistema fotográfico de NovaVenta se organiza en tres tipos de imagen:
           fotografía lifestyle, producto en uso y producto. En todos los casos,
           las imágenes deben mantener una estética natural, cercana y
@@ -397,7 +395,7 @@ export default function AssetsPage() {
               <summary className="cursor-pointer font-semibold text-azul-2">
                 {cat.title}
               </summary>
-              <div className="mt-4 flex flex-col gap-4 text-azul-3/80 leading-relaxed">
+              <div className="mt-4 flex flex-col gap-4 text-azul-3/80 leading-6">
                 {cat.body.split("\n\n").map((p, i) => (
                   <p key={i}>{p}</p>
                 ))}
@@ -415,13 +413,13 @@ export default function AssetsPage() {
         </div>
 
         <p className="font-semibold text-azul-1 mb-2">Fotografía de producto</p>
-        <p className="text-azul-3/80 leading-relaxed max-w-[640px] mb-2">
+        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-2">
           <strong>Producto en contexto:</strong> muestra el producto integrado en
           situaciones reales de uso, donde las personas interactúan con él de
           forma natural, manteniendo iluminación natural o direccional y
           composición cercana.
         </p>
-        <p className="text-azul-3/80 leading-relaxed max-w-[640px] mb-6">
+        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-6">
           <strong>Render 3D:</strong> presenta el producto de forma aislada, sin
           contexto ni elementos de ambientación, suspendido o flotando en el
           espacio, con iluminación controlada. En prendas de vestir se utiliza el
@@ -435,7 +433,7 @@ export default function AssetsPage() {
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.9" title="Uso de la fotografía" />
-        <p className="text-azul-3/80 leading-relaxed max-w-[640px] mb-6">
+        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-6">
           El uso de la fotografía define cómo las imágenes se integran dentro de
           las piezas de NovaVenta y cómo conviven con los demás elementos del
           sistema visual. Su función puede ser protagónica, de apoyo o
@@ -465,7 +463,7 @@ export default function AssetsPage() {
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.10" title="Sistema iconográfico" />
-        <p className="text-azul-3/80 leading-relaxed max-w-[640px] mb-6">
+        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-6">
           El sistema iconográfico de NovaVenta utiliza la familia de{" "}
           <strong>Google Material Symbols</strong>, disponible en Google Fonts,
           como base para construir un lenguaje visual consistente, funcional y
@@ -504,7 +502,7 @@ export default function AssetsPage() {
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.11" title="Sistema de tags" />
-        <p className="text-azul-3/80 leading-relaxed max-w-[640px] mb-8">
+        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-8">
           El sistema de tags organiza información funcional dentro de las piezas
           de NovaVenta y se divide en dos tipos: tags de navegación y tags
           promocionales. Los tags de navegación permiten identificar y recorrer
@@ -538,7 +536,7 @@ export default function AssetsPage() {
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.12" title="Pilares de diseño" />
-        <p className="text-azul-3/80 leading-relaxed max-w-[640px] mb-10">
+        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-10">
           El sistema visual de NovaVenta está construido para mantener una
           identidad clara, flexible y reconocible en todos sus puntos de
           contacto. Estos pilares orientan la aplicación del sistema y funcionan
@@ -548,7 +546,7 @@ export default function AssetsPage() {
           {DESIGN_PILLARS.map((p) => (
             <div key={p.title}>
               <p className="font-semibold text-azul-1 mb-1">{p.title}</p>
-              <p className="text-azul-3/80 leading-relaxed">{p.body}</p>
+              <p className="text-azul-3/80 leading-6">{p.body}</p>
             </div>
           ))}
         </div>
@@ -560,7 +558,7 @@ export default function AssetsPage() {
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.13" title="Sistema reticular" />
-        <p className="text-azul-3/80 leading-relaxed max-w-[640px] mb-4">
+        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-4">
           El sistema reticular de NovaVenta establece la estructura base para
           organizar los elementos dentro de cada composición. Su función es
           asegurar alineación, orden y consistencia entre tipografía, fotografía,
@@ -583,7 +581,7 @@ export default function AssetsPage() {
           </div>
           <div>
             <p className="font-semibold text-azul-1 mb-2">Sistema reticular para catálogos</p>
-            <p className="text-azul-3/80 leading-relaxed mb-4">
+            <p className="text-azul-3/80 leading-6 mb-4">
               Para catálogos y piezas impresas, la retícula organiza la
               información mediante una estructura modular de columnas y áreas de
               contenido, admitiendo configuraciones de una, dos o más columnas,

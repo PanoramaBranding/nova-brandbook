@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = { title: "01 · Estrategia de marca" };
 
@@ -117,10 +118,7 @@ const STAGES: Stage[] = [
 export default function EstrategiaPage() {
   return (
     <div className="flex flex-col">
-      <header className="bg-azul-1 px-6 md:px-[38px] pt-8 pb-16 md:pb-24 text-white">
-        <p className="text-sm font-semibold opacity-80">01</p>
-        <h1 className="text-4xl md:text-6xl font-bold">Estrategia de marca</h1>
-      </header>
+      <PageHero image="/brand/heroes/hero-estrategia.png" number="01" title="Brand Tree" />
 
       <section className="px-6 md:px-[38px] py-16 md:py-24 max-w-[900px]">
         <p className="text-2xl md:text-[36px] leading-[1.3] text-azul-1 font-medium">
@@ -133,9 +131,9 @@ export default function EstrategiaPage() {
         <div className="flex flex-col md:flex-row md:justify-between gap-6 md:gap-16 border-t border-azul-tint pt-12">
           <div className="md:w-[280px] shrink-0">
             <p className="text-sm font-semibold text-azul-2">1.1</p>
-            <h2 className="text-3xl font-bold text-azul-1">Brand Tree</h2>
+            <h2 className="text-2xl md:text-[32px] font-bold text-azul-1">Brand Tree</h2>
           </div>
-          <p className="text-azul-3/80 text-lg leading-relaxed max-w-[560px]">
+          <p className="text-azul-3/80 text-lg leading-6 max-w-[560px]">
             La estrategia de marca define el marco que orienta las decisiones de
             NovaVenta y establece la relación entre su contexto, las necesidades
             de las personas y el papel que la marca busca desempeñar en su vida
@@ -153,7 +151,7 @@ export default function EstrategiaPage() {
           id={stage.id}
           className="px-6 md:px-[38px] pb-16 md:pb-24 scroll-mt-8 border-t border-azul-tint pt-12"
         >
-          <h3 className="text-2xl md:text-3xl font-bold text-azul-1 mb-8">
+          <h3 className="text-2xl md:text-[32px] font-bold text-azul-1 mb-8">
             <span className="text-azul-2 font-semibold mr-2">{stage.kicker}</span>
             {stage.title}
           </h3>
@@ -165,7 +163,7 @@ export default function EstrategiaPage() {
                 </span>
                 <div>
                   <p className="font-semibold text-azul-1 mb-1">{item.title}</p>
-                  <p className="text-azul-3/80 leading-relaxed">{item.body}</p>
+                  <p className="text-azul-3/80 leading-6">{item.body}</p>
                 </div>
               </div>
             ))}

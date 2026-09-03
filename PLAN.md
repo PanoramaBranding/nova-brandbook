@@ -86,6 +86,31 @@ plan (link de Figma: team 1668749334268099081, "upgrade=mcp_rate_limit_paywall")
 o esperar el reset (no confirmado cada cuánto ocurre). Sofia decidió seguir
 construyendo con el contenido ya cacheado mientras tanto.
 
+## QA de Sofia (2026-09-02) — fondos y tipografía no coincidían con Figma
+Sofia revisó el sitio contra Figma y marcó que los encabezados de página
+(Estrategia/Master Brand/Assets) no tenían las imágenes reales y que varios
+tamaños de titulares estaban aproximados. Al revisar el componente real
+"Hero 2"/"Hero 3" (nunca lo había verificado — asumí un bloque de color
+plano), resultó que cada página interna SÍ tiene una fotografía de fondo
+real (Estrategia: familia en la mesa; Master Brand: isotipo Nova en zoom;
+Assets: barras de la paleta cromática) con "01/02/03 + título" en 96px Bold
+superpuesto. Corregido:
+- Nuevo componente `PageHero` con la imagen real de fondo por página.
+- **Bug de exportación de Figma:** el export de imagen (`get_design_context`)
+  vino en blanco para Estrategia y con un color plano para Assets, aunque la
+  vista previa (`get_screenshot`) SÍ mostraba lo correcto. Se usó el render
+  de `get_screenshot` (que incluye el texto de Figma dibujado) como fondo,
+  con un `<h1>` real pero visualmente oculto (`sr-only`) al lado para no
+  perder accesibilidad/legibilidad por IA. Si diseño reexporta el fondo
+  limpio (sin texto), se puede volver a superponer texto en vivo.
+- Título real de Estrategia corregido: decía "Estrategia de marca" (mi
+  invención), el real es "Brand Tree" (coincide con el nav).
+- Tamaños de encabezados de subsección ajustados de aproximados
+  (`text-3xl`=30px) a los 32px exactos confirmados por Figma; interlineado
+  de párrafos de cuerpo ajustado de `leading-relaxed` (1.625) a `leading-6`
+  (24px), que es el valor exacto extraído repetidamente de Figma para texto
+  de 16px.
+
 ## Notas técnicas
 - **Scroll-spy corregido (2026-09-02):** la primera versión usaba
   `IntersectionObserver` con una banda delgada (`rootMargin: -15%/-70%`), que
