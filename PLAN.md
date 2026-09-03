@@ -156,6 +156,31 @@ contenido ("Volver arriba" / contacto / copyright). Verificado con
 — son idénticos entre sí. Componente `Footer.tsx` creado y agregado al final
 de las 3 páginas.
 
+## QA de Sofia, ronda 5 (2026-09-02) — auditoría completa de Assets
+Sofia: "hay muchos que no coinciden". Confirmado — nunca había pasado
+`get_design_context` sobre 3.1, 3.2, 3.3, 3.6, 3.7, 3.9/3.10, 3.12; los
+construí de texto cacheado + capas de mi invención. Pasada completa ahora:
+- **3.3 Porcentajes de color:** era una barra inventada por mí — es una
+  imagen real de Figma (`porcentajes-color.png`), ya reemplazada.
+- **3.5 Fuentes tipográficas:** faltaba el botón "Descargar fuente" y la
+  muestra grande ("Tu mundo comienza aquí, en NovaVenta." + "Plus Jakarta
+  Sans"); la escala de pesos estaba a ~24px cuando el real es 32px.
+- **3.6 Jerarquías:** tenía los 4 niveles en Azul I — el real es H1=Azul I
+  (160px), H2/H3/H4=**Azul III** (80/40/20px). Corregido (con una
+  adaptación responsiva razonable en vez de los px literales del canvas fijo
+  de 1440, que desbordarían en pantallas normales).
+- **3.7 Usos incorrectos (tipografía):** era una lista de 9 bullets de
+  texto — es una cuadrícula 3×3 con 9 imágenes reales tachadas en rojo.
+  Reemplazado con las imágenes reales.
+- **3.9/3.10 Sistema iconográfico:** mezclé imágenes de dos frames
+  duplicados de Figma sin darme cuenta, con un aspect-ratio cruzado que
+  distorsionaba una de ellas, y me faltaba el subtítulo "Logotipo en
+  categoría". Corregido: nombres de archivo renombrados a su identidad real,
+  aspect ratios correctos, subtítulo agregado.
+- **3.12 Pilares de diseño:** era una grilla compacta de 2 columnas con
+  texto chico — el real es una lista de filas con el título de cada pilar
+  en 48px Azul I. Reconstruido.
+
 ## Notas técnicas
 - **Scroll-spy corregido (2026-09-02):** la primera versión usaba
   `IntersectionObserver` con una banda delgada (`rootMargin: -15%/-70%`), que

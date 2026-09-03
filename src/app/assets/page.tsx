@@ -3,6 +3,7 @@ import Image from "next/image";
 import AssetPending from "@/components/AssetPending";
 import PageHero from "@/components/PageHero";
 import Footer from "@/components/Footer";
+import Button from "@/components/Button";
 
 export const metadata: Metadata = { title: "03 · Brand Assets" };
 
@@ -217,22 +218,7 @@ export default function AssetsPage() {
           estableciendo una jerarquía clara y consistente en las distintas
           aplicaciones de NovaVenta.
         </p>
-        <div className="flex h-16 w-full max-w-[640px] rounded-xl overflow-hidden">
-          <div className="bg-azul-1 flex items-center justify-center text-white font-semibold" style={{ width: "50%" }}>
-            50%
-          </div>
-          <div className="bg-azul-2 flex items-center justify-center text-white font-semibold" style={{ width: "30%" }}>
-            30%
-          </div>
-          <div className="bg-hogar flex items-center justify-center text-white font-semibold" style={{ width: "20%" }}>
-            20%
-          </div>
-        </div>
-        <div className="flex gap-6 mt-3 text-sm text-azul-3/70 max-w-[640px]">
-          <p>Principal</p>
-          <p>Secundarios</p>
-          <p>Complementarios</p>
-        </div>
+        <Fig src="/brand/assets/porcentajes-color.png" alt="Distribución de porcentajes de color: 50% principal, 30% secundarios, 20% complementarios" aspect={4096 / 1749} />
       </section>
 
       <section
@@ -292,20 +278,46 @@ export default function AssetsPage() {
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.5" title="Fuentes tipográficas" />
-        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-10">
-          La tipografía principal de NovaVenta es Plus Jakarta Sans, seleccionada
-          por su legibilidad, versatilidad y buen desempeño en aplicaciones
-          impresas y digitales. El sistema utiliza sus diferentes pesos para
-          construir jerarquías claras y mantener consistencia en todos los puntos
-          de contacto. Plus Jakarta Sans es una tipografía de uso libre disponible
-          a través de Google Fonts.
-        </p>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-[127px] mb-16">
+          <p className="text-azul-3/80 leading-6 max-w-[561px]">
+            La tipografía principal de NovaVenta es Plus Jakarta Sans, seleccionada
+            por su legibilidad, versatilidad y buen desempeño en aplicaciones
+            impresas y digitales. El sistema utiliza sus diferentes pesos para
+            construir jerarquías claras y mantener consistencia en todos los puntos
+            de contacto. Plus Jakarta Sans es una tipografía de uso libre disponible
+            a través de Google Fonts.
+          </p>
+          <Button variant="outline" className="shrink-0">
+            Descargar fuente
+          </Button>
+        </div>
+
+        <div className="flex flex-col gap-8 mb-16">
+          <p className="text-azul-1 font-bold text-4xl md:text-[80px] leading-[1.1]">
+            Tu mundo comienza aquí,
+            <br />
+            en NovaVenta.
+          </p>
+          <p className="text-azul-1 font-bold text-2xl md:text-[40px]">Plus Jakarta Sans</p>
+          <p className="text-azul-1 text-xl md:text-[28px] leading-[1.3] max-w-[900px]">
+            NovaVenta es más que una tienda: es tu mundo. Un lugar donde todo se
+            encuentra, donde conviven marcas, categorías y soluciones pensadas
+            para ti. En NovaVenta, cada necesidad tiene su espacio y cada
+            elección abre posibilidades, porque todo lo que buscas vive en un
+            solo lugar.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-6">
           {FONT_WEIGHTS.map((f) => (
-            <div key={f.label} className="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-6">
-              <p className="w-28 shrink-0 text-azul-2 text-sm font-semibold">{f.label}</p>
-              <p className="text-azul-1 text-xl md:text-2xl" style={{ fontWeight: f.weight }}>
-                ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz !@#$%^&amp;*()?+
+            <div key={f.label} className="flex flex-col md:flex-row gap-2 md:gap-4">
+              <p className="w-full md:w-[140px] shrink-0 text-azul-1 text-lg md:text-[28px]">{f.label}</p>
+              <p className="text-azul-1 text-lg md:text-[28px]" style={{ fontWeight: f.weight }}>
+                ABCDEFGHIJKLMNOPQRSTUVWXYZ
+                <br />
+                abcdefghijklmnopqrstuvwxyz
+                <br />
+                {`!@#$%^&*()?+`}
               </p>
             </div>
           ))}
@@ -324,30 +336,25 @@ export default function AssetsPage() {
           una lógica de múltiplos de 4, asegurando consistencia y orden dentro del
           sistema visual.
         </p>
-        <p className="text-xs text-azul-3/50 mb-10 max-w-[640px]">
-          Nota: los tamaños exactos en px de cada nivel no se pudieron verificar
-          contra Figma (límite de llamadas activo) — la escala de abajo es
-          ilustrativa de la proporción H1→H4, a confirmar.
-        </p>
-        <div className="flex flex-col gap-8">
-          <div className="flex gap-4 items-baseline">
-            <span className="text-xs font-semibold text-azul-2 w-8">H1</span>
-            <p className="text-azul-1 font-bold text-5xl md:text-6xl">Hogar</p>
+        <div className="flex flex-col gap-10 mt-8">
+          <div className="flex gap-6 items-end">
+            <span className="text-2xl font-bold text-azul-3 w-10 shrink-0">H1</span>
+            <p className="text-azul-1 font-bold text-6xl md:text-[100px] leading-[1]">Hogar</p>
           </div>
-          <div className="flex gap-4 items-baseline">
-            <span className="text-xs font-semibold text-azul-2 w-8">H2</span>
-            <p className="text-azul-1 font-bold text-4xl md:text-5xl">$49.000</p>
+          <div className="flex gap-6 items-end">
+            <span className="text-2xl font-bold text-azul-3 w-10 shrink-0">H2</span>
+            <p className="text-azul-3 font-bold text-5xl md:text-[64px] leading-[1]">$49.000</p>
           </div>
-          <div className="flex gap-4 items-baseline">
-            <span className="text-xs font-semibold text-azul-2 w-8">H3</span>
-            <p className="text-azul-1 font-bold text-2xl max-w-[500px]">
+          <div className="flex gap-6 items-start">
+            <span className="text-2xl font-bold text-azul-3 w-10 shrink-0">H3</span>
+            <p className="text-azul-3 font-bold text-2xl md:text-[36px] leading-[1.2] max-w-[700px]">
               Descripcion larga de producto, lorem ipsum dolor sit amet,
               consectetuer adipiscing elit.
             </p>
           </div>
-          <div className="flex gap-4 items-baseline">
-            <span className="text-xs font-semibold text-azul-2 w-8">H4</span>
-            <p className="text-azul-3/80 max-w-[560px]">
+          <div className="flex gap-6 items-start">
+            <span className="text-2xl font-bold text-azul-3 w-10 shrink-0">H4</span>
+            <p className="text-azul-3 text-lg md:text-[20px] leading-7 max-w-[700px]">
               Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
               nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
               volutpat.
@@ -367,13 +374,14 @@ export default function AssetsPage() {
           definidos en el sistema. La prioridad es mantener siempre una lectura
           clara, ordenada y coherente.
         </p>
-        <ul className="grid md:grid-cols-2 gap-x-8 gap-y-2 max-w-[900px]">
-          {TYPO_MISUSE.map((rule) => (
-            <li key={rule} className="text-azul-3/80">
-              · {rule}
-            </li>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {TYPO_MISUSE.map((rule, i) => (
+            <div key={rule} className="flex flex-col gap-2">
+              <Fig src={`/brand/assets/tipo-mal-${i + 1}.png`} alt={rule} aspect={1479 / 921} />
+              <p className="text-azul-3/80">{rule}</p>
+            </div>
           ))}
-        </ul>
+        </div>
       </section>
 
       {/* Fotografía */}
@@ -475,24 +483,33 @@ export default function AssetsPage() {
           Weight medio, Grade neutro y un Optical Size acorde al tamaño final de
           uso.
         </p>
-        <div className="flex flex-col gap-6 mb-10">
-          <Fig src="/brand/assets/iconos-referencia.png" alt="Referencia de configuración de Material Symbols" aspect={289 / 430} />
-          <Fig src="/brand/assets/iconos-set-1.png" alt="Set de íconos NovaVenta" aspect={4096 / 1267} />
-          <Fig src="/brand/assets/iconos-logo-categoria.png" alt="Ícono aplicado con el logotipo por categoría" aspect={4096 / 1267} />
-          <Fig src="/brand/assets/iconos-en-categoria.png" alt="Íconos aplicados por categoría" aspect={4096 / 1840} />
+        <div className="flex flex-col md:flex-row gap-6 mb-10 items-start">
+          <div className="w-[180px] shrink-0">
+            <Fig src="/brand/assets/iconos-referencia.png" alt="Referencia de configuración de Material Symbols" aspect={289 / 430} />
+          </div>
+          <div className="flex-1">
+            <Fig src="/brand/assets/iconos-set-1.png" alt="Set de íconos NovaVenta" aspect={832 / 430} />
+          </div>
+        </div>
+        <div className="mb-10">
+          <Fig src="/brand/assets/iconos-banner.png" alt="Íconos NovaVenta" aspect={4096 / 1267} />
+        </div>
+        <p className="text-[20px] font-bold text-azul-2 mb-4">Logotipo en categoría</p>
+        <div className="mb-10">
+          <Fig src="/brand/assets/iconos-logo-categoria.png" alt="Ícono aplicado con el logotipo por categoría" aspect={4096 / 1840} />
         </div>
         <p className="text-[20px] font-bold text-azul-2 mb-4">Usos incorrectos</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="flex flex-col gap-2">
-            <Fig src="/brand/assets/iconos-mal-contraste.png" alt="No usar combinaciones con bajo contraste" aspect={1} />
+            <Fig src="/brand/assets/iconos-mal-contraste.png" alt="No usar combinaciones con bajo contraste" aspect={370 / 228} />
             <p className="text-sm text-azul-3/80">No usar combinaciones con bajo contraste</p>
           </div>
           <div className="flex flex-col gap-2">
-            <Fig src="/brand/assets/iconos-mal-color.png" alt="No usar colores de otras categorías" aspect={1} />
+            <Fig src="/brand/assets/iconos-mal-color.png" alt="No usar colores de otras categorías" aspect={370 / 228} />
             <p className="text-sm text-azul-3/80">No usar colores de otras categorías</p>
           </div>
           <div className="flex flex-col gap-2">
-            <Fig src="/brand/assets/iconos-mal-outline.png" alt="No usar iconos en contorno light" aspect={1} />
+            <Fig src="/brand/assets/iconos-mal-outline.png" alt="No usar iconos en contorno light" aspect={370 / 228} />
             <p className="text-sm text-azul-3/80">No usar iconos en contorno light</p>
           </div>
         </div>
@@ -544,11 +561,13 @@ export default function AssetsPage() {
           contacto. Estos pilares orientan la aplicación del sistema y funcionan
           como criterio para tomar decisiones de diseño.
         </p>
-        <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
+        <div className="flex flex-col gap-10">
           {DESIGN_PILLARS.map((p) => (
-            <div key={p.title}>
-              <p className="text-[20px] font-bold text-azul-2 mb-1">{p.title}</p>
-              <p className="text-azul-3/80 leading-6">{p.body}</p>
+            <div key={p.title} className="flex flex-col md:flex-row gap-4 md:gap-8 border-t border-azul-tint pt-8">
+              <p className="text-azul-1 font-bold text-3xl md:text-[48px] leading-[1.1] md:w-[500px] shrink-0">
+                {p.title}
+              </p>
+              <p className="text-[20px] leading-7 text-azul-3/80 md:w-[561px] max-w-[561px]">{p.body}</p>
             </div>
           ))}
         </div>
