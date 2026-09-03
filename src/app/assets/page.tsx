@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import AssetPending from "@/components/AssetPending";
 
 export const metadata: Metadata = { title: "03 · Brand Assets" };
@@ -61,12 +62,6 @@ const TYPO_MISUSE = [
   "No usar ningún tipo de filtro en el texto",
   "No combinar colores de diferentes paletas",
   "No usar diferentes colores en el texto",
-];
-
-const ICON_MISUSE = [
-  "No usar combinaciones con bajo contraste",
-  "No usar colores de otras categorías",
-  "No usar iconos en contorno light",
 ];
 
 const PHOTO_LIFESTYLE = [
@@ -143,6 +138,14 @@ function SwatchCard({ swatch, big = false }: { swatch: Swatch; big?: boolean }) 
       <p className="text-sm opacity-90">RGB: {swatch.rgb}</p>
       <p className="text-sm opacity-90">HEX: {swatch.hex}</p>
       <p className="text-sm opacity-90">PANTONE: {swatch.pantone}</p>
+    </div>
+  );
+}
+
+function Fig({ src, alt, aspect }: { src: string; alt: string; aspect: number }) {
+  return (
+    <div className="relative w-full" style={{ aspectRatio: aspect }}>
+      <Image src={src} alt={alt} fill className="object-cover rounded-lg" />
     </div>
   );
 }
@@ -249,7 +252,16 @@ export default function AssetsPage() {
           </p>
           <div>
             <p className="font-semibold text-azul-1 mb-2">Contrastes básicos</p>
-            <AssetPending label="ejemplos de combinaciones de contraste básico" />
+            <div className="flex flex-col gap-3">
+              {[1, 2, 3, 4, 5, 6, 7].map((n) => (
+                <Fig
+                  key={n}
+                  src={`/brand/assets/contraste-basico-${n}.png`}
+                  alt={`Ejemplo de contraste básico ${n}`}
+                  aspect={4096 / 1410}
+                />
+              ))}
+            </div>
           </div>
           <div>
             <p className="font-semibold text-azul-1 mb-2">Contrastes compuestos</p>
@@ -259,7 +271,11 @@ export default function AssetsPage() {
               pieza. Se recomienda trabajar con escalas cromáticas controladas e
               incorporar colores complementarios de forma puntual.
             </p>
-            <AssetPending label="ejemplos de contraste compuesto" />
+            <div className="flex flex-col gap-3">
+              <Fig src="/brand/assets/contraste-compuesto-1.png" alt="Ejemplo de contraste compuesto 1" aspect={1057 / 347} />
+              <Fig src="/brand/assets/contraste-compuesto-2.png" alt="Ejemplo de contraste compuesto 2" aspect={4096 / 1493} />
+              <Fig src="/brand/assets/contraste-compuesto-3.png" alt="Ejemplo de contraste compuesto 3" aspect={4096 / 1493} />
+            </div>
           </div>
           <p className="text-azul-3/80 leading-relaxed">
             El sistema permite incorporar variaciones adicionales siempre que se
@@ -459,15 +475,27 @@ export default function AssetsPage() {
           Weight medio, Grade neutro y un Optical Size acorde al tamaño final de
           uso.
         </p>
-        <p className="font-semibold text-azul-1 mb-2">Usos incorrectos</p>
-        <ul className="flex flex-col gap-2 max-w-[640px] mb-6">
-          {ICON_MISUSE.map((rule) => (
-            <li key={rule} className="text-azul-3/80">
-              · {rule}
-            </li>
-          ))}
-        </ul>
-        <AssetPending label="set de íconos aplicado por categoría, ejemplos de uso incorrecto" />
+        <div className="flex flex-col gap-6 mb-10">
+          <Fig src="/brand/assets/iconos-referencia.png" alt="Referencia de configuración de Material Symbols" aspect={289 / 430} />
+          <Fig src="/brand/assets/iconos-set-1.png" alt="Set de íconos NovaVenta" aspect={4096 / 1267} />
+          <Fig src="/brand/assets/iconos-logo-categoria.png" alt="Ícono aplicado con el logotipo por categoría" aspect={4096 / 1267} />
+          <Fig src="/brand/assets/iconos-en-categoria.png" alt="Íconos aplicados por categoría" aspect={4096 / 1840} />
+        </div>
+        <p className="font-semibold text-azul-1 mb-4">Usos incorrectos</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="flex flex-col gap-2">
+            <Fig src="/brand/assets/iconos-mal-contraste.png" alt="No usar combinaciones con bajo contraste" aspect={1} />
+            <p className="text-sm text-azul-3/80">No usar combinaciones con bajo contraste</p>
+          </div>
+          <div className="flex flex-col gap-2">
+            <Fig src="/brand/assets/iconos-mal-color.png" alt="No usar colores de otras categorías" aspect={1} />
+            <p className="text-sm text-azul-3/80">No usar colores de otras categorías</p>
+          </div>
+          <div className="flex flex-col gap-2">
+            <Fig src="/brand/assets/iconos-mal-outline.png" alt="No usar iconos en contorno light" aspect={1} />
+            <p className="text-sm text-azul-3/80">No usar iconos en contorno light</p>
+          </div>
+        </div>
       </section>
 
       {/* Tags */}
@@ -484,25 +512,24 @@ export default function AssetsPage() {
           promocionales destacan información relevante asociada a un producto,
           como beneficios, novedades, exclusividades o precios especiales.
         </p>
-        <div className="flex flex-wrap gap-3 mb-2">
-          <span className="rounded-full bg-azul-1 text-white text-sm font-medium px-4 py-1.5">
-            Despensa
-          </span>
-          <span className="rounded-full bg-hogar text-white text-sm font-medium px-4 py-1.5">
-            Hogar
-          </span>
-          <span className="rounded-full bg-mascotas text-white text-sm font-medium px-4 py-1.5">
-            Mascotas
-          </span>
-          <span className="rounded-full border-2 border-azul-1 text-azul-2 text-sm font-semibold px-4 py-1.5">
-            -20% OFF
-          </span>
+        <div className="flex flex-col gap-10">
+          <div>
+            <p className="font-semibold text-azul-1 mb-4">Tags de navegación</p>
+            <Fig src="/brand/assets/tags-navegacion.png" alt="Tags de navegación aplicados por categoría" aspect={4096 / 1840} />
+          </div>
+          <div>
+            <p className="font-semibold text-azul-1 mb-4">Construcción de tags de navegación</p>
+            <Fig src="/brand/assets/tags-navegacion-construccion.png" alt="Construcción de tags de navegación" aspect={3262 / 2000} />
+          </div>
+          <div>
+            <p className="font-semibold text-azul-1 mb-4">Tags promocionales</p>
+            <Fig src="/brand/assets/tags-promocionales.png" alt="Tags promocionales aplicados" aspect={4096 / 1840} />
+          </div>
+          <div>
+            <p className="font-semibold text-azul-1 mb-4">Construcción de tags promocionales</p>
+            <Fig src="/brand/assets/tags-promocionales-construccion.png" alt="Construcción de tags promocionales" aspect={3038 / 2000} />
+          </div>
         </div>
-        <p className="text-xs text-azul-3/50 max-w-[640px] mb-6">
-          Boceto ilustrativo con los tokens del sistema — no la construcción
-          exacta de Figma (pendiente de verificar medidas y radios reales).
-        </p>
-        <AssetPending label="construcción exacta de tags de navegación y promocionales" />
       </section>
 
       {/* Pilares */}
@@ -541,13 +568,42 @@ export default function AssetsPage() {
           puede adaptarse según el formato y el tipo de pieza pero debe conservar
           criterios comunes de márgenes, columnas, módulos y espaciados.
         </p>
-        <p className="text-azul-3/80 leading-relaxed max-w-[640px] mb-8">
-          Para catálogos y piezas impresas, la retícula organiza la información
-          mediante una estructura modular de columnas y áreas de contenido,
-          admitiendo configuraciones de una, dos o más columnas, además de
-          módulos destinados a imagen o contenido destacado.
-        </p>
-        <AssetPending label="diagramas de retícula (básica, catálogos, dobles páginas, portada)" />
+        <div className="flex flex-col gap-10">
+          <div>
+            <p className="font-semibold text-azul-1 mb-4">Retícula básica</p>
+            <Fig src="/brand/assets/reticula-basica.png" alt="Retícula básica" aspect={1841 / 2000} />
+          </div>
+          <div>
+            <p className="font-semibold text-azul-1 mb-4">Ubicación de elementos en la retícula</p>
+            <Fig src="/brand/assets/reticula-ubicacion.png" alt="Ubicación de elementos en la retícula" aspect={1841 / 2000} />
+          </div>
+          <div>
+            <p className="font-semibold text-azul-1 mb-4">Creación de la pieza gráfica</p>
+            <Fig src="/brand/assets/reticula-creacion.png" alt="Creación de la pieza gráfica" aspect={1841 / 2000} />
+          </div>
+          <div>
+            <p className="font-semibold text-azul-1 mb-2">Sistema reticular para catálogos</p>
+            <p className="text-azul-3/80 leading-relaxed mb-4">
+              Para catálogos y piezas impresas, la retícula organiza la
+              información mediante una estructura modular de columnas y áreas de
+              contenido, admitiendo configuraciones de una, dos o más columnas,
+              además de módulos destinados a imagen o contenido destacado.
+            </p>
+            <Fig src="/brand/assets/reticula-catalogos.png" alt="Sistema reticular para catálogos" aspect={1974 / 2000} />
+          </div>
+          <div>
+            <p className="font-semibold text-azul-1 mb-4">Doble páginas promocionales</p>
+            <Fig src="/brand/assets/reticula-doble-pagina.png" alt="Doble páginas promocionales" aspect={4096 / 1397} />
+          </div>
+          <div>
+            <p className="font-semibold text-azul-1 mb-4">Páginas especiales / Banners promocionales</p>
+            <Fig src="/brand/assets/reticula-banners.png" alt="Páginas especiales y banners promocionales" aspect={1920 / 1080} />
+          </div>
+          <div>
+            <p className="font-semibold text-azul-1 mb-4">Portada catálogo</p>
+            <Fig src="/brand/assets/reticula-portada.png" alt="Portada de catálogo" aspect={3556 / 2000} />
+          </div>
+        </div>
       </section>
     </div>
   );
