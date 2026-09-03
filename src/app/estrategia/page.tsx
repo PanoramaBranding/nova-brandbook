@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import PageHero from "@/components/PageHero";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = { title: "01 · Estrategia de marca" };
 
@@ -186,6 +187,8 @@ export default function EstrategiaPage() {
           />
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

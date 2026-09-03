@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Button from "@/components/Button";
 import PageHero from "@/components/PageHero";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = { title: "02 · Master Brand" };
 
@@ -304,6 +305,8 @@ export default function MasterBrandPage() {
         </SectionHeading>
         <MisuseGrid items={MISUSE_2_14} />
       </section>
+
+      <Footer />
     </div>
   );
 }

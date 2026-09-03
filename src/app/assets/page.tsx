@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import AssetPending from "@/components/AssetPending";
 import PageHero from "@/components/PageHero";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = { title: "03 · Brand Assets" };
 
@@ -604,6 +605,8 @@ export default function AssetsPage() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

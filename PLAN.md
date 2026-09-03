@@ -147,6 +147,15 @@ A partir de esta ronda estoy usando `get_design_context` (que trae captura +
 código) como fuente principal antes de dar una sección por terminada, no
 solo el texto cacheado.
 
+## QA de Sofia, ronda 4 (2026-09-02) — faltaba el footer en las 3 páginas internas
+Confirmado: nunca agregué el componente Footer a Estrategia/Master
+Brand/Assets (solo lo construí para Home). Es una variante distinta del de
+Home — fondo gris claro (#F5F5F5), sin logo, alineado a la derecha, mismo
+contenido ("Volver arriba" / contacto / copyright). Verificado con
+`get_design_context` en los 3 nodos de footer (528:280, 543:1400, 578:4202)
+— son idénticos entre sí. Componente `Footer.tsx` creado y agregado al final
+de las 3 páginas.
+
 ## Notas técnicas
 - **Scroll-spy corregido (2026-09-02):** la primera versión usaba
   `IntersectionObserver` con una banda delgada (`rootMargin: -15%/-70%`), que
