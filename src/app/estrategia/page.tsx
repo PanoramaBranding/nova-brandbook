@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = { title: "01 · Estrategia de marca" };
 
 type Item = { number: string; title: string; body: string };
-type Stage = { id: string; kicker: string; title: string; items: Item[] };
+type Stage = { id: string; number: string; title: string; items: Item[]; cols?: 2 | 3 };
 
-// Copy real, extraído de las capas de Figma (nodo 509:912) el 2026-09-02.
-// Nota de contenido: en Figma, el título de este 4º bloque dice "3 What -
-// Reasons to believe & brand Role" (duplicado con el bloque 3) — es un error
-// de copy del equipo de diseño. El contenido real es sobre visión de marca,
-// así que aquí usa el número/label correcto (4. Why) que sí aparece bien en
-// el nav y en el índice de Home.
+// Copy y estilos reales, extraídos de Figma (nodo 543:1190, "Frame 54") el
+// 2026-09-02. Nota de contenido: en Figma, el título de este 4º bloque dice
+// "3 What - Reasons to believe & brand Role" (duplicado con el bloque 3) —
+// es un error de copy del equipo de diseño. El contenido real es sobre
+// visión de marca, así que aquí usa el número/label correcto (4 Why) que sí
+// aparece bien en el nav y en el índice de Home.
 const STAGES: Stage[] = [
   {
     id: "where",
-    kicker: "1.",
+    number: "1",
     title: "Where - Assessing the landscape",
     items: [
       {
@@ -32,7 +33,7 @@ const STAGES: Stage[] = [
   },
   {
     id: "who",
-    kicker: "2.",
+    number: "2",
     title: "Who - Assessing the landscape",
     items: [
       {
@@ -49,8 +50,9 @@ const STAGES: Stage[] = [
   },
   {
     id: "what",
-    kicker: "3.",
-    title: "What - Reasons to believe & brand role",
+    number: "3",
+    title: "What - Reasons to believe & brand Role",
+    cols: 3,
     items: [
       {
         number: "5",
@@ -69,13 +71,13 @@ const STAGES: Stage[] = [
       },
       {
         number: "8",
-        title: "Beneficios del producto",
+        title: "Beneficios del produco",
         body: "Damos acceso a lo que quieres, dónde y cuándo nos necesitas con lo que quieres y conoces. Llegamos a las personas, damos acceso y progreso 24/7. Hiper diversificado.",
       },
       {
         number: "9",
         title: "Beneficios del consumidor",
-        body: "Con Nova siempre puedo tener lo que quiero; acceso fácil a toda hora en todo lugar.",
+        body: "Con Nova siempre puedo tener lo que quiero; acceso fácil a todo hora en todo lugar",
       },
       {
         number: "10",
@@ -86,30 +88,24 @@ const STAGES: Stage[] = [
   },
   {
     id: "why",
-    kicker: "4.",
+    number: "4",
     title: "Why - Why the brand exists",
-    items: [
-      {
-        number: "11",
-        title: "Visión",
-        body: "Acompañamos la vida.",
-      },
-    ],
+    items: [{ number: "11", title: "Visión", body: "Acompañamos la vida" }],
   },
   {
     id: "how",
-    kicker: "5.",
+    number: "5",
     title: "How - Brand execution",
     items: [
       {
         number: "12",
-        title: "Arquetipo · Personalidad · Valores",
+        title: "Arquetipo - Personalidad - Valores",
         body: "El Mago: transforma la realidad a través del conocimiento, la visión y la capacidad de hacer posible lo que otros creen imposible. Busca transformar, inspirar y revelar nuevas posibilidades. Humana · Visionaria · Facilitadora.",
       },
       {
         number: "13",
         title: "Brand CUES",
-        body: "El logo, la N, catálogo, las vending, el himno, Nova y todos los sufijos.",
+        body: "El logo, La N, catálogo - las vending, el himno, Nova y todos los sufijos.",
       },
     ],
   },
@@ -148,24 +144,48 @@ export default function EstrategiaPage() {
           id={stage.id}
           className="px-6 md:px-[38px] pb-16 md:pb-24 scroll-mt-8 border-t border-azul-tint pt-12"
         >
-          <h3 className="text-2xl md:text-[32px] font-bold text-azul-2 mb-8">
-            {stage.kicker} {stage.title}
+          <h3 className="text-5xl md:text-[96px] leading-[1.04] font-bold text-azul-1 mb-12">
+            {stage.number} {stage.title}
           </h3>
-          <div className="grid gap-x-12 gap-y-10 md:grid-cols-2">
-            {stage.items.map((item) => (
-              <div key={item.number} className="flex gap-4">
-                <span className="text-sm font-semibold text-azul-2 shrink-0 pt-1">
-                  {item.number}
-                </span>
-                <div>
-                  <p className="font-semibold text-azul-1 mb-1">{item.title}</p>
-                  <p className="text-azul-3/80 leading-6">{item.body}</p>
-                </div>
+
+          {stage.id === "why" ? (
+            <div className="border-t border-azul-tint pt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div className="flex gap-8 items-start">
+                <span className="text-[32px] font-bold text-azul-2">11</span>
+                <span className="text-[32px] font-bold text-azul-2">Visión</span>
               </div>
-            ))}
-          </div>
+              <p className="text-3xl md:text-[48px] leading-[1.4] font-bold text-azul-2">
+                Acompañamos la vida
+              </p>
+            </div>
+          ) : (
+            <div
+              className={`grid gap-x-3 gap-y-10 ${stage.cols === 3 ? "md:grid-cols-3" : "md:grid-cols-2"}`}
+            >
+              {stage.items.map((item) => (
+                <div key={item.number} className="border-t border-azul-tint pt-8 flex gap-8">
+                  <span className="text-[32px] font-bold text-azul-2 shrink-0">{item.number}</span>
+                  <div className="flex flex-col gap-6">
+                    <p className="text-[32px] leading-[1.2] font-bold text-azul-2">{item.title}</p>
+                    <p className="text-[20px] leading-7 text-azul-3/80">{item.body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
       ))}
+
+      <section className="px-6 md:px-[38px] pb-16 md:pb-24 border-t border-azul-tint pt-12">
+        <div className="relative w-full max-w-[1134px] mx-auto" style={{ aspectRatio: 1134 / 1295 }}>
+          <Image
+            src="/brand/estrategia/diagrama-brand-tree.png"
+            alt="Diagrama del Brand Tree de NovaVenta"
+            fill
+            className="object-contain"
+          />
+        </div>
+      </section>
     </div>
   );
 }

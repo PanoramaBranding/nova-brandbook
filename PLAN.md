@@ -123,6 +123,30 @@ fotografía, tags, retícula) ahora son número+título en una sola línea, Azul
 II, con el ancho/gap de columnas (127px, 300px/561px) ajustado al valor real
 de Figma en vez de los `gap-16`/`w-[280px]` aproximados de antes.
 
+## QA de Sofia, ronda 3 (2026-09-02) — Brand Tree no era texto plano, era un diagrama
+Sofia señaló el nodo 543:1190 ("Frame 54") directamente. Nunca lo había
+revisado con `get_design_context` — construí el Brand Tree como texto plano
+apilado, cuando en realidad:
+- Los encabezados de cada etapa ("1 Where – Assessing the landscape") son
+  **96px Bold Azul I**, no ~32px como tenía.
+- Cada ítem numerado es número+título en fila (32px Bold Azul II, título
+  encima de la descripción de 20px/28px Azul III), con una línea divisoria
+  arriba — no mi patrón de número chiquito + título en otro color.
+- El bloque "Visión" (ítem 11) tiene tratamiento especial: "11 Visión" a la
+  izquierda, "Acompañamos la vida" en 48px a la derecha — no es un ítem más.
+- Al final hay un **diagrama real** (`Diagrama 1`, nodo 527:243): un
+  flowchart que conecta los 13 ítems con "Visión" resaltado en el centro. No
+  existía en mi build — lo agregué como imagen completa.
+Todo esto se reconstruyó y se verificó contra el render de
+`get_design_context`, no solo contra el texto extraído.
+
+**Sobre el sistema de captura/comparación (pregunta directa de Sofia):** no
+lo había estado corriendo de forma sistemática — comparaba puntualmente
+cuando algo se veía raro, no una pasada exhaustiva sección por sección.
+A partir de esta ronda estoy usando `get_design_context` (que trae captura +
+código) como fuente principal antes de dar una sección por terminada, no
+solo el texto cacheado.
+
 ## Notas técnicas
 - **Scroll-spy corregido (2026-09-02):** la primera versión usaba
   `IntersectionObserver` con una banda delgada (`rootMargin: -15%/-70%`), que
