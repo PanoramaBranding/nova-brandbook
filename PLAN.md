@@ -66,7 +66,7 @@ para el nav Y el índice de Home (evita duplicar contenido).
 - [x] Nav mobile (hamburguesa + panel, diseño propio — ver nota abajo)
 - [x] Home/Estrategia/Master Brand/Assets responsive a 375px (reflow con Tailwind; no verificado pixel-perfect contra los frames "* - Mobile" de Figma todavía)
 - [x] Estrategia — contenido real completo (desktop), scroll-spy corregido (ver Notas técnicas)
-- [x] Master Brand — contenido real completo (desktop), placeholders explícitos en piezas visuales (diagramas, ejemplos de uso incorrecto)
+- [x] Master Brand — contenido real completo (desktop) **con todos los assets visuales reales** (diagrama de identificador, 4 versiones de color, área de reserva, tamaños mínimos, co-branding, endoso Walo/Zinergy, 4 construcciones de sub-marca, 6 ejemplos de uso incorrecto ×2 para logo y símbolo) — extraído del archivo copia de Sofia (fileKey `UDHz26k3eXAPVtSqav0GGi`), sin límite de llamadas
 - [x] Assets — contenido real completo (desktop): paleta con swatches reales, tipografía viva (Plus Jakarta Sans), pilares de diseño completos, sistema fotográfico con prompts de IA incluidos (decisión de Sofia: sí van públicos); placeholders en piezas puramente visuales (diagramas de retícula, ejemplos de contraste, set de íconos, fotos de referencia)
 - [ ] Mobile de Estrategia y Master Brand (Assets no tiene mobile — confirmado con Sofia)
 - [ ] `llms.txt` / `brand.json` con tokens de marca en texto plano
