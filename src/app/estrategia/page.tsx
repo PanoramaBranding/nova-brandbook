@@ -128,12 +128,9 @@ export default function EstrategiaPage() {
       </section>
 
       <section id="brand-tree" className="px-6 md:px-[38px] pb-16 md:pb-24 scroll-mt-8">
-        <div className="flex flex-col md:flex-row md:justify-between gap-6 md:gap-16 border-t border-azul-tint pt-12">
-          <div className="md:w-[280px] shrink-0">
-            <p className="text-sm font-semibold text-azul-2">1.1</p>
-            <h2 className="text-2xl md:text-[32px] font-bold text-azul-1">Brand Tree</h2>
-          </div>
-          <p className="text-azul-3/80 text-lg leading-6 max-w-[560px]">
+        <div className="flex flex-col md:flex-row md:gap-[127px] gap-6 border-t border-azul-tint pt-12">
+          <h2 className="text-2xl md:text-[32px] font-bold text-azul-2 md:w-[300px] shrink-0">1.1 Brand Tree</h2>
+          <p className="text-azul-3/80 leading-6 md:w-[561px] max-w-[561px]">
             La estrategia de marca define el marco que orienta las decisiones de
             NovaVenta y establece la relación entre su contexto, las necesidades
             de las personas y el papel que la marca busca desempeñar en su vida
@@ -151,9 +148,8 @@ export default function EstrategiaPage() {
           id={stage.id}
           className="px-6 md:px-[38px] pb-16 md:pb-24 scroll-mt-8 border-t border-azul-tint pt-12"
         >
-          <h3 className="text-2xl md:text-[32px] font-bold text-azul-1 mb-8">
-            <span className="text-azul-2 font-semibold mr-2">{stage.kicker}</span>
-            {stage.title}
+          <h3 className="text-2xl md:text-[32px] font-bold text-azul-2 mb-8">
+            {stage.kicker} {stage.title}
           </h3>
           <div className="grid gap-x-12 gap-y-10 md:grid-cols-2">
             {stage.items.map((item) => (

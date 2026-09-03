@@ -111,6 +111,18 @@ superpuesto. Corregido:
   (24px), que es el valor exacto extraído repetidamente de Figma para texto
   de 16px.
 
+## QA de Sofia, ronda 2 (2026-09-02) — número+título separados, color equivocado
+Sofia siguió viendo los títulos mal en Master Brand y Assets después del fix
+de los héroes. La causa: en Figma "2.2 Identificador" (número + título) es
+**una sola línea de texto**, 32px Bold, en Azul II (#0C67C1) — yo lo estaba
+separando en un número chiquito (text-sm) arriba y un título grande debajo,
+y encima en el color equivocado (Azul I en vez de Azul II). Corregido en
+Estrategia, Master Brand y Assets: todos los encabezados de sección y
+subsección (incluyendo los subtítulos de 20px dentro de Sub-marcas, paleta,
+fotografía, tags, retícula) ahora son número+título en una sola línea, Azul
+II, con el ancho/gap de columnas (127px, 300px/561px) ajustado al valor real
+de Figma en vez de los `gap-16`/`w-[280px]` aproximados de antes.
+
 ## Notas técnicas
 - **Scroll-spy corregido (2026-09-02):** la primera versión usaba
   `IntersectionObserver` con una banda delgada (`rootMargin: -15%/-70%`), que

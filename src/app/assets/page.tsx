@@ -154,8 +154,9 @@ function Fig({ src, alt, aspect }: { src: string; alt: string; aspect: number })
 function SectionHeading({ number, title }: { number: string; title: string }) {
   return (
     <div className="mb-8">
-      <p className="text-sm font-semibold text-azul-2">{number}</p>
-      <h2 className="text-2xl md:text-[32px] font-bold text-azul-1">{title}</h2>
+      <h2 className="text-2xl md:text-[32px] font-bold text-azul-2">
+        {number} {title}
+      </h2>
     </div>
   );
 }
@@ -177,9 +178,9 @@ export default function AssetsPage() {
           combinaciones y proporciones definidas para asegurar reconocimiento,
           contraste y consistencia en todos los puntos de contacto.
         </p>
-        <p className="font-semibold text-azul-1 mb-4">Color principal</p>
+        <p className="text-[20px] font-bold text-azul-2 mb-4">Color principal</p>
         <SwatchCard swatch={PRINCIPAL} big />
-        <p className="font-semibold text-azul-1 mt-10 mb-4">Colores secundarios</p>
+        <p className="text-[20px] font-bold text-azul-2 mt-10 mb-4">Colores secundarios</p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {SECONDARY.map((s) => (
             <SwatchCard key={s.name + s.hex} swatch={s} />
@@ -249,7 +250,7 @@ export default function AssetsPage() {
             la lectura.
           </p>
           <div>
-            <p className="font-semibold text-azul-1 mb-2">Contrastes básicos</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-2">Contrastes básicos</p>
             <div className="flex flex-col gap-3">
               {[1, 2, 3, 4, 5, 6, 7].map((n) => (
                 <Fig
@@ -262,7 +263,7 @@ export default function AssetsPage() {
             </div>
           </div>
           <div>
-            <p className="font-semibold text-azul-1 mb-2">Contrastes compuestos</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-2">Contrastes compuestos</p>
             <p className="text-azul-3/80 leading-6 mb-2">
               Los contrastes compuestos combinan un color de fondo, un color
               tipográfico y uno o más colores complementarios dentro de una misma
@@ -388,7 +389,7 @@ export default function AssetsPage() {
           representación coherente con el universo visual de la marca.
         </p>
 
-        <p className="font-semibold text-azul-1 mb-4">Fotografía lifestyle</p>
+        <p className="text-[20px] font-bold text-azul-2 mb-4">Fotografía lifestyle</p>
         <div className="flex flex-col gap-6 mb-10">
           {PHOTO_LIFESTYLE.map((cat) => (
             <details key={cat.title} className="border border-azul-tint rounded-xl p-6">
@@ -412,7 +413,7 @@ export default function AssetsPage() {
           ))}
         </div>
 
-        <p className="font-semibold text-azul-1 mb-2">Fotografía de producto</p>
+        <p className="text-[20px] font-bold text-azul-2 mb-2">Fotografía de producto</p>
         <p className="text-azul-3/80 leading-6 max-w-[640px] mb-2">
           <strong>Producto en contexto:</strong> muestra el producto integrado en
           situaciones reales de uso, donde las personas interactúan con él de
@@ -479,7 +480,7 @@ export default function AssetsPage() {
           <Fig src="/brand/assets/iconos-logo-categoria.png" alt="Ícono aplicado con el logotipo por categoría" aspect={4096 / 1267} />
           <Fig src="/brand/assets/iconos-en-categoria.png" alt="Íconos aplicados por categoría" aspect={4096 / 1840} />
         </div>
-        <p className="font-semibold text-azul-1 mb-4">Usos incorrectos</p>
+        <p className="text-[20px] font-bold text-azul-2 mb-4">Usos incorrectos</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="flex flex-col gap-2">
             <Fig src="/brand/assets/iconos-mal-contraste.png" alt="No usar combinaciones con bajo contraste" aspect={1} />
@@ -512,19 +513,19 @@ export default function AssetsPage() {
         </p>
         <div className="flex flex-col gap-10">
           <div>
-            <p className="font-semibold text-azul-1 mb-4">Tags de navegación</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-4">Tags de navegación</p>
             <Fig src="/brand/assets/tags-navegacion.png" alt="Tags de navegación aplicados por categoría" aspect={4096 / 1840} />
           </div>
           <div>
-            <p className="font-semibold text-azul-1 mb-4">Construcción de tags de navegación</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-4">Construcción de tags de navegación</p>
             <Fig src="/brand/assets/tags-navegacion-construccion.png" alt="Construcción de tags de navegación" aspect={3262 / 2000} />
           </div>
           <div>
-            <p className="font-semibold text-azul-1 mb-4">Tags promocionales</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-4">Tags promocionales</p>
             <Fig src="/brand/assets/tags-promocionales.png" alt="Tags promocionales aplicados" aspect={4096 / 1840} />
           </div>
           <div>
-            <p className="font-semibold text-azul-1 mb-4">Construcción de tags promocionales</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-4">Construcción de tags promocionales</p>
             <Fig src="/brand/assets/tags-promocionales-construccion.png" alt="Construcción de tags promocionales" aspect={3038 / 2000} />
           </div>
         </div>
@@ -545,7 +546,7 @@ export default function AssetsPage() {
         <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
           {DESIGN_PILLARS.map((p) => (
             <div key={p.title}>
-              <p className="font-semibold text-azul-1 mb-1">{p.title}</p>
+              <p className="text-[20px] font-bold text-azul-2 mb-1">{p.title}</p>
               <p className="text-azul-3/80 leading-6">{p.body}</p>
             </div>
           ))}
@@ -568,19 +569,19 @@ export default function AssetsPage() {
         </p>
         <div className="flex flex-col gap-10">
           <div>
-            <p className="font-semibold text-azul-1 mb-4">Retícula básica</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-4">Retícula básica</p>
             <Fig src="/brand/assets/reticula-basica.png" alt="Retícula básica" aspect={1841 / 2000} />
           </div>
           <div>
-            <p className="font-semibold text-azul-1 mb-4">Ubicación de elementos en la retícula</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-4">Ubicación de elementos en la retícula</p>
             <Fig src="/brand/assets/reticula-ubicacion.png" alt="Ubicación de elementos en la retícula" aspect={1841 / 2000} />
           </div>
           <div>
-            <p className="font-semibold text-azul-1 mb-4">Creación de la pieza gráfica</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-4">Creación de la pieza gráfica</p>
             <Fig src="/brand/assets/reticula-creacion.png" alt="Creación de la pieza gráfica" aspect={1841 / 2000} />
           </div>
           <div>
-            <p className="font-semibold text-azul-1 mb-2">Sistema reticular para catálogos</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-2">Sistema reticular para catálogos</p>
             <p className="text-azul-3/80 leading-6 mb-4">
               Para catálogos y piezas impresas, la retícula organiza la
               información mediante una estructura modular de columnas y áreas de
@@ -590,15 +591,15 @@ export default function AssetsPage() {
             <Fig src="/brand/assets/reticula-catalogos.png" alt="Sistema reticular para catálogos" aspect={1974 / 2000} />
           </div>
           <div>
-            <p className="font-semibold text-azul-1 mb-4">Doble páginas promocionales</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-4">Doble páginas promocionales</p>
             <Fig src="/brand/assets/reticula-doble-pagina.png" alt="Doble páginas promocionales" aspect={4096 / 1397} />
           </div>
           <div>
-            <p className="font-semibold text-azul-1 mb-4">Páginas especiales / Banners promocionales</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-4">Páginas especiales / Banners promocionales</p>
             <Fig src="/brand/assets/reticula-banners.png" alt="Páginas especiales y banners promocionales" aspect={1920 / 1080} />
           </div>
           <div>
-            <p className="font-semibold text-azul-1 mb-4">Portada catálogo</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-4">Portada catálogo</p>
             <Fig src="/brand/assets/reticula-portada.png" alt="Portada de catálogo" aspect={3556 / 2000} />
           </div>
         </div>
