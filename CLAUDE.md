@@ -4,18 +4,27 @@
 Manual de marca de NovaVenta, en formato web (no PDF), construido para ser legible
 tanto por personas como por motores de IA: HTML semántico, metadata estructurada, y
 un `llms.txt` / `brand.json` con los tokens de marca en texto plano (pendiente).
-Ver `PLAN.md` para arquitectura, sitemap y decisiones tomadas con Sofia.
+Ver **`context.md`** para el estado completo del proyecto (producción, decisiones,
+bugs de contenido conocidos, pendientes) y `PLAN.md` para el historial detallado
+ronda por ronda de QA.
 
 ## Siempre primero
 - Este es el **sistema de diseño reutilizable** de Panorama — no solo el sitio de
   Nova. Los componentes (`src/components/`) y el layout deben mantenerse genéricos;
   el contenido específico de Nova vive en datos (`src/lib/`) y en cada `page.tsx`.
 - Antes de tocar una sección nueva, llama a `get_design_context` de Figma sobre el
-  nodo real (fileKey `N55zKD9GQSbKa9hkHE2aq4`) — no inventes medidas ni copy.
+  nodo real (fileKey `UDHz26k3eXAPVtSqav0GGi` — ver nota abajo) — no inventes
+  medidas, colores ni layout a partir del texto cacheado. **Esto no es opcional:**
+  la ronda de QA del 2026-09-02 encontró 6+ secciones enteras mal construidas
+  específicamente por saltarse este paso y asumir a partir de texto/metadata.
   El copy final vive en las capas de Figma (confirmado con Sofia).
 
 ## Fuente de Figma
-- Archivo: `NOVA BRANDBOOK GUIDELINES 2026` — fileKey `N55zKD9GQSbKa9hkHE2aq4`.
+- Archivo a usar: `NOVA BRANDBOOK GUIDELINES 2026 (Copy)` — fileKey
+  `UDHz26k3eXAPVtSqav0GGi`. Es una copia que Sofia hizo en su propio team (plan
+  Pro) específicamente para evitar el límite de llamadas del plan Starter del
+  archivo original (fileKey `N55zKD9GQSbKa9hkHE2aq4` — **no usar ese**, ya se
+  agotó su límite una vez).
 - Cuenta MCP correcta: **diseno@panoramabranding.co** (no la personal). Si el MCP
   devuelve error de acceso, es porque el conector volvió a la cuenta equivocada —
   hay que reconectarlo desde la configuración de conectores.
