@@ -402,6 +402,16 @@ seems.
      crop exists, so no change needed there. Discovered Figma's mobile frame
      omits the "4 Why / Visión" stage entirely — see "Decisions confirmed
      with Sofia" #10 for how that was resolved.
+   - **Estrategia desktop audit:** fetched `get_design_context` on the
+     desktop node (`509:912`) too, later in this same round. Found the
+     Quote block was 36px/medium in code vs. Figma's real 52px/bold (the
+     same size used by Master Brand's and Assets' quotes, confirming this
+     is one shared "Quote" pattern this page's copy had drifted from), plus
+     a wrong container max-width (900px vs. the real ~676px for this page's
+     shorter quote text). Also fixed the "1.1 Brand Tree" title column
+     (300px vs. the confirmed 447px used everywhere else on this page and
+     on Master Brand/Assets). Confirmed no "Contenidos" TOC block exists in
+     Estrategia's Figma desktop node either — nothing missing there.
    - **Home page audit:** fetched the desktop hero (`528:1264`) and the full
      mobile frame (`528:1244`) directly — this page had the most real
      mismatches of any page this round, **including one on desktop**: the
