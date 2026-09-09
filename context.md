@@ -2,7 +2,7 @@
 
 A record of how this site was designed, built, deployed, and the decisions made
 along the way — so a future session (or Sofia) can pick this up cold. Last
-updated: 2026-09-09.
+updated: 2026-09-09 (Round 7 — hero rebuild + mobile pixel-perfect audit).
 
 ## What this is
 
@@ -111,6 +111,13 @@ files, not baked into components.
    in Figma's 3.8 section): included publicly on the site — Sofia's explicit
    call, not treated as internal-only.
 9. **Assets page has no mobile design** in Figma (confirmed, not a gap).
+10. **Estrategia keeps the "4 Why / Visión" stage visible on mobile** even
+    though Figma's real mobile frame (`529:1613`) omits it entirely (jumps
+    straight from "3 What" to "5 How"). Asked Sofia 2026-09-09 whether to
+    match Figma exactly (drop it) or keep it for content completeness — she
+    chose to keep it, judging the gap a mobile-mockup oversight rather than
+    an intentional cut. See memory `estrategia-mobile-vision-scope` for
+    detail. Don't "fix" this again without re-confirming with her.
 
 ## Design tokens (`src/app/globals.css`)
 
@@ -164,9 +171,11 @@ src/components/
   Nav.tsx              sticky sidebar (desktop) + hamburger/panel (mobile);
                         accordion by route + scroll-spy (position-based, not
                         IntersectionObserver — see Known quirks)
-  PageHero.tsx          page header: real hero photo as background (screenshot
-                        render, not the raw image-fill export — see quirks)
-                        + a visually-hidden real <h1> for a11y/AI-readability
+  PageHero.tsx          page header: real visible <h1> (number + 2-line
+                        title) over a background image via <picture>, with a
+                        different crop per breakpoint — a single H1 in the
+                        DOM, not duplicated markup toggled by CSS (see quirks
+                        for the one exception, Estrategia's scrim)
   Footer.tsx            inner-page footer (gray bg, no logo, right-aligned)
   Button.tsx            Figma "Boton" — outline/filled variants
   HeroMark.tsx           Home's composited NovaVenta lockup (9 SVG fragments)
@@ -179,14 +188,21 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
 
 ## Known quirks (intentional, don't "fix")
 
-- **`PageHero` uses a full-screenshot render, not the raw image fill.**
-  Figma's `get_design_context` image export came back broken for 2 of 3
-  page heroes (blank white for Estrategia, a flat color swatch for a
-  different node) even though `get_screenshot` rendered them correctly. We
-  use the screenshot (which has Figma's own text baked into the pixels) as
-  the background image, plus a real `sr-only` `<h1>` alongside for
-  accessibility/AI-readability. If design ever re-exports a clean
-  background-only asset, switch to a live text overlay instead.
+- **`PageHero` renders a real `<h1>` over a background image, not baked-in
+  text** (fixed 2026-09-09 — Sofia flagged the original screenshot-render
+  approach as wrong: it had Figma's own title text baked into the image
+  pixels instead of being real, readable markup). Master Brand and Assets
+  now use clean background-only exports (no text baked in) on both
+  breakpoints. **Estrategia is the one exception:** its specific photo has a
+  persistent Figma MCP asset-export bug — the raw image-fill export comes
+  back blank on *both* desktop and mobile crops (confirmed on two separate
+  retries, not transient), even though `get_screenshot` composites the same
+  node correctly. Until design re-exports that asset, Estrategia's hero uses
+  the `get_screenshot` render as the background plus a CSS gradient scrim
+  (`scrim` prop) over the area where the screenshot's baked-in text sits, so
+  the real `<h1>` on top is legible and the old baked pixels are hidden
+  underneath. If design re-exports a clean asset for Estrategia, drop the
+  `scrim` prop and switch its `image`/`mobileImage` to the new export.
 - **Nav scroll-spy is scroll-position based, not IntersectionObserver.**
   First version used an IntersectionObserver with a thin `rootMargin` band;
   it lost track on long sections (6+ items) because the band could exit the
@@ -209,15 +225,24 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
 ## Pending / open follow-ups (pick up here tomorrow)
 
 0. **Verify Andrés accepted the GitHub collaborator invite** (`PanoramaBranding`,
-   read access, invited 2026-09-02 for a security review) — couldn't confirm
-   on 2026-09-09 because `gh` wasn't available in that session; check via
-   `gh api repos/soysoff/nova-brandbook/invitations` or the repo's Settings →
-   Collaborators page.
-1. **Master Brand — needs the same rigorous re-audit Assets just got.** It
-   was originally built straight from `get_design_context`, so it's likely
-   in better shape, but it hasn't had a fresh line-by-line verification pass
-   the way Assets did in the last round (which found 6 sections built on
-   guesses). Do that pass before assuming it's correct.
+   read access, invited 2026-09-02 for a security review) — still couldn't
+   confirm on 2026-09-09 (retried at the start of Round 7): `gh` and `brew`
+   are both unavailable in this environment, and an unauthenticated
+   `curl https://api.github.com/users/soysoff` returns no public email (most
+   users keep it private, expected). Check via
+   `gh api repos/soysoff/nova-brandbook/invitations` from a machine with `gh`
+   installed, or the repo's Settings → Collaborators page.
+0b. **GitHub account email vs. Vercel/git identity** — same blocker as
+   above (no `gh`/`brew` this session). Sofia needs to check
+   `github.com/settings/emails` herself to confirm the `soysoff` GitHub
+   account's verified email matches `sofia@panoramabranding.co` (the email
+   used for the local git identity and the Vercel account) — matters once
+   GitHub↔Vercel auto-deploy is connected.
+1. ~~Master Brand — needs the same rigorous re-audit Assets just got~~ —
+   **done in Round 7:** full `get_design_context` audit of both the desktop
+   node and mobile frame (`543:519`); fixed 4 mobile spacing mismatches (see
+   Round 7 below). The shared `Button` component was checked too — already
+   pixel-perfect against the "Boton" spec, no change needed.
 2. **Assets 3.8/3.9 — photography reference images still pending**
    (`AssetPending` placeholders). Copy is complete (including the AI
    generation prompts, which Sofia confirmed should be public); only the
@@ -229,15 +254,20 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
    try `vercel git connect --scope panoramabranding` fresh before assuming
    the old GitHub-App-permissions fix is still needed — the earlier failure
    happened on the wrong account and may not recur.
-5. **Mobile responsive pass** has only been spot-checked, not verified
-   against Figma's real `"* - Mobile"` frames (`Home - Mobile`,
-   `01 Estrategia de marca - Mobile`, `02 Mater Brand - Mobile` all exist in
-   Figma; Assets has no mobile design, confirmed). Home/Estrategia/Master
-   Brand's *content* reflow at 375px hasn't been checked against those
-   frames directly — only that the sticky-sidebar problem (nav eating half
-   the screen) is fixed by the new hamburger pattern.
+5. ~~Mobile responsive pass — only spot-checked~~ — **substantially done in
+   Round 7:** Home, Estrategia, and Master Brand were all audited directly
+   against their real Figma mobile frames (not just CSS breakpoints assumed
+   correct) and every hero now art-directs a real per-breakpoint crop.
+   Assets confirmed (again) to have no mobile design in Figma. Still open:
+   Master Brand's *desktop* re-audit for the same body sections is done
+   (see item 1), but a final round of visual comparison in an actual mobile
+   browser (this session only had `curl`+HTML-parse + Figma screenshots to
+   verify against, no live browser) is worth doing before calling mobile
+   fully signed off.
 6. **Home page** was built earliest and least rigorously re-verified —
-   worth a fresh audit pass with the same method used on Assets.
+   still worth a fresh full audit pass with the same method used on Assets
+   (Round 7 only touched Home's hero + a couple of already-known mobile
+   sizing fixes from a prior session, not a fresh line-by-line pass).
 7. Sofia may still be finding mismatches — this list is what's *known*
    pending, not a guarantee everything else is pixel-perfect.
 
@@ -298,3 +328,37 @@ seems.
    CLI already had cached** — this is the same class of mistake as the
    Figma-account and GitHub-account mixups earlier in the project, just not
    caught until a week of dead deploys had piled up.
+
+7. **Round 7 (2026-09-09, same day):** Sofia asked for three things at once —
+   confirm GitHub uses her Panorama email (blocked, see Pending 0b), redo a
+   pixel-perfect pass on everything in Figma's "ready for dev" file
+   including mobile, and fix the page heroes so they're a real `<h1>` over a
+   background image instead of text baked into the image pixels.
+   - **Heroes rebuilt:** `PageHero.tsx` now renders one real `<h1>` (not two
+     copies toggled by CSS) with a `<picture>`/`<source media>` swap for a
+     different image crop per breakpoint. Master Brand and Assets got clean
+     background-only exports; Estrategia keeps a documented scrim workaround
+     for a confirmed persistent Figma export bug (see "Known quirks").
+   - **Master Brand mobile audit:** fetched `get_design_context` on node
+     `543:519` ("02 Mater Brand - Mobile") directly. Fixed: `SectionHeading`
+     h2 24px→28px, its title→body gap 16px→32px, the misuse grids (2.9/2.14)
+     were 2 columns on mobile when Figma stacks them 1-column (also fixed
+     their label text 14px→16px), and the 2.8 sub-brand blocks' gaps
+     16px→32px (including a "Marcas de nombre corto" subtitle that had only
+     a 4px margin instead of a real 32px gap).
+   - **Estrategia mobile audit:** fetched `get_design_context` on node
+     `529:1613` in full. Fixed: "1.1 Brand Tree" title→body gap 24px→32px,
+     stage `<h3>` line-height 1.04→1.2 on mobile (1.04 kept on desktop), and
+     item rows' number→content/title→body gaps 12px→18px/24px. Also
+     confirmed the mobile Brand Tree diagram is the exact same asset already
+     used on desktop (same file, same aspect ratio) — no separate mobile
+     crop exists, so no change needed there. Discovered Figma's mobile frame
+     omits the "4 Why / Visión" stage entirely — see "Decisions confirmed
+     with Sofia" #10 for how that was resolved.
+   - **GitHub email check:** still blocked — `gh`/`brew` unavailable, same as
+     the prior session. Not a new finding, just re-confirmed.
+   - Pattern holds again: every mismatch found this round was in a mobile
+     layout that had only ever been *assumed* to inherit correctly from the
+     desktop-first responsive classes, never checked against Figma's actual
+     mobile frame. Same lesson as Round 5, just for breakpoints instead of
+     whole sections.
