@@ -131,7 +131,7 @@ export default function EstrategiaPage() {
       </section>
 
       <section id="brand-tree" className="px-6 md:px-[38px] pb-16 md:pb-24 scroll-mt-8">
-        <div className="flex flex-col md:flex-row md:gap-[127px] gap-6 border-t border-azul-tint pt-12">
+        <div className="flex flex-col md:flex-row md:gap-[127px] gap-8 border-t border-azul-tint pt-12">
           <h2 className="text-[28px] md:text-[32px] font-bold text-azul-2 md:w-[300px] shrink-0">1.1 Brand Tree</h2>
           <p className="text-azul-3/80 leading-6 md:w-[561px] max-w-[561px]">
             La estrategia de marca define el marco que orienta las decisiones de
@@ -151,7 +151,7 @@ export default function EstrategiaPage() {
           id={stage.id}
           className="px-6 md:px-[38px] pb-16 md:pb-24 scroll-mt-8 border-t border-azul-tint pt-12"
         >
-          <h3 className="text-5xl md:text-[96px] leading-[1.04] font-bold text-azul-1 mb-12">
+          <h3 className="text-5xl md:text-[96px] leading-[1.2] md:leading-[1.04] font-bold text-azul-1 mb-12">
             {stage.number} {stage.title}
           </h3>
 
@@ -172,12 +172,12 @@ export default function EstrategiaPage() {
               {stage.items.map((item) => (
                 <div
                   key={item.number}
-                  className="border-t border-azul-tint pt-8 flex flex-col md:flex-row gap-3 md:gap-8"
+                  className="border-t border-azul-tint pt-8 flex flex-col md:flex-row gap-[18px] md:gap-8"
                 >
                   <span className="text-[28px] md:text-[32px] font-bold text-azul-2 shrink-0">
                     {item.number}
                   </span>
-                  <div className="flex flex-col gap-3 md:gap-6">
+                  <div className="flex flex-col gap-6">
                     <p className="text-[28px] md:text-[32px] leading-[1.2] font-bold text-azul-2">
                       {item.title}
                     </p>
