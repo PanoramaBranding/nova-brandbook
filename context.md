@@ -2,7 +2,8 @@
 
 A record of how this site was designed, built, deployed, and the decisions made
 along the way — so a future session (or Sofia) can pick this up cold. Last
-updated: 2026-09-09 (Round 7 — hero rebuild + mobile pixel-perfect audit).
+updated: 2026-09-09 (Round 8 — hero/button/nav/footer fixes after Sofia's
+re-review of the Round 7 deploy).
 
 ## What this is
 
@@ -192,9 +193,9 @@ src/components/
   PageHero.tsx          page header: real visible <h1> (number + 2-line
                         title) over a background image via <picture>, with a
                         different crop per breakpoint — a single H1 in the
-                        DOM, not duplicated markup toggled by CSS (see quirks
-                        for the one exception, Estrategia's scrim)
-  Footer.tsx            inner-page footer (gray bg, no logo, right-aligned)
+                        DOM, not duplicated markup toggled by CSS
+  Footer.tsx            shared footer, both pages' variants + both
+                        breakpoints (see "Decisions confirmed with Sofia")
   Button.tsx            Figma "Boton" — outline/filled variants
   HeroMark.tsx           Home's composited NovaVenta lockup (9 SVG fragments)
   AssetPending.tsx       placeholder for sections we chose not to fabricate
@@ -212,18 +213,18 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
 - **`PageHero` renders a real `<h1>` over a background image, not baked-in
   text** (fixed 2026-09-09 — Sofia flagged the original screenshot-render
   approach as wrong: it had Figma's own title text baked into the image
-  pixels instead of being real, readable markup). Master Brand and Assets
-  now use clean background-only exports (no text baked in) on both
-  breakpoints. **Estrategia is the one exception:** its specific photo has a
-  persistent Figma MCP asset-export bug — the raw image-fill export comes
-  back blank on *both* desktop and mobile crops (confirmed on two separate
-  retries, not transient), even though `get_screenshot` composites the same
-  node correctly. Until design re-exports that asset, Estrategia's hero uses
-  the `get_screenshot` render as the background plus a CSS gradient scrim
-  (`scrim` prop) over the area where the screenshot's baked-in text sits, so
-  the real `<h1>` on top is legible and the old baked pixels are hidden
-  underneath. If design re-exports a clean asset for Estrategia, drop the
-  `scrim` prop and switch its `image`/`mobileImage` to the new export.
+  pixels instead of being real, readable markup). All 4 heroes now use
+  clean background-only exports (no text baked in) on both breakpoints.
+  ⚠️ **Correction (same day, later):** an earlier version of this note
+  claimed Estrategia's photo had a "persistent, confirmed" raw-export bug
+  requiring a screenshot+scrim workaround. That was wrong — a fresh
+  `get_design_context` fetch later the same session returned the correct
+  clean photo on both breakpoints with no issue at all. The apparent
+  "blank export" was never re-verified with a second fresh fetch before
+  being written down as persistent; don't repeat that mistake — if a raw
+  asset export looks broken, retry with a brand-new `get_design_context`
+  call (not a cached one) before concluding it's a real, lasting bug.
+  The `scrim` prop has been removed from `PageHero` entirely.
 - **Nav scroll-spy is scroll-position based, not IntersectionObserver.**
   First version used an IntersectionObserver with a thin `rootMargin` band;
   it lost track on long sections (6+ items) because the band could exit the
@@ -384,8 +385,12 @@ seems.
    - **Heroes rebuilt:** `PageHero.tsx` now renders one real `<h1>` (not two
      copies toggled by CSS) with a `<picture>`/`<source media>` swap for a
      different image crop per breakpoint. Master Brand and Assets got clean
-     background-only exports; Estrategia keeps a documented scrim workaround
-     for a confirmed persistent Figma export bug (see "Known quirks").
+     background-only exports; Estrategia initially seemed to need a
+     screenshot+scrim workaround for a supposedly "persistent" raw-export
+     bug, but Sofia caught that the result still looked wrong (baked-in
+     text visible), which prompted a fresh re-fetch later this same
+     session that returned the correct clean photo with no bug at all —
+     see Round 8 below.
    - **Master Brand mobile audit:** fetched `get_design_context` on node
      `543:519` ("02 Mater Brand - Mobile") directly. Fixed: `SectionHeading`
      h2 24px→28px, its title→body gap 16px→32px, the misuse grids (2.9/2.14)
@@ -453,3 +458,62 @@ seems.
      subsections reports `w-[447px]` in Figma, not the `300px` in code —
      confirmed by the fact that 447+127(gap)+561(body) exactly matches the
      page's established 1135px content width, 300px doesn't.
+
+8. **Round 8 (2026-09-09, later same day):** Sofia looked at the deployed
+   Round 7 result and said the heroes still looked wrong, buttons were
+   inconsistent, the sidebar logo wasn't centered, and footers didn't match
+   across pages/breakpoints. Re-verified each directly instead of guessing:
+   - **Estrategia's "persistent" hero bug wasn't real.** A brand-new
+     `get_design_context` fetch (not a retry with the same stale approach)
+     returned the correct clean family-dinner photo on both breakpoints,
+     no blank export, no bug. The Round 7 diagnosis was wrong — see the
+     correction note in "Known quirks". Swapped in the real photos, deleted
+     the `scrim` prop from `PageHero` entirely.
+   - **Assets' hero background was the right file, wrong orientation.**
+     Comparing the raw export against Hero 3's screenshot side by side
+     showed horizontal color bands where Figma has vertical ones —
+     rotating the downloaded PNG -90° produced an exact match. Not an
+     MCP bug, just a fill rotation that doesn't survive the raw export.
+   - **Master Brand's hero background was actually correct** (a zoomed
+     preview made it look wrong at first glance; resizing it to match the
+     screenshot's aspect ratio confirmed the composition is identical).
+     Its `mobileImage`, though, was a byte-for-byte duplicate of the
+     desktop file — confirmed this is genuinely what Figma's own mobile
+     node also references (not a download mistake), so simplified to a
+     single `image` prop with no separate mobile file. Also fixed the
+     hero number's line-height (120px in Figma, was sharing the title's
+     96px value).
+   - **Buttons weren't actually inconsistent at the component level** —
+     every one already uses the shared `Button`. The visible size/position
+     differences came from their *containers*: 4 image+button blocks in
+     Master Brand (2.2, 2.3, 2.10, 2.11) used `items-start` where Figma's
+     real spec is `items-end` (confirmed via `99:283`), and Assets'
+     "Descargar fuente" button had no cross-axis alignment at all, so it
+     stretched to fill width on mobile / height on desktop under flexbox's
+     default `stretch`. Fixed both.
+   - **Sidebar logo:** Figma's "Menu v1" root (`528:286`) uses
+     `items-center` on the whole column, which `Nav.tsx` never applied —
+     added it, plus an explicit `w-full` on the nav-links `<ul>` so it
+     stays full-width instead of also collapsing and centering.
+   - **Footer rebuilt as one shared, variant-aware component.** It was two
+     separate implementations before (Home's own inline footer, plus
+     `Footer.tsx` for the other three) and neither matched Figma's mobile
+     spec. Fetched all 4 combinations directly (`528:254`/`528:256` desktop,
+     `543:393`/`543:407` mobile): mobile shows the logo on *every* page,
+     including the "gray" inner-page variant that hides it only on
+     desktop — a real per-breakpoint content difference, not an oversight
+     to "fix" away. The three footer links group differently per
+     breakpoint too (desktop pairs "Volver arriba" with the contact block,
+     18px gap, separate from copyright, 12px gap; mobile pairs
+     contact+copyright together, 32px gap, separate from "Volver arriba"
+     alone, 64px gap) — genuinely different grouping, not just the same
+     three items re-wrapped. Also fixed a dead `#top` anchor (no element
+     with that id existed anywhere) by making the back-to-top target a
+     `backToTopHref` prop, defaulting to `#`.
+   - **Lesson:** every one of these had already been "fixed" once this
+     project (or built from `get_design_context` originally) and still
+     shipped wrong. A first pass that *seems* to match Figma isn't the
+     same as verifying against a fresh fetch — cached impressions (a
+     zoomed screenshot, an assumption about which bug was "confirmed")
+     drifted from what Figma actually specifies. When Sofia says something
+     still looks off, re-fetch before re-explaining the old diagnosis.
