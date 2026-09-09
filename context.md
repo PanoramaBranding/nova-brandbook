@@ -199,6 +199,9 @@ src/components/
   HeroMark.tsx           Home's composited NovaVenta lockup (9 SVG fragments)
   AssetPending.tsx       placeholder for sections we chose not to fabricate
                         (real photos, a few diagrams) — see Pending below
+  ContentsToc.tsx        mid-page "Contenidos" TOC block (Master Brand,
+                        Assets) — duplicates the sidebar nav on purpose,
+                        see the component's own doc comment for why
 src/lib/nav-data.ts     sitemap data: page slugs/labels + anchor ids per page
 public/brand/           downloaded Figma assets, one subfolder per page/use
   home/ estrategia/ master-brand/ assets/ heroes/
@@ -274,7 +277,16 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
 2. **Assets 3.8/3.9 — photography reference images still pending**
    (`AssetPending` placeholders). Copy is complete (including the AI
    generation prompts, which Sofia confirmed should be public); only the
-   actual reference photos are missing.
+   actual reference photos are missing. Separately, **Assets had the same
+   missing-sections bug as Master Brand** — fetched its desktop node
+   directly in Round 7 and found the same "Quote" block + "Contenidos" TOC
+   block absent (Figma nodes `551:2733` and `553:2736`). Added both. Since
+   the TOC pattern now appears on two pages with identical structure, it's
+   extracted into `src/components/ContentsToc.tsx` — Master Brand was
+   refactored to use it too instead of its inline copy. Estrategia does
+   *not* have this block in Figma (confirmed directly), so don't add it
+   there. The rest of Assets' body (3.1–3.13) was not re-audited this
+   round — it already got a full line-by-line pass in Round 5.
 3. **`llms.txt` / `brand.json` / JSON-LD** — the core "AI-readable"
    differentiator from the original brief. Not started.
 4. **GitHub↔Vercel auto-deploy** not connected. Now that the project lives
