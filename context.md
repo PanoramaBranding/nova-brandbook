@@ -156,6 +156,16 @@ so don't "fix" them by changing our code without checking Figma first:
    Figma frames** (`578:4002` and `578:4017`) that both repeat the same
    title + description text. We merged the images from both into one
    section in code (title/description shown once).
+6. **"Brand Boook Guidelines" (extra "o") is Figma's actual, consistent
+   text** in every single Hero instance across the whole file — Home
+   desktop (`528:1264`), Home mobile (`528:1244`), and every inner-page
+   Hero (Estrategia/Master Brand mobile at least, likely all). Confirmed
+   2026-09-09 by fetching multiple Hero nodes directly — not a one-off
+   mobile typo, it's baked into the shared Hero component itself. We use
+   the corrected spelling ("Brand Book Guidelines") site-wide instead —
+   this was already the case for `PageHero.tsx` from an earlier session,
+   applied to Home's hero too in Round 7 for consistency. Flag for design
+   to fix in the source; don't silently follow their example elsewhere.
 
 ## File map
 
@@ -264,10 +274,17 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
    browser (this session only had `curl`+HTML-parse + Figma screenshots to
    verify against, no live browser) is worth doing before calling mobile
    fully signed off.
-6. **Home page** was built earliest and least rigorously re-verified —
-   still worth a fresh full audit pass with the same method used on Assets
-   (Round 7 only touched Home's hero + a couple of already-known mobile
-   sizing fixes from a prior session, not a fresh line-by-line pass).
+6. ~~Home page — built earliest and least rigorously re-verified~~ —
+   **done in Round 7:** fetched both the desktop hero (`528:1264`) and
+   the full mobile frame (`528:1244`) directly. This turned out to have
+   the most real mismatches of any page audited so far, **including a
+   wrong desktop value** (the hero's title-bar-to-wordmark gap was 106px
+   in code, Figma's real spec is 426px) — confirms this page really had
+   never been checked against `get_design_context` properly. See Round 7
+   below for the full list (hero reflow, `HeroMark` aspect ratio, Index
+   section padding/gaps). The footer and "Bienvenida" copy block were not
+   re-audited beyond the mobile padding fix — worth a look if more
+   mismatches turn up.
 7. Sofia may still be finding mismatches — this list is what's *known*
    pending, not a guarantee everything else is pixel-perfect.
 
@@ -355,10 +372,29 @@ seems.
      crop exists, so no change needed there. Discovered Figma's mobile frame
      omits the "4 Why / Visión" stage entirely — see "Decisions confirmed
      with Sofia" #10 for how that was resolved.
+   - **Home page audit:** fetched the desktop hero (`528:1264`) and the full
+     mobile frame (`528:1244`) directly — this page had the most real
+     mismatches of any page this round, **including one on desktop**: the
+     hero's title-bar-to-wordmark gap was 106px in code, Figma's actual
+     spec is a fixed 426px on a 929px-tall frame (proof this page really
+     hadn't been checked against `get_design_context` before). Fixed: the
+     hero's mobile reflow (390:844 full-bleed frame with `justify-between`,
+     top bar regrouping from "Nova+BBG / 2026" to "BBG alone / Nova+2026"
+     paired — a genuine content reflow, not just re-wrapping), `HeroMark`'s
+     aspect ratio (was a single 1440/415 at every breakpoint, Figma's
+     mobile crop is 388/118), Bienvenida/Index mobile padding (24px/48px
+     code vs. Figma's 16px/64px, and Index was missing top padding
+     entirely), and several Index list gaps (120px between page blocks vs.
+     64px, 32px heading-to-list vs. 16px, 48px between Assets' grouped
+     sections vs. 32px, 10px number-to-label vs. 16px) plus a missing
+     `font-semibold` on group headings. Also confirmed "Brand Boook
+     Guidelines" (extra "o") is Figma's real text everywhere, not a mobile
+     one-off — see "Known content bugs" #6.
    - **GitHub email check:** still blocked — `gh`/`brew` unavailable, same as
      the prior session. Not a new finding, just re-confirmed.
    - Pattern holds again: every mismatch found this round was in a mobile
      layout that had only ever been *assumed* to inherit correctly from the
      desktop-first responsive classes, never checked against Figma's actual
      mobile frame. Same lesson as Round 5, just for breakpoints instead of
-     whole sections.
+     whole sections — and Home's desktop hero gap shows the lesson applies
+     to desktop values too whenever a section was never actually verified.
