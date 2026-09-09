@@ -31,7 +31,7 @@ export default function Home() {
           (01-03); 04 y 05 existen en Figma pero quedan fuera por ahora. */}
       <section id="index" className="flex flex-col gap-16 px-6 md:px-[38px] pb-24">
         <div className="flex flex-col gap-8">
-          <h1 className="text-azul-1 font-bold text-6xl md:text-[96px]">Index</h1>
+          <h1 className="text-azul-1 font-bold text-5xl md:text-[96px]">Index</h1>
           <div className="border-t border-azul-1/30" />
         </div>
 
@@ -39,7 +39,7 @@ export default function Home() {
           {NAV_PAGES.map((page) => (
             <div key={page.slug} className="flex flex-col gap-16">
               <div className="flex flex-col md:flex-row md:justify-between gap-6">
-                <h2 className="text-azul-2 font-semibold text-2xl md:text-[40px] shrink-0">
+                <h2 className="text-azul-2 font-semibold text-[28px] md:text-[40px] shrink-0">
                   {page.number} {page.label}
                 </h2>
                 <IndexEntries page={page} />
@@ -51,9 +51,9 @@ export default function Home() {
       </section>
 
       {/* Footer — Figma node 528:254 */}
-      <footer className="flex flex-col md:flex-row items-center md:items-center justify-between gap-8 pt-16 md:pt-[140px] pb-9 px-6 md:px-[38px]">
+      <footer className="flex flex-col md:flex-row items-start md:items-center justify-between gap-16 md:gap-8 pt-16 md:pt-[140px] pb-9 px-6 md:px-[38px]">
         <img src="/brand/home/footer-mark.svg" alt="NovaVenta" className="h-[97px] w-auto" />
-        <div className="flex flex-col md:flex-row gap-4 md:gap-[18px] items-start md:items-center text-azul-1 text-base md:text-[20px] font-medium">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-[18px] items-start md:items-center text-azul-1 text-[20px] font-medium">
           <a href="#index" className="whitespace-nowrap">
             ↑ Volver arriba
           </a>
@@ -63,7 +63,7 @@ export default function Home() {
             contacto@panoramabranding.co
           </p>
         </div>
-        <p className="text-azul-1 text-base md:text-[20px] font-medium">
+        <p className="text-azul-1 text-[20px] font-medium">
           2026 Nova Venta.
           <br />
           Tu mundo está aquí, en Nova.

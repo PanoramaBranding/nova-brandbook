@@ -117,6 +117,7 @@ export default function EstrategiaPage() {
     <div className="flex flex-col">
       <PageHero
         image="/brand/heroes/hero-estrategia.png"
+        mobileImage="/brand/heroes/hero-estrategia-mobile.png"
         number="01"
         titleLines={["Brand", "Tree"]}
         scrim
