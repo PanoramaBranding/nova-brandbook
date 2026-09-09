@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import Button from "@/components/Button";
 import PageHero from "@/components/PageHero";
 import Footer from "@/components/Footer";
+import ContentsToc, { type TocItem } from "@/components/ContentsToc";
 
 export const metadata: Metadata = { title: "02 · Master Brand" };
 
@@ -29,12 +29,9 @@ function SectionHeading({
   );
 }
 
-// "Contenidos" TOC block (Figma node 543:652 desktop, 543:2174 mobile) — a
-// second, full-size table of contents in the page body itself, distinct
-// from (and duplicating) the persistent sidebar nav. Confirmed with Sofia
-// 2026-09-09 to build it anyway for full fidelity to the "ready for dev"
-// file, even though it repeats the sidebar's own subsection list.
-const TOC = [
+// "Contenidos" TOC block (Figma node 543:652 desktop, 543:2174 mobile) — see
+// ContentsToc.tsx for why this deliberately duplicates the sidebar nav.
+const TOC: TocItem[] = [
   { number: "2.1", label: "Background", id: "background" },
   { number: "2.2", label: "Identificador", id: "identificador" },
   { number: "2.3", label: "Versiones de color", id: "versiones-de-color" },
@@ -49,24 +46,7 @@ const TOC = [
   { number: "2.12", label: "Área de reserva", id: "simbolo-area-de-reserva" },
   { number: "2.13", label: "Tamaños mínimos", id: "simbolo-tamanos-minimos" },
   { number: "2.14", label: "Usos incorrectos", id: "simbolo-usos-incorrectos" },
-] as const;
-
-function TocColumn({ items }: { items: readonly (typeof TOC)[number][] }) {
-  return (
-    <div className="flex flex-col gap-4 md:gap-5">
-      {items.map((item) => (
-        <Link
-          key={item.id}
-          href={`#${item.id}`}
-          className="flex gap-[10px] md:gap-[15px] items-center text-azul-1 hover:underline"
-        >
-          <span className="text-base md:text-xl">{item.number}</span>
-          <span className="text-xl md:text-[32px]">{item.label}</span>
-        </Link>
-      ))}
-    </div>
-  );
-}
+];
 
 function Fig({ src, alt, aspect }: { src: string; alt: string; aspect: number }) {
   return (
@@ -130,25 +110,7 @@ export default function MasterBrandPage() {
         </p>
       </section>
 
-      <section className="px-6 md:px-[38px] pb-16 md:pb-24 border-t border-azul-tint pt-12">
-        <div className="flex flex-col gap-8 md:gap-16">
-          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
-            <p className="text-[28px] md:text-[32px] font-semibold md:font-bold text-azul-2 md:w-[447px]">
-              Contenidos
-            </p>
-            <Button variant="outline" className="hidden md:inline-flex">
-              Descargar assets
-            </Button>
-          </div>
-          <div className="flex flex-col md:flex-row gap-4 md:gap-[97px]">
-            <TocColumn items={TOC.slice(0, 7)} />
-            <TocColumn items={TOC.slice(7)} />
-          </div>
-          <Button variant="outline" className="self-start md:hidden">
-            Descargar assets
-          </Button>
-        </div>
-      </section>
+      <ContentsToc items={TOC} />
 
       <section id="background" className="px-6 md:px-[38px] py-12 md:py-16 border-t border-azul-tint scroll-mt-8">
         <SectionHeading number="2.1" title="Background">

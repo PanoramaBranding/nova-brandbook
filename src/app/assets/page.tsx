@@ -4,8 +4,27 @@ import AssetPending from "@/components/AssetPending";
 import PageHero from "@/components/PageHero";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
+import ContentsToc, { type TocItem } from "@/components/ContentsToc";
 
 export const metadata: Metadata = { title: "03 · Brand Assets" };
+
+// "Contenidos" TOC block (Figma node 553:2736) — see ContentsToc.tsx for why
+// this deliberately duplicates the sidebar nav.
+const TOC: TocItem[] = [
+  { number: "3.1", label: "Paleta cromática principal", id: "paleta-cromatica-principal" },
+  { number: "3.2", label: "Paleta complementaria", id: "paleta-complementaria" },
+  { number: "3.3", label: "Porcentajes de color", id: "porcentajes-de-color" },
+  { number: "3.4", label: "Uso de color", id: "uso-de-color" },
+  { number: "3.5", label: "Fuentes tipográficas", id: "fuentes-tipograficas" },
+  { number: "3.6", label: "Jerarquías", id: "jerarquias" },
+  { number: "3.7", label: "Usos incorrectos", id: "usos-incorrectos-tipografia" },
+  { number: "3.8", label: "Estilo fotográfico", id: "estilo-fotografico" },
+  { number: "3.9", label: "Uso de la fotografía", id: "uso-de-la-fotografia" },
+  { number: "3.10", label: "Sistema iconográfico", id: "sistema-iconografico" },
+  { number: "3.11", label: "Sistema de tags", id: "sistema-de-tags" },
+  { number: "3.12", label: "Pilares de diseño", id: "pilares-de-diseno" },
+  { number: "3.13", label: "Sistema reticular", id: "sistema-reticular" },
+];
 
 type Swatch = {
   name: string;
@@ -171,6 +190,20 @@ export default function AssetsPage() {
         number="03"
         titleLines={["Brand", "Assets"]}
       />
+
+      <section className="px-6 md:px-[38px] py-16 md:py-24 max-w-[905px]">
+        <p className="text-[32px] md:text-[52px] leading-[1.2] md:leading-[60px] text-azul-1 font-bold">
+          Los brand assets reúnen los recursos visuales que construyen la
+          identidad de NovaVenta.
+          <br />
+          <br />
+          Esta sección define el uso de color, tipografía, fotografía,
+          iconografía y tags para asegurar consistencia y claridad en todas
+          las aplicaciones.
+        </p>
+      </section>
+
+      <ContentsToc items={TOC} />
 
       {/* Color */}
       <section
