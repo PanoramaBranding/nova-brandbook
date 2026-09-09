@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import Button from "@/components/Button";
 import PageHero from "@/components/PageHero";
 import Footer from "@/components/Footer";
@@ -20,10 +21,49 @@ function SectionHeading({
 }) {
   return (
     <div className="flex flex-col md:flex-row md:gap-[127px] gap-8">
-      <h2 className="text-[28px] md:text-[32px] font-bold text-azul-2 md:w-[300px] shrink-0">
+      <h2 className="text-[28px] md:text-[32px] font-bold text-azul-2 md:w-[447px] shrink-0">
         {number} {title}
       </h2>
       <div className="text-azul-3/80 leading-6 md:w-[561px] max-w-[561px]">{children}</div>
+    </div>
+  );
+}
+
+// "Contenidos" TOC block (Figma node 543:652 desktop, 543:2174 mobile) — a
+// second, full-size table of contents in the page body itself, distinct
+// from (and duplicating) the persistent sidebar nav. Confirmed with Sofia
+// 2026-09-09 to build it anyway for full fidelity to the "ready for dev"
+// file, even though it repeats the sidebar's own subsection list.
+const TOC = [
+  { number: "2.1", label: "Background", id: "background" },
+  { number: "2.2", label: "Identificador", id: "identificador" },
+  { number: "2.3", label: "Versiones de color", id: "versiones-de-color" },
+  { number: "2.4", label: "Área de reserva", id: "area-de-reserva" },
+  { number: "2.5", label: "Tamaños mínimos", id: "tamanos-minimos" },
+  { number: "2.6", label: "Co-branding", id: "co-branding" },
+  { number: "2.7", label: "Endoso de marca", id: "endoso-de-marca" },
+  { number: "2.8", label: "Sub-marcas", id: "sub-marcas" },
+  { number: "2.9", label: "Usos incorrectos", id: "usos-incorrectos" },
+  { number: "2.10", label: "Símbolo", id: "simbolo" },
+  { number: "2.11", label: "Versiones de color", id: "simbolo-versiones-de-color" },
+  { number: "2.12", label: "Área de reserva", id: "simbolo-area-de-reserva" },
+  { number: "2.13", label: "Tamaños mínimos", id: "simbolo-tamanos-minimos" },
+  { number: "2.14", label: "Usos incorrectos", id: "simbolo-usos-incorrectos" },
+] as const;
+
+function TocColumn({ items }: { items: readonly (typeof TOC)[number][] }) {
+  return (
+    <div className="flex flex-col gap-4 md:gap-5">
+      {items.map((item) => (
+        <Link
+          key={item.id}
+          href={`#${item.id}`}
+          className="flex gap-[10px] md:gap-[15px] items-center text-azul-1 hover:underline"
+        >
+          <span className="text-base md:text-xl">{item.number}</span>
+          <span className="text-xl md:text-[32px]">{item.label}</span>
+        </Link>
+      ))}
     </div>
   );
 }
@@ -76,6 +116,39 @@ export default function MasterBrandPage() {
         number="02"
         titleLines={["Master", "Brand"]}
       />
+
+      <section className="px-6 md:px-[38px] py-16 md:py-24 max-w-[905px]">
+        <p className="text-[32px] md:text-[52px] leading-[1.2] md:leading-[60px] text-azul-1 font-bold">
+          Una marca evoluciona con la forma en que las personas se relacionan
+          con ella. NovaVenta responde a ese cambio con una identidad más
+          simple, clara y flexible.
+          <br />
+          <br />
+          El nuevo logo conserva el reconocimiento de NovaVenta, pero lo
+          integra al sistema Nova con una expresión más contemporánea,
+          consistente y preparada para distintos puntos de contacto.
+        </p>
+      </section>
+
+      <section className="px-6 md:px-[38px] pb-16 md:pb-24 border-t border-azul-tint pt-12">
+        <div className="flex flex-col gap-8 md:gap-16">
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
+            <p className="text-[28px] md:text-[32px] font-semibold md:font-bold text-azul-2 md:w-[447px]">
+              Contenidos
+            </p>
+            <Button variant="outline" className="hidden md:inline-flex">
+              Descargar assets
+            </Button>
+          </div>
+          <div className="flex flex-col md:flex-row gap-4 md:gap-[97px]">
+            <TocColumn items={TOC.slice(0, 7)} />
+            <TocColumn items={TOC.slice(7)} />
+          </div>
+          <Button variant="outline" className="self-start md:hidden">
+            Descargar assets
+          </Button>
+        </div>
+      </section>
 
       <section id="background" className="px-6 md:px-[38px] py-12 md:py-16 border-t border-azul-tint scroll-mt-8">
         <SectionHeading number="2.1" title="Background">
@@ -186,7 +259,7 @@ export default function MasterBrandPage() {
         </div>
 
         <div className="mt-12 flex flex-col md:flex-row md:gap-[127px] gap-8">
-          <p className="md:w-[300px] shrink-0 text-[20px] font-bold text-azul-2">Marcas de nombre largo</p>
+          <p className="md:w-[447px] shrink-0 text-[20px] font-bold text-azul-2">Marcas de nombre largo</p>
           <div className="md:w-[561px] max-w-[561px] flex flex-col gap-8 md:gap-6">
             <p className="text-azul-3/80 leading-6">
               Las submarcas de nombre largo mantienen a Nova como elemento
@@ -201,7 +274,7 @@ export default function MasterBrandPage() {
         </div>
 
         <div className="mt-12 flex flex-col md:flex-row md:gap-[127px] gap-8">
-          <p className="md:w-[300px] shrink-0 text-[20px] font-bold text-azul-2">Construcción horizontal de submarcas</p>
+          <p className="md:w-[447px] shrink-0 text-[20px] font-bold text-azul-2">Construcción horizontal de submarcas</p>
           <div className="md:w-[561px] max-w-[561px] flex flex-col gap-8 md:gap-6">
             <p className="text-azul-3/80 leading-6">
               Las submarcas pueden utilizar una composición horizontal en la que
@@ -215,7 +288,7 @@ export default function MasterBrandPage() {
         </div>
 
         <div className="mt-12 flex flex-col md:flex-row md:gap-[127px] gap-8">
-          <p className="md:w-[300px] shrink-0 text-[20px] font-bold text-azul-2">Submarca de construcción especial</p>
+          <p className="md:w-[447px] shrink-0 text-[20px] font-bold text-azul-2">Submarca de construcción especial</p>
           <div className="md:w-[561px] max-w-[561px] flex flex-col gap-8 md:gap-6">
             <p className="text-azul-3/80 leading-6">
               iNova es una excepción dentro del sistema de sub-marcas. A
