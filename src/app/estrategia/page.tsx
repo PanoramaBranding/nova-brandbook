@@ -120,7 +120,6 @@ export default function EstrategiaPage() {
         mobileImage="/brand/heroes/hero-estrategia-mobile.png"
         number="01"
         titleLines={["Brand", "Tree"]}
-        scrim
       />
 
       <section className="px-6 md:px-[38px] py-16 md:py-24 max-w-[676px]">

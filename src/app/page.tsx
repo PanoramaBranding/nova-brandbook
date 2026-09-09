@@ -1,5 +1,6 @@
 import Link from "next/link";
 import HeroMark from "@/components/HeroMark";
+import Footer from "@/components/Footer";
 import { NAV_PAGES, isGroups } from "@/lib/nav-data";
 
 export default function Home() {
@@ -63,25 +64,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer — Figma node 528:254 */}
-      <footer className="flex flex-col md:flex-row items-start md:items-center justify-between gap-16 md:gap-8 pt-16 md:pt-[140px] pb-9 px-6 md:px-[38px]">
-        <img src="/brand/home/footer-mark.svg" alt="NovaVenta" className="h-[97px] w-auto" />
-        <div className="flex flex-col md:flex-row gap-8 md:gap-[18px] items-start md:items-center text-azul-1 text-[20px] font-medium">
-          <a href="#index" className="whitespace-nowrap">
-            ↑ Volver arriba
-          </a>
-          <p>
-            ¿Preguntas?
-            <br />
-            contacto@panoramabranding.co
-          </p>
-        </div>
-        <p className="text-azul-1 text-[20px] font-medium">
-          2026 Nova Venta.
-          <br />
-          Tu mundo está aquí, en Nova.
-        </p>
-      </footer>
+      <Footer variant="default" backToTopHref="#index" />
     </div>
   );
 }

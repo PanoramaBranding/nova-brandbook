@@ -92,7 +92,6 @@ export default function MasterBrandPage() {
     <div className="flex flex-col">
       <PageHero
         image="/brand/heroes/hero-master-brand-bg.jpg"
-        mobileImage="/brand/heroes/hero-master-brand-mobile.jpg"
         number="02"
         titleLines={["Master", "Brand"]}
       />
@@ -130,7 +129,7 @@ export default function MasterBrandPage() {
           descriptor Venta, estableciendo una jerarquía clara entre ambos
           elementos.
         </SectionHeading>
-        <div className="mt-8 flex flex-col gap-6 items-start">
+        <div className="mt-8 flex flex-col gap-6 items-end">
           <Fig src="/brand/master-brand/identificador-1.png" alt="Construcción del identificador NovaVenta" aspect={4096 / 2602} />
           <Button variant="outline">Descargar assets</Button>
         </div>
@@ -144,7 +143,7 @@ export default function MasterBrandPage() {
           preserve el reconocimiento de la marca y la jerarquía entre Nova y el
           descriptor Venta.
         </SectionHeading>
-        <div className="mt-8 flex flex-col gap-6 items-start">
+        <div className="mt-8 flex flex-col gap-6 items-end">
           <div className="grid grid-cols-2 gap-6 w-full">
             <Fig src="/brand/master-brand/versiones-color-1.png" alt="Versión de color 1" aspect={4096 / 2602} />
             <Fig src="/brand/master-brand/versiones-color-2.png" alt="Versión de color 2" aspect={4096 / 2602} />
@@ -287,7 +286,7 @@ export default function MasterBrandPage() {
           y orientación deben mantenerse siempre sin modificaciones para
           preservar su reconocimiento y consistencia dentro de la identidad.
         </SectionHeading>
-        <div className="mt-8 flex flex-col gap-6 items-start">
+        <div className="mt-8 flex flex-col gap-6 items-end">
           <Fig src="/brand/master-brand/simbolo-1.png" alt="El símbolo de Nova" aspect={4096 / 2602} />
           <Button variant="outline">Descargar símbolo</Button>
         </div>
@@ -300,7 +299,7 @@ export default function MasterBrandPage() {
           únicamente en las combinaciones aprobadas, manteniendo sin cambios su
           construcción y proporciones.
         </SectionHeading>
-        <div className="mt-8 flex flex-col gap-6 items-start">
+        <div className="mt-8 flex flex-col gap-6 items-end">
           <div className="grid grid-cols-2 gap-6 w-full">
             <Fig src="/brand/master-brand/simbolo-color-1.png" alt="Símbolo versión de color 1" aspect={4096 / 2602} />
             <Fig src="/brand/master-brand/simbolo-color-2.png" alt="Símbolo versión de color 2" aspect={4096 / 2602} />

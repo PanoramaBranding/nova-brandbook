@@ -315,7 +315,7 @@ export default function AssetsPage() {
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.5" title="Fuentes tipográficas" />
-        <div className="flex flex-col md:flex-row gap-8 md:gap-[127px] mb-16">
+        <div className="flex flex-col md:flex-row md:justify-between gap-8 mb-16 items-start">
           <p className="text-azul-3/80 leading-6 max-w-[561px]">
             La tipografía principal de NovaVenta es Plus Jakarta Sans, seleccionada
             por su legibilidad, versatilidad y buen desempeño en aplicaciones

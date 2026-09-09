@@ -80,7 +80,7 @@ export default function Nav() {
     <>
       {/* Desktop — sticky sidebar */}
       <nav
-        className="hidden md:flex sticky top-0 h-screen w-[200px] shrink-0 overflow-y-auto bg-azul-1 px-6 pt-7 pb-8 flex-col gap-12 [scrollbar-width:thin]"
+        className="hidden md:flex sticky top-0 h-screen w-[200px] shrink-0 overflow-y-auto bg-azul-1 px-6 pt-7 pb-8 flex-col items-center gap-12 [scrollbar-width:thin]"
         aria-label="Navegación del manual de marca"
       >
         <Link href="/" className="shrink-0 w-[80px]" aria-label="Ir a inicio">
@@ -135,7 +135,7 @@ function NavLinks({
   onNavigate?: () => void;
 }) {
   return (
-    <ul className="flex flex-col gap-7 text-white text-base font-medium">
+    <ul className="flex flex-col gap-7 w-full text-white text-base font-medium">
       {NAV_PAGES.map((page) => {
         const isActive = page.slug === pathname;
         return (
