@@ -166,7 +166,11 @@ function SectionHeading({ number, title }: { number: string; title: string }) {
 export default function AssetsPage() {
   return (
     <div className="flex flex-col">
-      <PageHero image="/brand/heroes/hero-assets.png" number="03" title="Brand Assets" />
+      <PageHero
+        image="/brand/heroes/hero-assets-bg.png"
+        number="03"
+        titleLines={["Brand", "Assets"]}
+      />
 
       {/* Color */}
       <section

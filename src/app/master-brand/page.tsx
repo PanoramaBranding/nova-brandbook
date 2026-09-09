@@ -70,7 +70,11 @@ function MisuseGrid({ items }: { items: typeof MISUSE_2_9 }) {
 export default function MasterBrandPage() {
   return (
     <div className="flex flex-col">
-      <PageHero image="/brand/heroes/hero-master-brand.png" number="02" title="Master Brand" />
+      <PageHero
+        image="/brand/heroes/hero-master-brand-bg.jpg"
+        number="02"
+        titleLines={["Master", "Brand"]}
+      />
 
       <section id="background" className="px-6 md:px-[38px] py-12 md:py-16 border-t border-azul-tint scroll-mt-8">
         <SectionHeading number="2.1" title="Background">

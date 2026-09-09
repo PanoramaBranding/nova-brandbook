@@ -115,7 +115,12 @@ const STAGES: Stage[] = [
 export default function EstrategiaPage() {
   return (
     <div className="flex flex-col">
-      <PageHero image="/brand/heroes/hero-estrategia.png" number="01" title="Brand Tree" />
+      <PageHero
+        image="/brand/heroes/hero-estrategia.png"
+        number="01"
+        titleLines={["Brand", "Tree"]}
+        scrim
+      />
 
       <section className="px-6 md:px-[38px] py-16 md:py-24 max-w-[900px]">
         <p className="text-2xl md:text-[36px] leading-[1.3] text-azul-1 font-medium">
