@@ -248,11 +248,14 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
    account's verified email matches `sofia@panoramabranding.co` (the email
    used for the local git identity and the Vercel account) — matters once
    GitHub↔Vercel auto-deploy is connected.
-1. ~~Master Brand — needs the same rigorous re-audit Assets just got~~ —
-   **done in Round 7:** full `get_design_context` audit of both the desktop
-   node and mobile frame (`543:519`); fixed 4 mobile spacing mismatches (see
-   Round 7 below). The shared `Button` component was checked too — already
-   pixel-perfect against the "Boton" spec, no change needed.
+1. **Master Brand — mobile done in Round 7, desktop still not re-verified.**
+   Fetched `get_design_context` fresh on the mobile frame (`543:519`) and
+   fixed 4 mobile spacing mismatches (see Round 7 below). **Did not**
+   re-fetch the desktop node this round — its body sections (2.1–2.14)
+   still rely on the original 2026-09-02 build and haven't had a fresh
+   line-by-line check the way Assets got in Round 5. The shared `Button`
+   component was checked and is already pixel-perfect against the "Boton"
+   spec, no change needed.
 2. **Assets 3.8/3.9 — photography reference images still pending**
    (`AssetPending` placeholders). Copy is complete (including the AI
    generation prompts, which Sofia confirmed should be public); only the
@@ -269,11 +272,11 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
    against their real Figma mobile frames (not just CSS breakpoints assumed
    correct) and every hero now art-directs a real per-breakpoint crop.
    Assets confirmed (again) to have no mobile design in Figma. Still open:
-   Master Brand's *desktop* re-audit for the same body sections is done
-   (see item 1), but a final round of visual comparison in an actual mobile
-   browser (this session only had `curl`+HTML-parse + Figma screenshots to
-   verify against, no live browser) is worth doing before calling mobile
-   fully signed off.
+   Master Brand's *desktop* body sections still haven't been re-verified
+   (see item 1), and a final round of visual comparison in an actual
+   mobile browser (this session only had `curl`+HTML-parse + Figma
+   screenshots to verify against, no live browser) is worth doing before
+   calling mobile fully signed off.
 6. ~~Home page — built earliest and least rigorously re-verified~~ —
    **done in Round 7:** fetched both the desktop hero (`528:1264`) and
    the full mobile frame (`528:1244`) directly. This turned out to have
