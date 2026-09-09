@@ -118,6 +118,14 @@ files, not baked into components.
     chose to keep it, judging the gap a mobile-mockup oversight rather than
     an intentional cut. See memory `estrategia-mobile-vision-scope` for
     detail. Don't "fix" this again without re-confirming with her.
+11. **Master Brand's "Contenidos" TOC block was added despite duplicating
+    the sidebar nav.** Figma's desktop node has a full table-of-contents
+    block mid-page (title + all 14 subsection links + a download button)
+    that repeats what the persistent sidebar (`Nav.tsx`) already shows.
+    Asked Sofia 2026-09-09 whether to build it anyway or treat it as
+    redundant — she chose full fidelity to Figma, so it's built. If a
+    similar duplicate-content question comes up on another page, don't
+    assume the same answer applies — ask again.
 
 ## Design tokens (`src/app/globals.css`)
 
@@ -248,13 +256,20 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
    account's verified email matches `sofia@panoramabranding.co` (the email
    used for the local git identity and the Vercel account) — matters once
    GitHub↔Vercel auto-deploy is connected.
-1. **Master Brand — mobile done in Round 7, desktop still not re-verified.**
-   Fetched `get_design_context` fresh on the mobile frame (`543:519`) and
-   fixed 4 mobile spacing mismatches (see Round 7 below). **Did not**
-   re-fetch the desktop node this round — its body sections (2.1–2.14)
-   still rely on the original 2026-09-02 build and haven't had a fresh
-   line-by-line check the way Assets got in Round 5. The shared `Button`
-   component was checked and is already pixel-perfect against the "Boton"
+1. ~~Master Brand — needs the same rigorous re-audit Assets just got~~ —
+   **done in Round 7:** fetched `get_design_context` fresh on both the
+   mobile frame (`543:519`) and the desktop node (`99:283`). Desktop turned
+   out to have two **entire sections missing**, not just style drift — a
+   "Quote" block (same pattern as Estrategia's, different text) and a full
+   "Contenidos" table-of-contents block (title + 14 subsection links in two
+   columns + a "Descargar assets" button) that duplicates the sidebar
+   nav's own list. Added both; the Contenidos block was confirmed with
+   Sofia first since it's a deliberate duplication of existing nav, not a
+   style fix. Also fixed `SectionHeading`'s title column width (300px in
+   code vs. Figma's consistent 447px across all 14 subsections — confirmed
+   by the fact that 447+127(gap)+561(body) exactly matches the page's
+   established 1135px content width, 300px doesn't). The shared `Button`
+   component was checked too — already pixel-perfect against the "Boton"
    spec, no change needed.
 2. **Assets 3.8/3.9 — photography reference images still pending**
    (`AssetPending` placeholders). Copy is complete (including the AI
@@ -271,12 +286,12 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
    Round 7:** Home, Estrategia, and Master Brand were all audited directly
    against their real Figma mobile frames (not just CSS breakpoints assumed
    correct) and every hero now art-directs a real per-breakpoint crop.
-   Assets confirmed (again) to have no mobile design in Figma. Still open:
-   Master Brand's *desktop* body sections still haven't been re-verified
-   (see item 1), and a final round of visual comparison in an actual
-   mobile browser (this session only had `curl`+HTML-parse + Figma
-   screenshots to verify against, no live browser) is worth doing before
-   calling mobile fully signed off.
+   Assets confirmed (again) to have no mobile design in Figma. Master
+   Brand's desktop was also re-verified this round (see item 1). Still
+   open: a final round of visual comparison in an actual mobile browser
+   (this session only had `curl`+HTML-parse + Figma screenshots to verify
+   against, no live browser) is worth doing before calling mobile fully
+   signed off.
 6. ~~Home page — built earliest and least rigorously re-verified~~ —
    **done in Round 7:** fetched both the desktop hero (`528:1264`) and
    the full mobile frame (`528:1244`) directly. This turned out to have
@@ -401,3 +416,18 @@ seems.
      mobile frame. Same lesson as Round 5, just for breakpoints instead of
      whole sections — and Home's desktop hero gap shows the lesson applies
      to desktop values too whenever a section was never actually verified.
+   - **Master Brand desktop audit:** fetched `get_design_context` on node
+     `99:283` directly. Found two **entire sections missing from the page**,
+     not just style drift: a "Quote" block between the hero and the first
+     subsection (same pattern already used on Estrategia, just with Master
+     Brand's own text — and this text was actually visible in the mobile
+     fetch earlier in this same round too, so it should have been caught
+     then), and a full "Contenidos" table-of-contents block (title + all 14
+     subsection links in two columns on desktop/one on mobile + a
+     "Descargar assets" button). Confirmed with Sofia before building the
+     Contenidos block specifically, since it deliberately duplicates the
+     sidebar nav's own list — see "Decisions confirmed with Sofia" #11.
+     Also fixed `SectionHeading`'s title column width: every one of the 14
+     subsections reports `w-[447px]` in Figma, not the `300px` in code —
+     confirmed by the fact that 447+127(gap)+561(body) exactly matches the
+     page's established 1135px content width, 300px doesn't.
