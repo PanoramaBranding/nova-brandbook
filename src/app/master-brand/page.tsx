@@ -20,7 +20,7 @@ function SectionHeading({
 }) {
   return (
     <div className="flex flex-col md:flex-row md:gap-[127px] gap-4">
-      <h2 className="text-2xl md:text-[32px] font-bold text-azul-2 md:w-[300px] shrink-0">
+      <h2 className="text-[28px] md:text-[32px] font-bold text-azul-2 md:w-[300px] shrink-0">
         {number} {title}
       </h2>
       <div className="text-azul-3/80 leading-6 md:w-[561px] max-w-[561px]">{children}</div>
@@ -72,6 +72,7 @@ export default function MasterBrandPage() {
     <div className="flex flex-col">
       <PageHero
         image="/brand/heroes/hero-master-brand-bg.jpg"
+        mobileImage="/brand/heroes/hero-master-brand-mobile.jpg"
         number="02"
         titleLines={["Master", "Brand"]}
       />

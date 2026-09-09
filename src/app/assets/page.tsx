@@ -156,7 +156,7 @@ function Fig({ src, alt, aspect }: { src: string; alt: string; aspect: number })
 function SectionHeading({ number, title }: { number: string; title: string }) {
   return (
     <div className="mb-8">
-      <h2 className="text-2xl md:text-[32px] font-bold text-azul-2">
+      <h2 className="text-[28px] md:text-[32px] font-bold text-azul-2">
         {number} {title}
       </h2>
     </div>

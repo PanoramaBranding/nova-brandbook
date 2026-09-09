@@ -124,7 +124,7 @@ export default function EstrategiaPage() {
       />
 
       <section className="px-6 md:px-[38px] py-16 md:py-24 max-w-[900px]">
-        <p className="text-2xl md:text-[36px] leading-[1.3] text-azul-1 font-medium">
+        <p className="text-[32px] md:text-[36px] leading-[1.3] text-azul-1 font-bold md:font-medium">
           “Las marcas no entran a Nova, habitan en ella. Y el cliente no visita
           Nova, está en Nova.”
         </p>
@@ -132,7 +132,7 @@ export default function EstrategiaPage() {
 
       <section id="brand-tree" className="px-6 md:px-[38px] pb-16 md:pb-24 scroll-mt-8">
         <div className="flex flex-col md:flex-row md:gap-[127px] gap-6 border-t border-azul-tint pt-12">
-          <h2 className="text-2xl md:text-[32px] font-bold text-azul-2 md:w-[300px] shrink-0">1.1 Brand Tree</h2>
+          <h2 className="text-[28px] md:text-[32px] font-bold text-azul-2 md:w-[300px] shrink-0">1.1 Brand Tree</h2>
           <p className="text-azul-3/80 leading-6 md:w-[561px] max-w-[561px]">
             La estrategia de marca define el marco que orienta las decisiones de
             NovaVenta y establece la relación entre su contexto, las necesidades
@@ -158,8 +158,8 @@ export default function EstrategiaPage() {
           {stage.id === "why" ? (
             <div className="border-t border-azul-tint pt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="flex gap-8 items-start">
-                <span className="text-[32px] font-bold text-azul-2">11</span>
-                <span className="text-[32px] font-bold text-azul-2">Visión</span>
+                <span className="text-[28px] md:text-[32px] font-bold text-azul-2">11</span>
+                <span className="text-[28px] md:text-[32px] font-bold text-azul-2">Visión</span>
               </div>
               <p className="text-3xl md:text-[48px] leading-[1.4] font-bold text-azul-2">
                 Acompañamos la vida
@@ -170,11 +170,20 @@ export default function EstrategiaPage() {
               className={`grid gap-x-3 gap-y-10 ${stage.cols === 3 ? "md:grid-cols-3" : "md:grid-cols-2"}`}
             >
               {stage.items.map((item) => (
-                <div key={item.number} className="border-t border-azul-tint pt-8 flex gap-8">
-                  <span className="text-[32px] font-bold text-azul-2 shrink-0">{item.number}</span>
-                  <div className="flex flex-col gap-6">
-                    <p className="text-[32px] leading-[1.2] font-bold text-azul-2">{item.title}</p>
-                    <p className="text-[20px] leading-7 text-azul-3/80">{item.body}</p>
+                <div
+                  key={item.number}
+                  className="border-t border-azul-tint pt-8 flex flex-col md:flex-row gap-3 md:gap-8"
+                >
+                  <span className="text-[28px] md:text-[32px] font-bold text-azul-2 shrink-0">
+                    {item.number}
+                  </span>
+                  <div className="flex flex-col gap-3 md:gap-6">
+                    <p className="text-[28px] md:text-[32px] leading-[1.2] font-bold text-azul-2">
+                      {item.title}
+                    </p>
+                    <p className="text-[16px] md:text-[20px] leading-6 md:leading-7 text-azul-3/80">
+                      {item.body}
+                    </p>
                   </div>
                 </div>
               ))}
