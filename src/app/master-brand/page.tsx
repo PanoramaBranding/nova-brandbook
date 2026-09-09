@@ -19,7 +19,7 @@ function SectionHeading({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col md:flex-row md:gap-[127px] gap-4">
+    <div className="flex flex-col md:flex-row md:gap-[127px] gap-8">
       <h2 className="text-[28px] md:text-[32px] font-bold text-azul-2 md:w-[300px] shrink-0">
         {number} {title}
       </h2>
@@ -56,10 +56,10 @@ const MISUSE_2_14 = [
 
 function MisuseGrid({ items }: { items: typeof MISUSE_2_9 }) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 mt-8">
       {items.map((item) => (
         <div key={item.label} className="flex flex-col gap-2">
-          <p className="text-sm text-azul-3/80">{item.label}</p>
+          <p className="text-base text-azul-3/80">{item.label}</p>
           <Fig src={item.src} alt={item.label} aspect={1} />
         </div>
       ))}
@@ -173,7 +173,7 @@ export default function MasterBrandPage() {
 
       <section id="sub-marcas" className="px-6 md:px-[38px] py-12 md:py-16 border-t border-azul-tint scroll-mt-8">
         <SectionHeading number="2.8" title="Sub-marcas">
-          <span className="block text-[20px] font-bold text-azul-2 mb-1">Marcas de nombre corto</span>
+          <span className="block text-[20px] font-bold text-azul-2 mb-8 md:mb-1">Marcas de nombre corto</span>
           Las submarcas de nombre corto se construyen a partir del logotipo Nova
           acompañado por un descriptor breve, ubicado en una posición secundaria
           y con una proporción constante dentro del sistema. Esta estructura
@@ -185,9 +185,9 @@ export default function MasterBrandPage() {
           <Fig src="/brand/master-brand/endoso-2.png" alt="Construcción de submarcas de nombre corto" aspect={1135 / 761} />
         </div>
 
-        <div className="mt-12 flex flex-col md:flex-row md:gap-[127px] gap-6">
+        <div className="mt-12 flex flex-col md:flex-row md:gap-[127px] gap-8">
           <p className="md:w-[300px] shrink-0 text-[20px] font-bold text-azul-2">Marcas de nombre largo</p>
-          <div className="md:w-[561px] max-w-[561px] flex flex-col gap-6">
+          <div className="md:w-[561px] max-w-[561px] flex flex-col gap-8 md:gap-6">
             <p className="text-azul-3/80 leading-6">
               Las submarcas de nombre largo mantienen a Nova como elemento
               principal y ubican el descriptor en una segunda línea para
@@ -200,9 +200,9 @@ export default function MasterBrandPage() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col md:flex-row md:gap-[127px] gap-6">
+        <div className="mt-12 flex flex-col md:flex-row md:gap-[127px] gap-8">
           <p className="md:w-[300px] shrink-0 text-[20px] font-bold text-azul-2">Construcción horizontal de submarcas</p>
-          <div className="md:w-[561px] max-w-[561px] flex flex-col gap-6">
+          <div className="md:w-[561px] max-w-[561px] flex flex-col gap-8 md:gap-6">
             <p className="text-azul-3/80 leading-6">
               Las submarcas pueden utilizar una composición horizontal en la que
               el descriptor se alinea a la derecha de Nova. La distancia,
@@ -214,9 +214,9 @@ export default function MasterBrandPage() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col md:flex-row md:gap-[127px] gap-6">
+        <div className="mt-12 flex flex-col md:flex-row md:gap-[127px] gap-8">
           <p className="md:w-[300px] shrink-0 text-[20px] font-bold text-azul-2">Submarca de construcción especial</p>
-          <div className="md:w-[561px] max-w-[561px] flex flex-col gap-6">
+          <div className="md:w-[561px] max-w-[561px] flex flex-col gap-8 md:gap-6">
             <p className="text-azul-3/80 leading-6">
               iNova es una excepción dentro del sistema de sub-marcas. A
               diferencia de las demás, no incorpora un descriptor independiente
