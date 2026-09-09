@@ -123,8 +123,8 @@ export default function EstrategiaPage() {
         scrim
       />
 
-      <section className="px-6 md:px-[38px] py-16 md:py-24 max-w-[900px]">
-        <p className="text-[32px] md:text-[36px] leading-[1.3] text-azul-1 font-bold md:font-medium">
+      <section className="px-6 md:px-[38px] py-16 md:py-24 max-w-[676px]">
+        <p className="text-[32px] md:text-[52px] leading-[1.3] md:leading-[60px] text-azul-1 font-bold">
           “Las marcas no entran a Nova, habitan en ella. Y el cliente no visita
           Nova, está en Nova.”
         </p>
@@ -132,7 +132,7 @@ export default function EstrategiaPage() {
 
       <section id="brand-tree" className="px-6 md:px-[38px] pb-16 md:pb-24 scroll-mt-8">
         <div className="flex flex-col md:flex-row md:gap-[127px] gap-8 border-t border-azul-tint pt-12">
-          <h2 className="text-[28px] md:text-[32px] font-bold text-azul-2 md:w-[300px] shrink-0">1.1 Brand Tree</h2>
+          <h2 className="text-[28px] md:text-[32px] font-bold text-azul-2 md:w-[447px] shrink-0">1.1 Brand Tree</h2>
           <p className="text-azul-3/80 leading-6 md:w-[561px] max-w-[561px]">
             La estrategia de marca define el marco que orienta las decisiones de
             NovaVenta y establece la relación entre su contexto, las necesidades
