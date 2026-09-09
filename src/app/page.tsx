@@ -5,20 +5,33 @@ import { NAV_PAGES, isGroups } from "@/lib/nav-data";
 export default function Home() {
   return (
     <div>
-      {/* Hero — Figma node 528:1264 */}
-      <section className="bg-azul-1 flex flex-col gap-24 md:gap-[106px] pt-3 pb-9 px-6 md:px-[38px]">
-        <div className="flex items-center justify-between text-white text-lg md:text-[32px] font-normal">
-          <div className="flex gap-6 md:gap-[150px]">
-            <p>Nova</p>
+      {/* Hero — Figma node 528:1264 desktop (fixed 426px gap, no full-bleed
+          height), 529:1874 mobile (justify-between filling a 390:844 frame,
+          and the top bar reflows: "Brand Book Guidelines" alone on its own
+          line, then "Nova"/"2026" paired — not the same grouping as
+          desktop's "Nova + Brand Book Guidelines" / "2026" split). */}
+      <section className="bg-azul-1 flex flex-col justify-between md:justify-start md:gap-[426px] aspect-[390/844] md:aspect-auto md:h-[929px] py-8 md:pt-3 md:pb-9 px-4 md:px-[38px]">
+        <div className="text-white text-2xl md:text-[32px] font-normal">
+          <div className="flex flex-col gap-6 md:hidden">
             <p>Brand Book Guidelines</p>
+            <div className="flex gap-5">
+              <p>Nova</p>
+              <p>2026</p>
+            </div>
           </div>
-          <p>2026</p>
+          <div className="hidden md:flex md:items-center md:justify-between">
+            <div className="flex gap-[150px]">
+              <p>Nova</p>
+              <p>Brand Book Guidelines</p>
+            </div>
+            <p>2026</p>
+          </div>
         </div>
         <HeroMark />
       </section>
 
       {/* Bienvenida — Figma node 504:199 */}
-      <section className="flex justify-end py-12 md:py-[90px] px-6 md:pl-[497px] md:pr-[38px]">
+      <section className="flex justify-end py-16 md:py-[90px] px-4 md:pl-[497px] md:pr-[38px]">
         <p className="text-azul-1 text-2xl md:text-[36px] leading-[1.3] max-w-[905px]">
           Bienvenido a las directrices de marca de NovaVenta. Utiliza estos recursos y
           lineamientos al preparar materiales para aplicar la identidad de manera
@@ -29,15 +42,15 @@ export default function Home() {
 
       {/* Índice — Figma node 505:259. Solo se listan las páginas en alcance
           (01-03); 04 y 05 existen en Figma pero quedan fuera por ahora. */}
-      <section id="index" className="flex flex-col gap-16 px-6 md:px-[38px] pb-24">
+      <section id="index" className="flex flex-col gap-8 md:gap-16 px-4 md:px-[38px] pt-16 pb-24">
         <div className="flex flex-col gap-8">
           <h1 className="text-azul-1 font-bold text-5xl md:text-[96px]">Index</h1>
           <div className="border-t border-azul-1/30" />
         </div>
 
-        <div className="flex flex-col gap-16">
+        <div className="flex flex-col gap-[120px] md:gap-16">
           {NAV_PAGES.map((page) => (
-            <div key={page.slug} className="flex flex-col gap-16">
+            <div key={page.slug} className="flex flex-col gap-8 md:gap-16">
               <div className="flex flex-col md:flex-row md:justify-between gap-6">
                 <h2 className="text-azul-2 font-semibold text-[28px] md:text-[40px] shrink-0">
                   {page.number} {page.label}
@@ -76,10 +89,10 @@ export default function Home() {
 function IndexEntries({ page }: { page: (typeof NAV_PAGES)[number] }) {
   if (isGroups(page.sections)) {
     return (
-      <div className="flex flex-col gap-8 md:w-[759px]">
+      <div className="flex flex-col gap-12 md:gap-8 md:w-[759px]">
         {page.sections.map((group) => (
-          <div key={group.heading} className="flex flex-col md:flex-row gap-4 md:gap-[106px]">
-            <p className="text-azul-1 text-xl md:text-[32px] md:w-[177px] shrink-0">
+          <div key={group.heading} className="flex flex-col gap-8 md:flex-row md:gap-[106px]">
+            <p className="text-azul-1 font-semibold text-xl md:text-[32px] md:w-[177px] shrink-0">
               {group.heading}
             </p>
             <div className="flex flex-col gap-5">
@@ -87,7 +100,7 @@ function IndexEntries({ page }: { page: (typeof NAV_PAGES)[number] }) {
                 <Link
                   key={item.id}
                   href={`${page.slug}#${item.id}`}
-                  className="flex gap-4 items-center text-azul-1 hover:underline"
+                  className="flex gap-[10px] md:gap-4 items-center text-azul-1 hover:underline"
                 >
                   <span className="text-base md:text-[20px]">{item.number}</span>
                   <span className="text-xl md:text-[32px]">{item.label}</span>
@@ -101,12 +114,12 @@ function IndexEntries({ page }: { page: (typeof NAV_PAGES)[number] }) {
   }
 
   return (
-    <div className="flex flex-col gap-5 md:w-[621px]">
+    <div className="flex flex-col gap-4 md:gap-5 md:w-[621px]">
       {page.sections.map((item) => (
         <Link
           key={item.id}
           href={`${page.slug}#${item.id}`}
-          className="flex gap-4 items-center text-azul-1 hover:underline"
+          className="flex gap-[10px] md:gap-4 items-center text-azul-1 hover:underline"
         >
           <span className="text-base md:text-[20px]">{item.number}</span>
           <span className="text-xl md:text-[32px]">{item.label}</span>

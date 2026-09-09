@@ -1,7 +1,11 @@
-/** NovaVenta lockup from the Home hero (Figma node 528:1251) — reassembled from its exported path fragments, kept at their exact relative insets so the mark stays crisp and responsive. */
+/** NovaVenta lockup from the Home hero (Figma node 528:1251 desktop, 529:1864
+ * mobile) — reassembled from its exported path fragments, kept at their exact
+ * relative insets so the mark stays crisp and responsive. The container's
+ * aspect ratio genuinely differs per breakpoint in Figma (mobile crops
+ * tighter around the mark), not just a naive collapse of the desktop ratio. */
 export default function HeroMark() {
   return (
-    <div className="relative w-full aspect-[1440/415]" aria-hidden="true">
+    <div className="relative w-full aspect-[388/118] md:aspect-[1440/415]" aria-hidden="true">
       <div className="absolute inset-[0_46.8%_4.1%_0]">
         <img src="/brand/home/hero-wordmark-1.svg" alt="" className="block size-full" />
       </div>
