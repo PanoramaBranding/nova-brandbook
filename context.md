@@ -2,7 +2,7 @@
 
 A record of how this site was designed, built, deployed, and the decisions made
 along the way — so a future session (or Sofia) can pick this up cold. Last
-updated: 2026-09-02.
+updated: 2026-09-09.
 
 ## What this is
 
@@ -15,20 +15,49 @@ files, not baked into components.
 
 ## Where it lives (production setup)
 
-- **Live site:** https://nova-brandbook.vercel.app
-- **Code:** https://github.com/soysoff/nova-brandbook (private repo, branch `main`)
-- **Hosting:** Vercel — project `nova-brandbook`, scope `sofias-projects-6186c25c`
-- **Auto-deploy: NOT connected.** Vercel's GitHub App couldn't attach to the
-  repo ("Failed to connect soysoff/nova-brandbook to project") — likely
-  because the Vercel GitHub App only has access to a limited repo list.
-  **To fix:** go to https://github.com/settings/installations → "Vercel" →
-  Configure → add `nova-brandbook` to repository access → then retry
-  `vercel git connect`.
+- **Live site:** https://nova-brandbook-nine.vercel.app (production alias —
+  `nova-brandbook.vercel.app` was NOT available because that exact subdomain
+  is already claimed by the old/wrong project below; Vercel subdomains are
+  global, not per-account)
+- **Code:** https://github.com/soysoff/nova-brandbook (private repo, branch
+  `main`) — collaborator `PanoramaBranding` (Andrés) added with read access
+  2026-09-02 for a security review; invitation was still pending as of
+  2026-09-09 (couldn't re-check — `gh` CLI wasn't available in that session).
+- **Hosting: Vercel — project `nova-brandbook`, team `panoramabranding`**
+  (`orgId team_K4w2qFAFBeBqEM5USq1rtLIm`), logged in as
+  **sofia@panoramabranding.co**.
+  ⚠️ **History/gotcha (2026-09-09):** for the first week, every deploy went
+  to project `nova-brandbook` under team `sofias-projects-6186c25c` — Sofia's
+  **personal** Vercel account (`soysostudio`, the same one used for her
+  portfolio project), because that was whatever the CLI already had cached,
+  and nobody checked which account it was until Sofia noticed the project
+  didn't show up in her Panorama account. Every deploy in that account also
+  got permanently stuck in `UNKNOWN` status and never finished building
+  (only the very first one ever completed) — almost certainly a limit on
+  that personal account's plan. Fixed by `vercel login sofia@panoramabranding.co`
+  (device-flow login, completes once she approves it in the browser it opens),
+  then deleting `.vercel/` and redeploying with `--scope panoramabranding`,
+  which created a **fresh project** and built successfully in ~23s with no
+  stuck-queue issue at all. **The old project/URLs under
+  `sofias-projects-6186c25c` are dead weight now — not deleted, just
+  abandoned.** If anyone goes looking for this site and finds a
+  `nova-brandbook-*.vercel.app` URL that looks stale or won't load, that's
+  why; the current one is `nova-brandbook-nine.vercel.app`.
+- **Auto-deploy: NOT connected.** When first attempted (on the old account),
+  Vercel's GitHub App couldn't attach to the repo ("Failed to connect
+  soysoff/nova-brandbook to project") — likely because the Vercel GitHub App
+  only had access to a limited repo list under that account. Re-check this
+  from scratch on the `panoramabranding` team — it may just work now, or may
+  need the same fix (https://github.com/settings/installations → "Vercel" →
+  Configure → add `nova-brandbook` to repository access) applied to whichever
+  GitHub account/org is connected to the `panoramabranding` Vercel team.
 - **Manual deploy (current workflow):**
   ```bash
   git add -A && git commit -m "..." && git push origin main
-  npx vercel@latest --prod --yes
+  npx vercel@latest --prod --yes --scope panoramabranding
   ```
+  (`.vercel/project.json` is already linked to the right project, so
+  `--scope` may not even be required — include it anyway to be safe.)
 - **Git identity (local repo only):** Sofia Suarez / sofia@panoramabranding.co
   — set via `git config user.name`/`user.email` in this repo, not globally.
   ⚠️ Not yet confirmed whether this email is verified on the `soysoff` GitHub
@@ -179,6 +208,11 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
 
 ## Pending / open follow-ups (pick up here tomorrow)
 
+0. **Verify Andrés accepted the GitHub collaborator invite** (`PanoramaBranding`,
+   read access, invited 2026-09-02 for a security review) — couldn't confirm
+   on 2026-09-09 because `gh` wasn't available in that session; check via
+   `gh api repos/soysoff/nova-brandbook/invitations` or the repo's Settings →
+   Collaborators page.
 1. **Master Brand — needs the same rigorous re-audit Assets just got.** It
    was originally built straight from `get_design_context`, so it's likely
    in better shape, but it hasn't had a fresh line-by-line verification pass
@@ -190,9 +224,11 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
    actual reference photos are missing.
 3. **`llms.txt` / `brand.json` / JSON-LD** — the core "AI-readable"
    differentiator from the original brief. Not started.
-4. **GitHub↔Vercel auto-deploy** not connected — see "Where it lives" above
-   for the fix (needs Sofia to authorize the repo in GitHub's installed-apps
-   settings).
+4. **GitHub↔Vercel auto-deploy** not connected. Now that the project lives
+   under the correct `panoramabranding` Vercel team (see "Where it lives"),
+   try `vercel git connect --scope panoramabranding` fresh before assuming
+   the old GitHub-App-permissions fix is still needed — the earlier failure
+   happened on the wrong account and may not recur.
 5. **Mobile responsive pass** has only been spot-checked, not verified
    against Figma's real `"* - Mobile"` frames (`Home - Mobile`,
    `01 Estrategia de marca - Mobile`, `02 Mater Brand - Mobile` all exist in
@@ -249,3 +285,16 @@ Pattern across every round: **sections built from cached text/metadata
 without a direct `get_design_context` call were the ones that turned out
 wrong.** Trust that tool's output over any assumption, however reasonable it
 seems.
+
+6. **Round 6 (2026-09-09, a week later):** the deploy itself was wrong, not
+   the content. Sofia noticed the Vercel project wasn't showing up in her
+   Panorama account — every deploy for a full week had been going to (and
+   getting permanently stuck in) her personal Vercel account instead. Fixed
+   by logging into `sofia@panoramabranding.co` and recreating the project
+   under the `panoramabranding` team — see "Where it lives" for the full
+   story and the new live URL. Lesson: **when a hosting/account action is
+   about to run, confirm which account is actually authenticated
+   (`vercel whoami` / `vercel teams ls`) instead of trusting whatever the
+   CLI already had cached** — this is the same class of mistake as the
+   Figma-account and GitHub-account mixups earlier in the project, just not
+   caught until a week of dead deploys had piled up.
