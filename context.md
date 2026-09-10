@@ -2,7 +2,7 @@
 
 A record of how this site was designed, built, deployed, and the decisions made
 along the way — so a future session (or Sofia) can pick this up cold. Last
-updated: 2026-09-09 (Round 9 — full Assets page pixel-perfect pass).
+updated: 2026-09-09 (Round 10 — nav/hero/button fixes + scroll animations).
 
 ## What this is
 
@@ -103,10 +103,14 @@ files, not baked into components.
 6. **AI-readable layer:** full stack — semantic HTML + JSON-LD (schema.org)
    + a `llms.txt`/`brand.json` file with the brand tokens in plain text.
    **Not built yet** — next up.
-7. **Mobile nav:** Figma has **no mobile design for the nav at all** (checked
-   every mobile frame and the Componentes section — nothing). The hamburger
-   + full-screen panel is an interaction pattern designed here, not
-   extracted from Figma. Flag for design review.
+7. ~~Mobile nav: Figma has no mobile design for the nav at all~~ —
+   **wrong, corrected in Round 10.** Figma does have it: node `2045:921`,
+   a bare hamburger icon with no bar/background/logo. Missed it in the
+   earlier search (checked the mobile page frames and the "Componentes"
+   section, not this specific standalone node) and built a full-width
+   `sticky` bar with a logo instead, which turned out to push the Hero's
+   own content down by the bar's height — Sofia caught this. Rebuilt to
+   match: a `fixed` (not `sticky`) floating hamburger button, no bar.
 8. **Photography AI-generation prompts** ("Prompt Maestro"/"Negative Prompt"
    in Figma's 3.8 section): included publicly on the site — Sofia's explicit
    call, not treated as internal-only.
@@ -186,19 +190,26 @@ src/app/
   master-brand/page.tsx  02 · Master Brand
   assets/page.tsx      03 · Brand Assets
 src/components/
-  Nav.tsx              sticky sidebar (desktop) + hamburger/panel (mobile);
-                        accordion by route + scroll-spy (position-based, not
-                        IntersectionObserver — see Known quirks)
+  Nav.tsx              sticky sidebar (desktop) + floating hamburger button
+                        + full-screen panel (mobile, `fixed` not `sticky`
+                        so it adds no layout height above the Hero); null
+                        entirely on Home; accordion by route with a
+                        rotating chevron + grid-rows animation + scroll-spy
+                        (position-based, not IntersectionObserver — see
+                        Known quirks)
   PageHero.tsx          page header: real visible <h1> (number + 2-line
                         title) over a background image via <picture>, with a
                         different crop per breakpoint — a single H1 in the
-                        DOM, not duplicated markup toggled by CSS
+                        DOM, not duplicated markup toggled by CSS;
+                        `h-svh`/`h-screen` so it fills the viewport on load
   Footer.tsx            shared footer, both pages' variants + both
                         breakpoints (see "Decisions confirmed with Sofia")
-  Button.tsx            Figma "Boton" — outline/filled variants
-  HeroMark.tsx           Home's composited NovaVenta lockup (9 SVG fragments)
-  AssetPending.tsx       placeholder for sections we chose not to fabricate
-                        (real photos, a few diagrams) — see Pending below
+  Button.tsx            Figma "Boton" — outline/filled variants, hover
+                        matches the confirmed "Variante 2" filled state
+  HeroMark.tsx           Home's composited NovaVenta lockup (9 SVG
+                        fragments, object-contain — see Known quirks)
+  ScrollReveal.tsx       mounted once in the root layout; fades/slides in
+                        each page's sections below the hero on scroll
   ContentsToc.tsx        mid-page "Contenidos" TOC block (Master Brand,
                         Assets) — duplicates the sidebar nav on purpose,
                         see the component's own doc comment for why
@@ -579,3 +590,49 @@ seems.
      (Jerarquías) beyond the mechanical `SectionHeading` move — worth a
      closer look if more mismatches turn up, since neither got a full
      fresh content re-check this round the way 3.1-3.4/3.9/3.11/3.13 did.
+
+10. **Round 10 (2026-09-09, later same day):** Sofia sent Figma links for
+    the footer, mobile nav, and button hover, plus several open complaints
+    (Home shouldn't have a menu, heroes should fill the screen on load, the
+    Home hero's Nova mark looked deformed, the other heroes' top text sat
+    too low, menu needs dropdown arrows + animation, buttons need a real
+    hover animation, and scroll should reveal content with opacity).
+    - **Home has no nav at all now** (confirmed with Sofia) — `Nav.tsx`
+      returns `null` on `pathname === "/"`. It's the index page itself; a
+      persistent menu would just duplicate its own Index section.
+    - **Root-caused the "text too low" complaint**: `Nav.tsx`'s mobile
+      trigger was a full-width `sticky` bar (logo + hamburger) sitting in
+      normal document flow *above* the Hero, pushing it down by the bar's
+      own height. Fetched the real mobile nav node (`2045:921`) — it's
+      just a bare hamburger icon, no bar/background/logo at all. Rebuilt
+      the trigger as a `fixed` floating button (zero layout height) so it
+      no longer pushes the Hero's own top-row text down. This also
+      resolved the "menu isn't from Figma" flag noted in earlier commits
+      — it is, just not a full bar.
+    - **Heroes now use `h-svh`/`h-screen`** instead of a fixed
+      aspect-ratio box, on both Home and the shared `PageHero`, so they
+      fill the actual viewport on first load rather than Figma's fixed
+      578px/929px mockup heights.
+    - **`HeroMark` was genuinely stretching one of its 9 fragments** —
+      Figma's reported inset percentages are rounded to ~2 decimals, and
+      the fragments were sized with no `object-fit` (stretch to fill both
+      axes of their slot), compounding that rounding into a confirmed
+      ~5.6% width mismatch on the biggest wordmark piece. Added
+      `object-contain` to all 9 fragments.
+    - **Button hover was wrong.** Fetched the confirmed hover state
+      (`543:673`, "Variante 2") — a solid filled `bg-azul-1` button with
+      white text, not the light-tint hover previously used. Fixed, plus a
+      small scale transition for "a cool but simple" feel as asked.
+    - **Nav accordion**: added a rotating chevron per top-level page and
+      switched sub-items from popping in/out on route change to a smooth
+      `grid-template-rows` height transition (element stays mounted so it
+      can animate closed, not just conditionally rendered).
+    - **Added a site-wide scroll-reveal** (new `ScrollReveal.tsx`, mounted
+      once in the root layout): every section below each page's hero
+      fades/slides in the first time it scrolls into view. Generic by
+      position (skips only the first direct child of the page's root
+      `<div>`, whether that's Home's own `<section>` hero or PageHero's
+      `<header>`) rather than needing per-page wiring.
+    - Footer was re-checked against all 3 nodes Sofia linked (`543:407`
+      mobile, `528:254` home, `528:256` other pages) — all three already
+      matched the Round 8 rebuild exactly; nothing to fix there.
