@@ -92,8 +92,10 @@ export default function MasterBrandPage() {
     <div className="flex flex-col">
       <PageHero
         image="/brand/heroes/hero-master-brand-bg.jpg"
+        mobileImage="/brand/heroes/hero-master-brand-mobile.png"
         number="02"
         titleLines={["Master", "Brand"]}
+        mobileScrim
       />
 
       <section className="px-6 md:px-[38px] py-16 md:py-24 max-w-[905px]">
