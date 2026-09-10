@@ -2,8 +2,9 @@
 
 A record of how this site was designed, built, deployed, and the decisions made
 along the way — so a future session (or Sofia) can pick this up cold. Last
-updated: 2026-09-09 (Round 13 — confirmed nav/Home index already match
-Figma for "04"; found and fixed Master Brand's missing real mobile hero).
+updated: 2026-09-09 (Round 14 — Sofia reports Master Brand still broken and
+"04" showing nothing; extensive server-side verification found no bug —
+see Round 14 for the open questions this needs to move forward).
 
 ## What this is
 
@@ -828,3 +829,70 @@ seems.
       production HTML too. No code-level cause found; flagged to Sofia
       to send a fresh screenshot of where specifically she's seeing it,
       in case it's a stale/cached view.
+
+14. **Round 14 (2026-09-09, later same day) — Sofia reports Master Brand
+    still has "un espacio gigante blanco," we're "still using images that
+    aren't for the heroes, same error," "04" (`/aplicaciones`) "shows
+    nothing," and the sidebar menu's spacing looks too generous /
+    "espichando" (cramped) and may need smaller margins. Investigated
+    thoroughly; could not reproduce the first three at the code/server
+    level — this is now a genuinely open question, not a fixed bug.**
+    - **Checked every layer of both pages on the CURRENT production
+      deployment** (`https://nova-brandbook-nine.vercel.app`, confirmed
+      via `vercel alias ls` to be aliased to the exact deployment from
+      Round 13's push, 10 minutes old at the time): raw file responses
+      (200 for every hero and every one of the 19 `/aplicaciones` mockup
+      images), `next/image` optimizer responses (200, correct
+      content-type, real bytes, tested at multiple widths), and — most
+      importantly — the actual server-rendered HTML `<body>` (not just
+      the React hydration payload): both `/master-brand`'s `<picture>`
+      (correct `<source>`/`<img>` split between the desktop jpg and the
+      new mobile png) and `/aplicaciones`'s gallery (41 real `<img>`
+      tags, all 19 filenames present with correct `src`, hero images
+      present) come back completely correct. Also re-verified the actual
+      downloaded Master Brand content images (identificador-1.png,
+      versiones-color-1-4.png, simbolo-*.png, etc.) all exist and are NOT
+      blank/white (checked white-pixel-fraction per file) — though
+      **`identificador-1.png` and `versiones-color-1.png` are confirmed
+      byte-identical (same md5)**, a real content bug from the original
+      Sept 2 download (2.2 "Identificador" and the first swatch of 2.3
+      "Versiones de color" wrongly show the exact same image) — flagged,
+      not yet fixed, since it doesn't match "giant blank space" or
+      "wrong hero images" and needs its own confirmation of what the
+      *correct* identificador-1 image should actually be before
+      re-downloading it.
+    - **Could not find a technical cause for "giant white space" /
+      "nothing shows" / "wrong hero images" given everything above comes
+      back correct.** Leading hypothesis, not yet confirmed: Sofia may be
+      looking at a stale, deployment-specific Vercel URL rather than the
+      stable alias. Every `vercel --prod` deploy creates a NEW immutable
+      URL (e.g. `nova-brandbook-rclrici7o-panoramabranding.vercel.app`)
+      that never changes again — only the aliases
+      (`nova-brandbook-nine.vercel.app`,
+      `nova-brandbook-panoramabranding.vercel.app`,
+      `nova-brandbook-git-main-panoramabranding.vercel.app`) move forward
+      to the latest deploy. If she has an old deployment-specific URL
+      bookmarked or pasted somewhere (from earlier today or an earlier
+      session), it would show frozen, older content forever — matching
+      all three symptoms at once, including "04 shows nothing" if that
+      bookmark predates today's build entirely. **Not yet confirmed with
+      Sofia — need to ask which exact URL she's opening, and get a fresh
+      screenshot if it's already one of the 3 current aliases.**
+    - **Menu/sidebar spacing was re-verified against Figma's own most
+      cramped realistic case** (node `528:503`, "Menu v1 / Variante 4" =
+      Assets active, the longest expanded list: 13 sub-items across 6
+      category groups) — every gap in our `Nav.tsx` matches Figma exactly
+      at every nesting level: 28px between top-level page entries
+      (`gap-7`), 20px between a page's title and its subsection block
+      (`gap-5`), 20px between category groups and between a group's
+      heading and its own leaf list (`gap-5`), 12px between individual
+      leaf items (`gap-3`). This is not a "we deviated from Figma" bug —
+      if the spacing should still be tighter than this, that would be a
+      deliberate departure from Figma's own numbers, which needs Sofia's
+      explicit go-ahead rather than a unilateral change, per the
+      "confirm before deviating from Figma" rule.
+    - **No code changes made this round** — investigated only, since
+      nothing reproducible was found to fix. Next step is getting
+      Sofia's confirmation on the exact URL/screenshot before touching
+      anything further, to avoid guessing at a fix for a bug that
+      couldn't be located.
