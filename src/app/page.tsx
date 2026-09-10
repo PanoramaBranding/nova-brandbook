@@ -6,12 +6,15 @@ import { NAV_PAGES, isGroups } from "@/lib/nav-data";
 export default function Home() {
   return (
     <div>
-      {/* Hero — Figma node 528:1264 desktop (fixed 426px gap, no full-bleed
-          height), 529:1874 mobile (justify-between filling a 390:844 frame,
-          and the top bar reflows: "Brand Book Guidelines" alone on its own
-          line, then "Nova"/"2026" paired — not the same grouping as
-          desktop's "Nova + Brand Book Guidelines" / "2026" split). */}
-      <section className="bg-azul-1 flex flex-col justify-between md:justify-start md:gap-[426px] aspect-[390/844] md:aspect-auto md:h-[929px] py-8 md:pt-3 md:pb-9 px-4 md:px-[38px]">
+      {/* Hero — Figma node 528:1264 desktop, 529:1874 mobile. Figma's own
+          frames are a fixed 929px/390:844 box, but the hero should always
+          fill the actual screen on first load, so height is h-svh/h-screen
+          with justify-between distributing the leftover space instead of
+          the literal fixed 426px gap. Mobile's top bar reflows: "Brand
+          Book Guidelines" alone on its own line, then "Nova"/"2026" paired
+          — not the same grouping as desktop's "Nova + Brand Book
+          Guidelines" / "2026" split. */}
+      <section className="bg-azul-1 flex flex-col justify-between h-svh md:h-screen py-8 md:pt-3 md:pb-9 px-4 md:px-[38px]">
         <div className="text-white text-2xl md:text-[32px] font-normal">
           <div className="flex flex-col gap-6 md:hidden">
             <p>Brand Book Guidelines</p>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import Nav from "@/components/Nav";
+import ScrollReveal from "@/components/ScrollReveal";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="es" className={`${plusJakartaSans.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col md:flex-row bg-white text-[color:var(--color-ink)]">
         <Nav />
+        <ScrollReveal />
         <main className="flex-1 min-w-0">{children}</main>
       </body>
     </html>

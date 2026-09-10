@@ -7,8 +7,12 @@
  *    (96px Bold, leading-[96px]), 123px gap between them.
  *  - Mobile: top bar STACKED, not a row (20px Regular white — Figma pairs
  *    it with a static hamburger glyph baked into the mockup, which we skip
- *    since Nav.tsx already renders a real functional one in a sticky bar
- *    above every page); "{number}" + 2-line title stacked at 64px Bold.
+ *    since Nav.tsx renders a real functional one as a floating button, not
+ *    a bar, so it doesn't add height above this text); "{number}" + 2-line
+ *    title stacked at 64px Bold.
+ * `h-svh`/`h-screen` (not an aspect-ratio box) so the hero always fills the
+ * initial viewport, matching how it reads on first load in Figma — an
+ * aspect-locked box was frequently shorter than the actual screen.
  * One <picture> does the art-direction (different crop per breakpoint,
  * only one variant fetched) so there's a single real <h1> in the DOM, not
  * two copies toggled by CSS.
@@ -26,7 +30,7 @@ export default function PageHero({
 }) {
   return (
     <header
-      className="relative w-full flex flex-col justify-between px-4 md:pl-[67px] md:pr-[38px] pt-4 md:pt-3 pb-8 md:pb-[38px] aspect-[390/844] md:aspect-[1240/578]"
+      className="relative w-full h-svh md:h-screen flex flex-col justify-between px-4 md:pl-[67px] md:pr-[38px] pt-4 md:pt-3 pb-8 md:pb-[38px]"
     >
       <picture>
         <source media="(min-width: 768px)" srcSet={image} />
