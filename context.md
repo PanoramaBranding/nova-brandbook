@@ -2,9 +2,17 @@
 
 A record of how this site was designed, built, deployed, and the decisions made
 along the way — so a future session (or Sofia) can pick this up cold. Last
-updated: 2026-09-09 (Round 14 — Sofia reports Master Brand still broken and
-"04" showing nothing; extensive server-side verification found no bug —
-session paused unresolved, resume here tomorrow).
+updated: 2026-09-10 (Round 16 — found the Round 15 hero-spacing fix never
+actually worked: a real Chromium `display:contents`+`<source>` bug was still
+pushing every page hero's top-bar text down by ~1/3 of the hero's height,
+caught only by pixel-measuring the live site instead of trusting a
+screenshot glance. Fixed at the root, plus 3 confirmed mobile hero/nav spec
+corrections from a fresh Figma fetch — see Round 16 below. Round 15 itself
+found and fixed 4 real code bugs from a fresh Sofia complaint list, incl. a
+hero text-ghosting bug only found after setting up real screenshot
+verification (`screenshot.mjs`); two other complaints re-verified as already
+matching Figma exactly, then deliberately overridden per Sofia's explicit
+go-ahead — see Round 15 below).
 
 ## What this is
 
@@ -907,3 +915,726 @@ seems.
       server-side checks from scratch — those already came back clean
       twice. Do not assume the "stale deployment-specific URL" hypothesis
       is confirmed; it's still just the leading guess.
+
+15. **Round 15 (2026-09-10):** Sofia opened with a screenshot (Master Brand,
+    live site) plus a long voice-note list of complaints. Rather than
+    guessing pixel values, read the actual component code first and found
+    three genuine, verifiable code bugs (not Figma drift) — fixed all three
+    — plus re-verified two more complaints against fresh Figma fetches and
+    found they already match the file exactly, which is being flagged back
+    to her rather than "fixed" per the hard no-unilateral-deviation rule.
+    One complaint is still unresolved pending a screenshot from her.
+    - **FIXED — hero top spacing "huge" on every inner page, but "perfect"
+      on Home.** Root cause: `PageHero.tsx`'s `<header>` is
+      `flex flex-col justify-between`, and its first JSX child was a bare
+      `<picture>` wrapping the background `<img>`. Even though the `<img>`
+      itself is `absolute` (out of flow), the `<picture>` element wrapping
+      it had no positioning of its own, so it was still a real (zero-height
+      but present) flex item — turning what should be 2 flex items (top
+      bar text, `<h1>`) into 3. `justify-between` then split the free space
+      into *two* gaps instead of one, pushing the top bar down from the
+      edge by roughly half the hero's height instead of sitting at the
+      intended `pt-4`/`pt-3` (16px/12px). Home's hero has no `<picture>` at
+      all (solid `bg-azul-1`, no background image) — only 2 real flex
+      items — which is exactly why it looked "perfect" while every
+      `PageHero`-based page (Estrategia/Master Brand/Assets/Aplicaciones)
+      had the bug. Fix: `className="contents"` on the `<picture>` so it
+      generates no box of its own and stops being a flex item at all. Only
+      Home was correct before; now every page should match it.
+    - **FIXED — Aplicaciones (04) "huge gap of empty white space," reported
+      as present on desktop but not mobile.** Root cause was in
+      `ScrollReveal.tsx`, not per-page: its `IntersectionObserver` used
+      `threshold: 0.1` — a *ratio of the target element's own total
+      height*, not a fixed pixel amount. `aplicaciones/page.tsx` wraps its
+      entire 19-image desktop gallery in one single `<section>`
+      (`DesktopGallery` + `MobileGallery` both live inside it, toggled by
+      `hidden md:flex` / `md:hidden flex`), and that section's real
+      rendered height on desktop is roughly 11,000px+ — over 10x a typical
+      ~900px viewport. A section that tall can never show 10% of its own
+      area within one viewport, so `isIntersecting` never crossed the
+      threshold and `.reveal-visible` (opacity 1) never got applied — the
+      section stayed permanently at `.reveal`'s `opacity: 0`, which still
+      reserves full layout height (not `display:none`), reading as a
+      giant blank gap exactly the section's height. On mobile the *same*
+      wrapping section is much shorter (single-column narrow images), well
+      under the ratio cutoff, so it revealed fine — matching "you're able
+      to see it on mobile, not on desktop" exactly. This wasn't
+      Aplicaciones-specific, just the first page with a section tall
+      enough to hit it — any future very-tall section anywhere would hit
+      the same bug. Fixed generically: `threshold: 0` (fires the instant
+      any pixel is visible, independent of the target's total height),
+      not a per-page workaround.
+    - **FIXED — sidebar accordion "expands but doesn't collapse on a
+      second click."** Real bug, unrelated to Figma: `Nav.tsx`'s
+      accordion-open state was derived *only* from `page.slug === pathname`
+      (the current route). Clicking an already-active page's `<Link>`
+      just re-navigates to the same URL — a no-op — so there was never
+      any state to toggle closed. Added a `collapsedSlug` state: clicking
+      the link for the page that's already active now `preventDefault`s
+      the navigation and toggles collapse instead of no-op'ing; clicking
+      any other page's link navigates normally (and clears the override).
+      Applies to both the desktop sidebar and the mobile panel (same
+      `NavLinks` component).
+    - **DELIBERATE DEVIATION FROM FIGMA (confirmed with Sofia) — sidebar
+      top-level spacing.** Re-verified `528:503` fresh (second independent
+      check, same result as Round 14): Figma's own code is `gap-[28px]`
+      between top-level page blocks, exactly matching `Nav.tsx`'s `gap-7`
+      — genuinely not a bug. Flagged this back to Sofia rather than
+      guessing; she confirmed she wants it tighter than Figma's own spec
+      anyway. Changed `Nav.tsx`'s top-level `<ul>` gap `gap-7` (28px) →
+      `gap-5` (20px). This is intentionally NOT what Figma specifies —
+      don't "correct" it back without re-confirming with her first.
+    - **DELIBERATE DEVIATION FROM FIGMA (confirmed with Sofia) — footer
+      link spacing, opposite direction from the nav item above.** Sofia's
+      original complaint was that "volver arriba / preguntas / novaventa"
+      look too close together with no space — i.e. she wants this gap
+      BIGGER, not smaller (unlike the nav item, which she wants smaller).
+      Re-verified `528:256` fresh: Figma's own code is `gap-[12px]`
+      between the "Volver arriba + Preguntas" cluster and the "2026 Nova
+      Venta" copyright block, exactly matching `Footer.tsx`'s `gap-3` —
+      not a bug either. She confirmed deviating from Figma here too.
+      Changed `Footer.tsx`'s desktop group gap `gap-3` (12px) → `gap-6`
+      (24px). Same rule as above: intentional departure from Figma, don't
+      revert without asking.
+    - **INVESTIGATED — mobile heroes "still using images with text baked
+      in."** Sofia wants the clean mobile photo back, not the
+      screenshot-render + scrim workaround documented in Round 11 (see
+      "Known quirks"). Re-checked with a brand-new fetch rather than
+      trusting that old diagnosis: `get_design_context` on Estrategia's
+      "Hero 2 Mobile" (`529:1846`) now DOES return a direct `<img src>`
+      for the node (unlike Round 11, when no extractable child image layer
+      existed at all) — so the node's structure changed since. But
+      downloading that exact raw asset URL and checking it directly
+      (`sips -g pixelWidth -g pixelHeight`) shows it's **1024×572** —
+      that's not a mobile crop at all, it's a byte-for-byte match for the
+      *desktop* hero's own dimensions (`hero-estrategia.png` is also
+      1024×572). The raw MCP export for this specific node is still
+      returning the wrong (desktop) image, now just via a different code
+      path than last time. **Did not swap it in** — doing so would
+      regress to a real bug (the desktop-shaped image force-filling a
+      390×844 portrait mobile box). The screenshot+`mobileScrim` approach
+      remains the correct, verified workaround for this node; not fixed
+      because there was nothing to fix, but re-confirmed today rather than
+      assumed.
+    - **INVESTIGATED — mobile "nav bar" should come back, ideally with a
+      blue background on scroll.** Checked Figma's "Componentes" section
+      metadata fresh and found the node Sofia may be thinking of, "Nav -
+      mobile" (`2048:1276`, 390×82). Fetched it directly: it's not a
+      separate bar component at all — it's the *exact same* "Brand Book
+      Guidelines / 2026" text row + hamburger-lines icon that's already
+      built into `PageHero`'s own top bar (identical text nodes,
+      `2045:922`–`2045:927`). There is no distinct Figma mobile nav-bar
+      component with its own background fill anywhere in the section —
+      the dark backdrop visible in its Figma screenshot is just the
+      canvas/frame boundary, not an authored fill. **No Figma source for a
+      "blue bar on scroll"** — if Sofia still wants that, it would be a
+      net-new departure from Figma (fine to build, but needs to be an
+      explicit ask, not an inferred one, per the no-inventing rule).
+    - **FOUND AND FIXED — "background image getting deformed," turned out
+      to be Estrategia's mobile hero, not the desktop diagram.** Sofia's
+      voice note was ambiguous about which page/image at first; she then
+      sent the actual Figma link (node `509:725`, Estrategia's desktop
+      "Hero 2") and said "de fondo, la imagen que va en brand tree." That
+      raw asset downloaded byte-identical (same md5) to the desktop
+      `hero-estrategia.png` already in the repo — so the desktop file
+      itself was never wrong. The real bug only showed up once real
+      screenshot tooling existed this round (see below): at mobile
+      (390×844), Estrategia's hero showed the live "Brand Book Guidelines
+      / 2026" and "01 Brand Tree" text with a faint **ghosted duplicate**
+      of Figma's baked-in text from the `mobileScrim` screenshot-render
+      workaround (see "Known quirks") showing through behind it — that
+      doubled/misaligned text is almost certainly what read as
+      "deformándose." Root cause: the scrim gradients
+      (`rgba(8,51,94,0.75)`→`0` top, `0.9`→`0.55`→`0` bottom) never
+      reached full opacity, and worse, by the point the gradient reached
+      its darkest stop, the actual title text (measured: top of the "01"
+      numeral sits ~247px up from the bottom edge) had already dropped to
+      only ~60% coverage — nowhere near enough to hide bold 64px white
+      text. Fixed by switching both bands from "fade from the first
+      pixel" to "hold fully solid (`rgba(...,1)`) through the measured
+      text zone, then fade" — solid through 55% of a taller `h-40`/`h-56`
+      top band, solid through 65% of a `h-[50%]` bottom band. Re-verified
+      with `screenshot.mjs` through two more rounds (see below) until no
+      ghost text remained, then spot-checked Master Brand mobile and
+      Aplicaciones (both breakpoints, since they share `mobileScrim`/
+      `desktopScrim`) — clean on all of them.
+    - **Set up real screenshot verification this round** — CLAUDE.md's
+      pixel-perfect flow assumes a Browser/Puppeteer tool that has never
+      actually been available in this environment (Round 12-14 all hit
+      the same gap; see memory `no-browser-tool-vscode-session`). Sofia
+      asked how to get the same capability she has in `~/Downloads/
+      portafolio`; that project turned out to just have `puppeteer` as a
+      plain devDependency plus a small script, no special tool involved.
+      Copied the same pattern here: `puppeteer` added to
+      `devDependencies`, `screenshot.mjs` added at the project root
+      (`node screenshot.mjs <url> [label] [--viewport=WxH] [--full]
+      [--wait=ms]`, saves to `./temporary screenshots/`, gitignored).
+      This is what caught the ghosting bug above — code review and Figma
+      diffing alone had missed it. **Use this going forward** instead of
+      assuming no visual verification is possible.
+    - **Used the new screenshot setup to actually verify the rest of this
+      round's fixes**, not just at the code/build level:
+      - Hero spacing fix (`contents` on `<picture>`): confirmed via
+        screenshot — top bar text now sits right at the edge on
+        Estrategia, matching Home.
+      - Nav accordion + tighter top-level gap: confirmed via screenshot —
+        "01 Brand Tree" expands with its 5 sub-items, other pages
+        collapsed, spacing visibly tighter.
+      - ScrollReveal `threshold: 0` fix: scripted a full scroll-through of
+        both `/aplicaciones` (the page Sofia specifically flagged) and
+        `/assets` (checking every `.reveal` element's final opacity) —
+        zero elements stuck at `opacity: 0` on either page after a full
+        scroll, and a screenshot at `scrollY=4000` on `/aplicaciones`
+        shows the gallery images fully visible, not blank.
+    - **Verified via `npx tsc --noEmit`, `npm run build`, and the
+      screenshot pass above** — this round's fixes have actual visual
+      confirmation, not just code-level reasoning, unlike the caveat
+      noted earlier this same round before the screenshot setup existed.
+    - **Scrim fix, round 2 — Sofia caught that the first fix overcorrected.**
+      She checked `localhost:3000` directly (screenshot tooling from this
+      round made that possible for the first time) and sent her own
+      screenshot next to a fresh Figma reference (node `529:1847`,
+      Estrategia's real mobile hero instance): our fix killed the ghost
+      but the bottom scrim band was `h-[50%]` solid-to-65%, i.e. a hard
+      navy rectangle covering roughly half the photo — Figma's actual
+      design barely darkens the photo at all (the "01 Brand Tree" text
+      just sits on the photo's own naturally dark areas). Recalculated
+      the *real* text position from `PageHero`'s own layout (topbar
+      pt-4→~66px; h1 bottom-aligned via pb-8, ~215px tall on mobile →
+      spans ~y=597–812 of 844px) and shrank the bottom band to hug it:
+      mobile `h-[38%]` solid-to-78% (was `h-[50%]`/65%). Re-screenshotted
+      — confirmed no ghost, much smaller visible block. **Then found the
+      same percentage-based band doesn't transfer to desktop** — Aplicaciones
+      desktop (`desktopScrim`, real 96px title text, `h-screen` container
+      whose actual height varies by monitor) showed a fresh ghost of
+      "Aplicaciones" with the shrunk-to-match-mobile band; desktop's text
+      is positioned differently (larger font, side-by-side number+title,
+      different padding) so mobile's exact percentages don't carry over.
+      Kept desktop more generous (`h-[48%]` solid-to-75%, vs mobile's
+      `h-[38%]`/78%) and re-verified clean. **Lesson: `object-cover` on a
+      screenshot-rendered hero means the baked text's rendered position
+      depends on the container's aspect ratio, which varies a lot more on
+      desktop (monitor height) than mobile (~844px is fairly standard) —
+      a single fixed-percentage scrim isn't reliable across both without
+      separate calibration per breakpoint.** If a real ghost or
+      over-coverage complaint comes back on a DIFFERENT page's desktop
+      hero specifically, recheck that page's own text size/position
+      rather than assuming the Aplicaciones numbers transfer directly.
+    - **Sofia kept reporting "no changed nothing" even after the scrim
+      fix, both spacing changes, and the accordion fix were all verified
+      working via fresh screenshots** — traced this to two separate
+      things, not a code bug: (1) she confirmed via a temporary on-page
+      red banner (`MARCADOR V3`, added then removed from `layout.tsx`)
+      that she IS hitting the exact same dev server, ruling out a
+      split-environment theory; (2) two of the four items she was
+      checking (nav accordion collapse, mobile menu open) are **only
+      visible on interaction** — clicking, not just loading the page —
+      so "looking the same" was expected if she hadn't actually clicked.
+      Session paused mid-diagnosis; Sofia asked to step back and look at
+      how `~/Downloads/portafolio` achieved pixel-perfect, to see if
+      there was a better process. Turned out to be the same
+      `screenshot.mjs` pattern (nothing new), plus two things worth
+      adopting: that project's `serve.mjs` sends `Cache-Control: no-store`
+      on every response (we're on `next dev`, one more layer that can
+      desync after many rapid edits in one tab) and a `qa.mjs` +
+      ImageMagick pattern for numeric pixel-color sampling, not just
+      eyeballing screenshots — noted as a nice-to-have, not adopted yet.
+    - **Resolution: published a self-contained QA gallery as a Claude
+      Artifact** (`https://claude.ai/code/artifact/cc5ba579-0c93-4611-8ea1-2111620b45dd`,
+      "QA Ronda 15") with the actual `localhost:3000` screenshots for all
+      4 items (nav expand/collapse pair, footer spacing, mobile hero,
+      mobile menu), each captioned with the exact before/after pixel
+      values. This sidesteps the whole "are we even looking at the same
+      localhost" problem entirely — it's a real hosted URL, viewable from
+      any device, and she can comment directly on it. Also asked her to
+      re-check in a fresh Incognito window to rule out stale-tab caching
+      as a contributing factor. **Outcome not yet confirmed** — this is
+      the next thing to check when resuming.
+    - **Not yet committed/pushed or deployed** — all changes (including
+      the new `puppeteer` devDependency and `screenshot.mjs`) are on disk
+      only, pending Sofia's confirmation via the gallery above.
+
+16. **Round 15 continued — "05 Sub-marcas" brought into scope and built,
+    same day.** Sofia asked directly ("vamos haciendo el de submarca"),
+    which counts as the explicit per-page confirmation CLAUDE.md requires
+    (05 had been out of scope since the project started; only 04 was
+    previously confirmed). Found the real Figma nodes fresh — `525:218`
+    "05 SUBMARCA" desktop (1440×22449) and `2055:2171` "05 SUBMARCA -
+    mobile" (390×13961) — via a full-document metadata search (never
+    assumed from cached knowledge). This is a bigger page than 04: three
+    subsections (5.1 Arquitectura de marca, 5.2 Marcas de visibilidad
+    externa — Nova Express + Nova Clic, 5.3 Marcas de visibilidad interna
+    — iNova + Nova Empresarios + Nova Líder) and ~35 mockup images plus 5
+    color swatches, confirmed with Sofia via `AskUserQuestion` before
+    committing to building all of it in one pass ("todo de una, en
+    orden").
+    - **New route `/submarca`**, wired into `nav-data.ts`'s `NAV_PAGES`
+      (auto-propagates to the sidebar, mobile panel, AND Home's index —
+      no separate wiring needed, same mechanism as 04). Number `05`,
+      label `Sub-marcas` (matches Figma's own sidebar spelling, confirmed
+      via node `528:503`).
+    - **One responsive tree, not desktop/mobile split like 04** — checked
+      this deliberately rather than assuming: compared every image's
+      aspect ratio and crop-inset percentages between the desktop
+      (`525:218`) and mobile (`2055:2171`) metadata and found they match
+      exactly image-for-image (unlike 04, where several images changed
+      relative proportion between breakpoints). One tree with responsive
+      Tailwind widths was correct here; don't assume this generalizes to
+      future pages without checking each one's own metadata the same way.
+    - **Hero uses the same screenshot+scrim workaround** as every other
+      photo-based hero on this site — confirmed via the same raw-vs-
+      screenshot comparison used all day: the raw asset export for node
+      `2046:938` is a portrait 955×1024 crop that doesn't match the real
+      landscape frame, while `get_screenshot` returns the correct
+      1240×578 composition. Downloaded and saved as `hero-submarca.png`/
+      `hero-submarca-mobile.png`.
+    - **Two real content bugs found in Figma's source, flagged (not
+      silently fixed) in code comments and here:**
+      1. **"Colores secundarios" for Nova Express (Express II/III, Beige,
+         Gris Express) have copy-pasted CMYK/RGB/PANTONE values** — each
+         one's HEX and visual fill are correct and unique to that swatch,
+         but its CMYK/RGB/PANTONE fields are a *verbatim* match for a
+         completely unrelated swatch from the main Azul palette (Express
+         II's values = Azul III's; Express III's = Azul II's; Beige's =
+         Azul IV's; Gris Express's = Azul tinte-claro's — confirmed
+         number-for-number, including PANTONE codes). Almost certainly
+         built by duplicating the Azul palette cards and only updating
+         Name+Hex+fill. Displayed as Figma has them (didn't invent
+         corrected values — RGB could be derived from hex, but CMYK/
+         PANTONE can't be without real color-matching data), flagged
+         clearly in a code comment for the design team to fix at the
+         source.
+      2. **The body text under "iNova" is the Nova Express intro
+         paragraph, verbatim** (same string appears 4 times in the file:
+         nodes `2055:672`, `2055:2116`, `2055:2307`, `2055:2521`) — talks
+         about "puntos de contacto físicos," nothing about iNova. Shown
+         as-is per the no-inventing rule, flagged in a code comment.
+      3. Also reconfirmed the same TOC-vs-heading numbering drift pattern
+         documented elsewhere on the site: the on-page heading for 5.3
+         literally says "5.2 Marcas de visibilidad externa" (same text as
+         the 5.2 heading above it) in both the desktop and mobile Figma
+         nodes. Used the correct 5.3 number/label per the TOC, matching
+         how every other numbering-drift case on this site was handled.
+      4. The "Textura mobiliario" image (Nova Express) uses a genuinely
+         rotated Figma fill (180°, not just an off-center crop) —
+         approximated with a `transform: rotate(180deg)` wrapper around
+         the same crop-inset technique used elsewhere; a new pattern not
+         needed by any other page so far.
+    - **Verified with `npx tsc --noEmit`, `npm run build`, and a real
+      screenshot pass** (`screenshot.mjs`) covering the hero at both
+      breakpoints, the color swatches, the crop-heavy "Aplicaciones de
+      sub-marca" gallery, and the footer — plus a scripted full-page
+      scroll checking for broken `<img>` tags (`naturalWidth === 0`) and
+      any `.reveal` element stuck below `opacity: 1` (the exact class of
+      bug fixed earlier this round). Zero of either. All clean.
+    - **Images downscaled to a 1800px max edge** before committing (same
+      as 04's precedent) — 265MB → 70MB for ~35 files. Still larger than
+      04's 46MB for 19 files; hasn't needed a second compression pass yet
+      but worth revisiting if repo size becomes a problem.
+    - **Not yet committed/pushed/deployed**, same as everything else this
+      round.
+
+17. **Round 15, final verification pass (2026-09-10, later same day) — done
+    from a different client than every prior round.** This session runs in
+    the **Claude desktop app (Code tab)**, which has a native Browser pane
+    (`mcp__Claude_Browser__*`) — unlike every VSCode-extension session before
+    it, which had none (see memory `no-browser-tool-vscode-session`, updated
+    today to note the distinction is per-client, not per-project).
+    - **Discovered the Browser pane can silently go `document.hidden` in the
+      background** (confirmed via `document.visibilityState`), which pauses
+      `IntersectionObserver`/`requestAnimationFrame` — a scroll-based
+      `ScrollReveal` check done through it read as 3 stuck `opacity:0`
+      elements on `/aplicaciones` that were **not a real bug**, just the
+      observer never firing while unpainted. Don't trust scroll/animation
+      state read through the Browser pane without first confirming
+      `document.hidden === false`; fall back to `screenshot.mjs` (a separate
+      headless Puppeteer instance, unaffected by the pane's visibility) for
+      anything scroll- or timing-dependent.
+    - **Also found a `screenshot.mjs --full` gotcha**: Puppeteer's
+      `fullPage` screenshot captures the full scrollable area without
+      actually scrolling the page for JS purposes, so `ScrollReveal`'s
+      IntersectionObserver never fires and the whole page below the hero
+      renders blank — looked exactly like the bug Round 15 had just fixed,
+      but was purely a screenshot-methodology artifact. Fixed by scrolling
+      through in real steps (`window.scrollTo` + wait, repeated down the
+      page) before taking the screenshot — confirmed zero stuck elements and
+      a fully-rendered gallery on `/aplicaciones`, `/master-brand`, and
+      `/submarca` this way. **Use this scroll-through pattern, not a bare
+      `--full` capture, whenever verifying anything `ScrollReveal`-gated.**
+    - **All 4 Round 15 fixes reconfirmed visually working**: hero top
+      spacing (Estrategia desktop, matches Home), nav accordion collapse
+      (clicked "01 Brand Tree" twice live — expands, then collapses), the
+      `/aplicaciones` blank-gap fix (full gallery + footer render, no
+      blank), and the Estrategia mobile hero scrim (no ghosted text, clean
+      readable title).
+    - **`/submarca` (built later in Round 15) spot-checked for the first
+      time**: hero clean at both breakpoints (no ghosting), 39 images on
+      desktop/mobile with zero broken `<img>` tags, `ScrollReveal` clean
+      (zero stuck elements across a 24,098px-tall desktop page), the 5.2
+      Nova Express and 5.3 iNova sections render with the flagged Figma
+      content bugs displayed faithfully (iNova's body copy is genuinely the
+      Nova Express paragraph, heading correctly reads "5.3" per the TOC despite
+      Figma's own on-page drift to "5.2"), and the footer's wider gap-6
+      deviation is visibly present (not accidentally reverted).
+    - **Still not committed/pushed/deployed** — this was verification only;
+      next step is Sofia's go-ahead (or the earlier QA gallery Artifact
+      confirmation) before shipping.
+
+18. **Round 16 (2026-09-10, later same day) — Sofia asked for every page
+    hero (desktop + mobile) to match Home's hero exactly except the
+    background photo, pointing at Estrategia's mobile hero node (`529:1846`)
+    as the reference. Found and fixed a real, previously-undetected layout
+    bug affecting EVERY page hero on BOTH breakpoints, plus 3 confirmed
+    spec drifts on the mobile top bar/hamburger/title.**
+    - **ROOT CAUSE FOUND — the Round 15 hero-spacing fix never actually
+      worked.** Round 15 diagnosed the "huge gap" bug as `<picture>` being
+      an unstyled flex item and fixed it with `className="contents"`.
+      Pixel-measuring the live site today (`getBoundingClientRect`, not just
+      eyeballing a screenshot) showed the top-bar text was STILL pushed
+      down by roughly a third of the hero's height, on every `PageHero`
+      page, desktop included — the original bug, not a new one, just never
+      actually fixed. Root-caused with a minimal standalone repro
+      (`file://` HTML, isolated from the app): a `<source>` element inside
+      a `display:contents` `<picture>`, nested in a flex container, is
+      still counted by this Chromium version as an extra invisible flex
+      item — `display:contents` doesn't reliably neutralize `<picture>`
+      when it contains a `<source>`. `justify-between` then splits the free
+      space across 3 slots instead of 2, which is exactly the "text pushed
+      down by about a third" symptom. **Fixed at the root**: `<picture>` is
+      now `absolute inset-0` directly (matching the `<img>`'s own
+      positioning) instead of `contents` — an absolutely positioned element
+      is never a flex item regardless of what's inside it, so the bug can't
+      recur here. Verified via `getBoundingClientRect` (top-bar now sits
+      exactly at `pt-4`/`pt-3`) and screenshots on every hero page at both
+      breakpoints (Estrategia, Master Brand, Assets, Aplicaciones,
+      Submarca) — all clean, scrims still render correctly (z-index
+      preserved). **This means Round 15's own screenshot-based
+      verification of this exact fix was insufficient** — worth pixel-
+      measuring (`getBoundingClientRect`), not just screenshotting, when
+      verifying flex/grid spacing fixes going forward, since a screenshot
+      can look "close enough" at a glance while still being visibly wrong
+      on inspection.
+    - **3 confirmed spec corrections on the mobile hero**, from a fresh
+      `get_design_context` fetch on Estrategia's `529:1846` AND Master
+      Brand's `543:522` (both instances of the same shared "Hero 2 Mobile"
+      component — confirmed identical structure/values on both, so this is
+      a universal `PageHero` fix, not page-specific):
+      1. **Title block was 64px/gap-1(4px)**, Figma's real spec is
+         **56px/gap-3(12px)**.
+      2. **Hero's own bottom padding was `pb-8` (32px)**, Figma's frame is
+         uniform `p-[16px]` on all sides with no special bottom nudge — now
+         `pb-4` (16px).
+      3. **Top-bar row font/gap was `text-base`(16px)/`gap-3`(12px)**,
+         Figma's real spec is **`text-[20px]`/`gap-5`(20px)**. Also
+         confirmed (via pixel-measuring Figma's own screenshot, not just
+         reading the exported code) that the top-bar row carries its OWN
+         nested 16px padding on top of the header's 16px — 32px total inset
+         — while the title block only gets the outer 16px; added `p-4
+         md:p-0` to the top-bar div to match.
+    - **Mobile hamburger glyph was wrong** — hand-drawn 3-line SVG at 24×24,
+      `fixed top-4 right-4`. Figma's real glyph (part of the same shared
+      component, node 2045:925-927, confirmed identical on every page) is 2
+      plain 2px bars, 40px wide, 6px gap. Replaced the SVG with 2 `<span>`
+      bars matching those exact dimensions, repositioned to `top-8 right-8`
+      (32px) to match the confirmed top-bar inset above, using `pb-3 pl-3`
+      (not padding on top/right) so the tap target grows down/left without
+      shifting the visible bars off that anchor. The "X" close icon (no
+      Figma mockup exists for the open state, per Round 13) keeps its
+      previous custom shape, just repositioned the same way.
+    - **Verified**: `npx tsc --noEmit`, `npm run build`, fresh
+      `getBoundingClientRect` measurements confirming the fix on both
+      breakpoints, screenshots of all 5 `PageHero` pages at both
+      breakpoints, and a scripted click-test confirming the mobile menu
+      still opens/shows the X icon/lists all 5 nav pages correctly.
+
+    - **Same-day follow-up: Sofia flagged "ese gradiente tan extraño azul"
+      on Aplicaciones and Submarca's hero photos, identical on mobile.**
+      Root-caused, not guessed: `PageHero`'s `mobileScrim`/`desktopScrim`
+      (the dark band that hides Figma's baked-in text on the screenshot-
+      render workaround — confirmed via a fresh Figma screenshot that
+      Figma's own design has **no scrim at all** here, so this is purely
+      our own workaround, not a Figma spec to match) used a 2-stop
+      "100% opaque, then one straight linear fade to 0%" gradient. That
+      shape has a visible kink exactly at the point it starts fading — on
+      Estrategia/Master Brand it's invisible because the photo in that zone
+      is naturally low-contrast (blurred wall, flat blue illustration), but
+      on Aplicaciones' white flyer and Submarca's actual "Nova express"
+      store signage it showed up as a hard-edged seam, and on Submarca the
+      old fade zone landed right on top of the signage, ghosting it in a
+      washed-out blue. Confirmed by cropping and comparing the raw baked
+      screenshots against the live rendered output side by side.
+      **Fixed**: replaced the single linear fade in all 4 bands (mobile
+      top/bottom, desktop top/bottom) with a multi-stop eased curve (holds
+      solid a little longer — this hero's text also got taller in the
+      Round 16 mobile-nav fix — then eases out over 4 steps instead of one
+      straight line), and grew the top bands slightly (mobile `h-40`→`h-48`,
+      desktop `h-56`→`h-64`) to give the ease more room. Re-screenshotted
+      all 4 affected pages at both breakpoints — the hard seam and the
+      signage ghost are both gone, reads as a soft vignette now. Re-checked
+      Estrategia and Master Brand mobile too (shared component) to confirm
+      no regression there — still clean, unchanged in effect.
+
+    - **Immediate follow-up, same conversation: Sofia asked to remove the
+      scrim entirely on Aplicaciones/Submarca, "solo dejar la imagen tal
+      cual esta en figma."** Checked whether that was even possible before
+      touching code: confirmed via a fresh fetch that both heroes' photos
+      are still a frame-level fill on both breakpoints (no separate image
+      child layer), and the MCP's raw asset export is still the same wrong
+      crop documented in Round 12 (verified today: Aplicaciones desktop
+      683×1024 portrait, cuts off "Súper" when force-fit into the landscape
+      box — simulated it to show her directly). So neither existing source
+      works without either a bad crop or a scrim — reported this
+      concretely (with both broken-crop and no-scrim-ghosting renders sent
+      as images) rather than picking one silently, and asked how she wanted
+      to proceed.
+    - **Resolved once Sofia supplied her own exports** (`~/Documents/
+      submarca.png`, `~/Documents/design system .png` — she'd looked in
+      Downloads first, then corrected herself to Documents): both are
+      1240×578, matching the Hero instance's exact declared size, correctly
+      cropped, and genuinely text-free — copied directly to
+      `hero-submarca.png`/`hero-design-system.png`. For mobile, re-checked
+      the MCP raw asset export one more time with fresh eyes instead of
+      assuming Round 12's "broken" verdict still held for the *mobile*
+      node specifically (it was only ever confirmed broken for desktop):
+      turned out to be genuinely clean on both `2045:606` (Aplicaciones)
+      and `2055:2174` (Submarca) — just needed a manual crop instead of
+      Figma's own default position. Submarca's needed left/top anchoring
+      specifically (a centered crop cuts the "Nova" half of the "Nova
+      express" sign clean off — confirmed by comparing both crops side by
+      side) — saved as fixed 390×844 files rather than relying on runtime
+      `object-position` tuning.
+    - **Removed `mobileScrim`/`desktopScrim` from both pages' `PageHero`
+      usage** — no gradient at all now, exactly the photo as Figma shows
+      it. Verified with fresh screenshots at both breakpoints on both
+      pages: full "Nova express" signage and the full flyer are visible on
+      Submarca/Aplicaciones with zero overlay. Text legibility on top of
+      the raw photo is a bit tighter in a couple of spots (e.g. Submarca's
+      "05/Sub-marcas" sits on a light floor) than it would be with a scrim,
+      but that's the direct, informed tradeoff Sofia chose over any
+      darkening — don't re-add a scrim here without asking again.
+    - **`PageHero`'s scrim mechanism itself was left in place** (Estrategia
+      and Master Brand's mobile heroes still need it — their raw exports
+      are still genuinely broken, not re-verified as clean today) — updated
+      its doc comment to reflect that Aplicaciones/Submarca no longer use
+      it and why.
+    - Verified with `npx tsc --noEmit` and `npm run build`.
+
+    - **Immediate follow-up: Sofia reported the hero photos looking
+      "stretched vertically."** Not literal CSS stretching (`object-fit:
+      cover` mathematically can't do that) — root-caused by testing across
+      viewport widths instead of just the usual desktop/mobile pair:
+      reproduced at in-between sizes like 768×1024 and 1024×768 (tablets,
+      or a non-maximized browser window), where `md:h-screen` still forces
+      the hero to fill the FULL viewport height even though the width is
+      much narrower than a normal desktop — for a ~2.145:1 photo, that
+      meant `object-cover` had to zoom in hard enough to crop down to as
+      little as ~35% of the photo's width, which reads as a bad, distorted
+      zoom even though no pixel is actually non-uniformly scaled.
+      **Fixed**: `PageHero`'s header height changed from `md:h-screen` to
+      `md:h-[min(100vh,71vw)]` — caps the box's aspect ratio at ~1.4:1
+      (solved for keeping ≥~65% of the photo's width visible), which only
+      engages on unusually narrow/tall windows; every normal desktop
+      viewport (16:9 or wider) already has `100vh < 71vw`, so `min()` still
+      picks `100vh` and nothing changes there — verified with screenshots
+      at 768×1024, 1024×768 (both dramatically improved — full "Nova
+      express" signage visible now instead of just "express") and 1440×900/
+      1920×1080 (pixel-identical to before, confirming no regression).
+    - **Found a separate, pre-existing bug while testing this**, not yet
+      fixed (out of scope for this request, flagging for later): every
+      `PageHero` title (`text-[96px] md:...`, no intermediate step between
+      mobile and desktop sizes) overflows past the right edge of the
+      viewport at these same in-between widths — confirmed on Estrategia
+      ("Brand Tree"), Master Brand ("Master Brand"), and Aplicaciones
+      ("Aplicaciones master brand") all cut off mid-word at 768px width.
+      Same root cause category as the photo issue (nothing scales down
+      between the mobile breakpoint and full desktop), but a typography
+      fix, not a height-cap fix — needs its own pass (likely a `lg:`-gated
+      size step, or a `clamp()`) rather than folding into this change.
+    - Also same session: reduced the desktop sidebar's own top padding
+      (`Nav.tsx`'s `<nav>`, `pt-7`→`pt-5`, 28px→20px) alongside the
+      already-20px top-level item gap, per Sofia's request while reviewing
+      the sidebar in DevTools — another intentional deviation from Figma's
+      literal spec, same rationale as the Round 15 gap change.
+    - Verified with `npx tsc --noEmit` and `npm run build`.
+
+    - **Immediate follow-up: Sofia said Estrategia's hero ("Brand Tree")
+      still looked stretched and sent a photo.** Tested the SAME viewport
+      matrix used to fix Aplicaciones/Submarca (1440×900, 1920×1080,
+      1024×768, 768×1024, 1200×700, 1000×750, 390×844) and could not
+      reproduce any stretching — asked her to confirm she was on
+      `localhost:3000` (not the undeployed production URL) before digging
+      further, given Round 14's exact false-alarm precedent; she confirmed
+      localhost. Root cause turned out to be simpler once she sent the
+      actual image: our `hero-estrategia.png` was 1024×572 (an older fetch,
+      predating today's methodology), a different aspect ratio than the
+      Hero instance's real 1240×578 — she'd separately grabbed a correct
+      1240×578 export of the same photo (`~/Documents/bran tree.png`,
+      already noted as a match back in this same round's earlier entry but
+      not used since Estrategia wasn't thought to need it). Swapped it in
+      the same way as Submarca/Aplicaciones. Verified clean at every
+      viewport in the matrix above.
+    - **Sidebar spacing, next pass**: with the top-level item gap and
+      container top padding both already at 20px, the logo-to-menu gap
+      (`gap-12`, 48px) was the one value left that visibly didn't match the
+      new tighter rhythm — reduced to `gap-8` (32px). Confirmed via a
+      cropped, zoomed screenshot of the sidebar before/after.
+    - Verified with `npx tsc --noEmit` and `npm run build`.
+
+    - **Full hero audit, all 5 pages, requested once the Estrategia fix
+      landed.** Fetched fresh metadata for Master Brand's (`528:1227`) and
+      Assets' (`551:2723`) real Hero instances to confirm the site-wide
+      correct size — all 5 pages use the exact same `1240×578` Hero
+      component, not page-specific sizes:
+      - Estrategia, Aplicaciones, Submarca: `1240×578` ✓ (today's fixes).
+      - Master Brand (`hero-master-brand-bg.jpg`, `4096×1899`): different
+        resolution but the same ~2.145:1 aspect and, confirmed by
+        downloading a fresh Figma screenshot of `528:1227` and comparing
+        side by side, the identical blue-wave composition — no change
+        needed, re-confirms Round 8's finding.
+      - Assets (`hero-assets-bg.png`, `1914×3000` — portrait, initially
+        looked wrong): also confirmed correct via a fresh Figma screenshot
+        of `551:2723` — identical 5-vertical-color-bar composition, same
+        order. The odd portrait export doesn't matter here because the
+        content is uniform top-to-bottom (5 solid color columns), so
+        `object-cover` cropping the height differently than Figma's own
+        578px never changes what's visible — genuinely not a bug despite
+        the unusual dimensions, just an odd export shape for a
+        crop-agnostic image.
+      - Confirmed every mobile hero shows the same underlying photo/pattern
+        as its desktop counterpart: Estrategia and Master Brand's mobile
+        (still the screenshot-render + scrim workaround) both match their
+        desktop scene/pattern; Aplicaciones and Submarca's (today's clean
+        raw crops) already confirmed same photo earlier this round; Assets
+        still correctly has no mobile hero at all (by design, Figma has
+        none).
+    - Verified with `npx tsc --noEmit` and `npm run build`, plus screenshots
+      of all 5 pages at both 1440×900 and the 768×1024 stress case.
+
+    - **Immediate follow-up: Sofia flagged the same "weird blue gradient"
+      on Estrategia and Master Brand's MOBILE heroes** — the last two pages
+      still using `mobileScrim`. Screenshotted both and confirmed a visible
+      hard-edged navy block, same class of issue as the Aplicaciones/
+      Submarca fix earlier today, just not yet addressed here since these
+      two were assumed to still need the scrim (no clean source found
+      previously). Re-checked that assumption instead of just re-tuning the
+      gradient again: fetched fresh `get_design_context` for both mobile
+      hero nodes (`529:1846`, `543:522`) — the raw asset export is STILL
+      the known bug (returns the desktop-shaped image: 1024×572 for
+      Estrategia, 4096×1899 for Master Brand, confirmed by direct
+      download), but unlike Aplicaciones/Submarca's flyer/signage photos,
+      **these two source photos turned out to crop cleanly into the mobile
+      box on their own** — Estrategia's family-dinner scene and Master
+      Brand's abstract wave pattern don't have the "one specific sign/word
+      that must stay in frame" constraint the other two had, so a plain
+      `object-cover` crop (left-anchored for Estrategia to keep the mom's
+      expression the focal point; centered for Master Brand, an abstract
+      pattern with no wrong answer) already looks good. Saved as new fixed
+      390×844 files, removed `mobileScrim` from both pages entirely — no
+      page on the site uses the scrim mechanism anymore (kept in
+      `PageHero.tsx` for a future page that might need it, with its doc
+      comment rewritten to explain why raw-export-then-crop should be tried
+      before falling back to it).
+    - **Also this round: nav sizing/spacing corrected to match Figma's
+      actual default-state reference exactly**, per a Figma link Sofia sent
+      (node `239:64`, "Menu v1 / Predeterminado" — the collapsed/resting
+      variant, different from `528:503`'s expanded-accordion variant that
+      Round 15's gap-5 deviation was tuned against). This reverses today's
+      earlier tightening in favor of matching this specific reference
+      literally: container top padding `pt-5`(20px)→`pt-7`(28px, back to
+      Figma's value), logo-to-list gap `gap-8`(32px)→`gap-14`(56px, bigger
+      than either previous value), top-level item gap `gap-5`(20px)→
+      `gap-[18px]` (Figma's exact number, no round Tailwind equivalent),
+      and item font `text-base`(16px)→`text-[14px]`. Worth remembering:
+      Figma's own "Menu v1" component apparently has different numbers
+      across its own variants depending on collapsed/expanded state — don't
+      assume one variant's spec generalizes to another without checking
+      the specific node.
+    - Verified with `npx tsc --noEmit` and `npm run build`, plus screenshots
+      of both mobile heroes and the sidebar.
+
+    - **Immediate follow-up #1: nav item vertical alignment.** Sofia sent a
+      Figma inspector screenshot of "04 Aplicaciones de marca" and asked for
+      the number/label/chevron to align to the top instead of floating
+      centered against the label's 2-line wrapped height. Root cause:
+      `NavLinks`' per-item `<Link>` used `items-center` — fine for every
+      single-line item, but centers everything against the *tallest* item
+      in the flex row once the label wraps to 2 lines, so "04" and the
+      chevron ended up vertically centered between the two text lines
+      instead of aligned with the first one. Changed to `items-start`
+      (`Nav.tsx`) — harmless for single-line items (same height either way),
+      fixes the wrapped one.
+    - **Immediate follow-up #2: Estrategia's mobile hero "still looks
+      stretched and weird," reopened after today's earlier fix.** Traced
+      through several rounds instead of guessing once and moving on:
+      1. Verified there's no actual pixel distortion (compared the crop's
+         face against the same face cropped from the undistorted raw photo
+         at the same relative region — identical proportions; the "wide
+         open laughing" look is just how she's captured in the source
+         photo, not a stretch artifact).
+      2. Explained the real geometric constraint to Sofia: the source is a
+         ~1.79:1 landscape photo, forced by `object-cover` into a ~0.46:1
+         portrait mobile box, which mathematically requires ~1.48x zoom and
+         only shows ~26% of the original width — that's what read as
+         "stretched." Offered concrete alternatives (the current crop, an
+         alternate anchor, a shorter/less-zoomed hero) rather than picking
+         silently.
+      3. She asked for the crop to just be automatic (plain `object-cover`,
+         default center position) instead of a hand-picked anchor — tried
+         it, and the *default* center crop happened to land on the
+         daughter's out-of-focus hair with no clear subject, worse than any
+         manual anchor. Reported this back rather than shipping a
+         worse-looking "automatic" result just because it was simpler.
+      4. She then pointed at a specific Figma node (`529:1847`) and asked to
+         just match what's actually designed there. That node turned out to
+         be **Figma's own pre-composed mobile screenshot** — not a plain
+         `object-cover` crop at all, but a deliberately art-directed frame
+         showing the full three-person scene, something no CSS crop of the
+         raw landscape photo could reproduce (confirmed: this exact node
+         was referenced once before, Round 15, but never actually used as
+         the image source — only compared against for scrim calibration).
+         Used it directly as `hero-estrategia-mobile.png`.
+      5. That render has Figma's own baked-in text like every other
+         screenshot-sourced hero, but only the TOP band ghosted when
+         checked closely (zoomed screenshot comparison) — the bottom title
+         area was already clean, no ghost, no scrim needed there. Rather
+         than reapply the old all-or-nothing `mobileScrim`, split
+         `PageHero`'s scrim props into four independent booleans
+         (`mobileScrimTop`/`mobileScrimBottom`/`desktopScrimTop`/
+         `desktopScrimBottom`) so a page can scrim only the band that
+         actually needs it. Estrategia now uses `mobileScrimTop` only —
+         confirmed via a zoomed crop of both bands that the top is fully
+         clean and the bottom needed nothing extra.
+      - **Lesson for next time a mobile hero "looks off" on a
+        screenshot-sourced photo**: check for a second, adjacent Figma node
+        (often `X:Y+1` next to the frame's own id) before concluding a
+        custom CSS crop is the best available option — Figma sometimes
+        already has the intended art-directed composition sitting one node
+        away, and no amount of `object-position` tuning on the raw asset
+        will match a deliberately composed multi-subject shot.
+    - Verified with `npx tsc --noEmit`, `npm run build`, and zoomed
+      screenshots of both the top and bottom text bands.
+
+    - **Immediate follow-up #3: Sofia pasted a screenshot ("esta") of the
+      family-dinner photo with NO text baked in at all**, at exactly
+      390×844. Not accessible as a file directly from the pasted message —
+      found it by searching Downloads for recently-added images:
+      `~/Downloads/Hero 2 Mobile.png` (390×844) and `~/Downloads/Hero 2.png`
+      (1240×578, byte-identical via `md5` to the `bran tree.png` already in
+      use for the desktop hero — same source, confirms consistency). These
+      are **manual Figma exports of just the image-fill layer** (done from
+      Sofia's own Figma desktop app, selecting the layer directly and
+      exporting) rather than a rendered screenshot of the composed frame —
+      genuinely clean, no text, no baked anything. Swapped
+      `hero-estrategia-mobile.png` for this file and removed
+      `mobileScrimTop` entirely — Estrategia's mobile hero needs no scrim
+      at all now, full stop. Verified via screenshot: clean family scene,
+      real live text on top, zero ghosting, zero gradient.
+    - **This changes the standing advice for the next photo-hero problem**:
+      a manual Figma-desktop export of the specific image layer bypasses
+      BOTH known problems at once (the MCP raw-export desktop-shape bug,
+      and the get_screenshot-render's baked-in text) — it should be the
+      *first* thing asked for when a hero photo's raw MCP export is broken,
+      not a fallback after calibrating a screenshot+scrim workaround.
+      Updated `PageHero.tsx`'s doc comment accordingly.
+    - Verified with `npx tsc --noEmit` and `npm run build`.
+    - **Still not committed/pushed/deployed.**

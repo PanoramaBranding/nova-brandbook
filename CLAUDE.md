@@ -40,13 +40,18 @@ ronda por ronda de QA.
 
 ## Flujo de verificación pixel-perfect
 Adaptado del proyecto de portafolio (`~/Downloads/portafolio`) que Sofia pidió usar
-como referencia:
+como referencia. Ese proyecto no usa ninguna herramienta especial de Claude Code —
+es simplemente `puppeteer` como devDependency + un script chico. Desde 2026-09-10
+(Round 15) este repo tiene lo mismo:
 1. `npm run dev` → http://localhost:3000
-2. Tomar screenshot de la página en el navegador (herramienta Browser / Puppeteer).
+2. Tomar screenshot real con `node screenshot.mjs <url> [label] [--viewport=WxH]
+   [--full] [--wait=ms]` (guarda en `./temporary screenshots/`, gitignored) y
+   leerlo con la herramienta de lectura de archivos.
 3. Comparar contra el screenshot de Figma (`get_screenshot` del mismo nodo).
 4. Ajustar espaciados/tipografía/color hasta que no haya diferencias visibles.
    Mínimo 2 rondas de comparación antes de dar una sección por terminada.
-5. Repetir en mobile (375–390px) para las páginas que sí tienen diseño mobile.
+5. Repetir en mobile (`--viewport=390x844`) para las páginas que sí tienen diseño
+   mobile.
 
 ## Design tokens
 Ver `src/app/globals.css` — todos los colores son variables (`--color-azul-1`, etc.),

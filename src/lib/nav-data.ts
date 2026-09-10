@@ -112,4 +112,14 @@ export const NAV_PAGES: NavPage[] = [
     label: "Aplicaciones de marca",
     sections: [{ id: "aplicaciones-master-brand", number: "4.1", label: "Aplicaciones master brand" }],
   },
+  {
+    slug: "/submarca",
+    number: "05",
+    label: "Sub-marcas",
+    sections: [
+      { id: "arquitectura-de-marca", number: "5.1", label: "Arquitectura de marca" },
+      { id: "marcas-de-visibilidad-externa", number: "5.2", label: "Marcas de visibilidad externa" },
+      { id: "marcas-de-visibilidad-interna", number: "5.3", label: "Marcas de visibilidad interna" },
+    ],
+  },
 ];

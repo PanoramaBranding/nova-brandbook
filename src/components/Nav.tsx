@@ -8,19 +8,27 @@ import { NAV_PAGES, isGroups, type NavLeaf } from "@/lib/nav-data";
 
 /**
  * Nav — Figma "Menu v1" for desktop (sticky 200px sidebar, accordion +
- * scroll-spy). Mobile trigger is a real Figma component too (node 2045:921:
- * a plain hamburger icon, no bar/background/logo around it) — it must not
- * occupy real layout height above the page, since that pushes the Hero's
- * own top-row text down from where Figma shows it. Rendered `fixed` (not
- * `sticky`) so it floats over the Hero instead of sitting in a bar above
- * it, and stays reachable at any scroll position without adding height.
- * Home has no menu at all (confirmed with Sofia) — it's the index page
- * itself, so a persistent nav would just duplicate its own Index section.
+ * scroll-spy). Mobile trigger is the hamburger glyph from Figma's shared
+ * "Nav - mobile" component (node 2048:1276, its bars at 2045:925-927 — 2
+ * plain 2px bars, 40px wide, 6px gap, confirmed identical on every page's
+ * mobile hero 2026-09-10), not a bar/background/logo of its own — it must
+ * not occupy real layout height above the page, since that pushes the
+ * Hero's own top-row text down from where Figma shows it. Rendered `fixed`
+ * (not `sticky`) so it floats over the Hero instead of sitting in a bar
+ * above it, and stays reachable at any scroll position without adding
+ * height — Figma's own row doesn't add height for it either, it's the same
+ * row as the top-bar text, not a separate bar. Home has no menu at all
+ * (confirmed with Sofia) — it's the index page itself, so a persistent nav
+ * would just duplicate its own Index section.
  */
 export default function Nav() {
   const pathname = usePathname();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  // The active route's accordion section opens by default (see `isOpen`
+  // below); this tracks a page the user explicitly clicked closed again,
+  // since routing alone (isActive) has no notion of "collapsed".
+  const [collapsedSlug, setCollapsedSlug] = useState<string | null>(null);
 
   const activePage = NAV_PAGES.find((p) => p.slug === pathname);
   const isHome = pathname === "/";
@@ -75,9 +83,10 @@ export default function Nav() {
     };
   }, [activePage, pathname]);
 
-  // Close the mobile panel on route change.
+  // Close the mobile panel and reset any manual collapse on route change.
   useEffect(() => {
     setMobileOpen(false);
+    setCollapsedSlug(null);
   }, [pathname]);
 
   if (isHome) return null;
@@ -86,38 +95,52 @@ export default function Nav() {
     <>
       {/* Desktop — sticky sidebar */}
       <nav
-        className="hidden md:flex sticky top-0 h-screen w-[200px] shrink-0 overflow-y-auto bg-azul-1 px-6 pt-7 pb-8 flex-col items-center gap-12 [scrollbar-width:thin]"
+        className="hidden md:flex sticky top-0 h-screen w-[200px] shrink-0 overflow-y-auto bg-azul-1 px-6 pt-7 pb-8 flex-col items-center gap-14 [scrollbar-width:thin]"
         aria-label="Navegación del manual de marca"
       >
         <Link href="/" className="shrink-0 w-[80px]" aria-label="Ir a inicio">
           <Image src="/brand/nova-logo-white.svg" alt="NovaVenta" width={80} height={75} priority />
         </Link>
-        <NavLinks pathname={pathname} activeId={activeId} />
+        <NavLinks
+          pathname={pathname}
+          activeId={activeId}
+          collapsedSlug={collapsedSlug}
+          onToggleCollapse={setCollapsedSlug}
+        />
       </nav>
 
-      {/* Mobile — floating trigger (Figma node 2045:921: a plain hamburger,
-          no bar/background behind it) + full-screen panel. `fixed`, not
-          `sticky` or a layout element, so it never pushes the Hero's own
-          content down. `mix-blend-difference` (not an invented backdrop
-          circle) keeps a plain white icon readable over both the Hero's
-          photo and plain white page content further down, without a
-          background Figma never specified. */}
+      {/* Mobile — floating trigger. Figma's real glyph (node 2045:925-927,
+          part of the shared "Nav - mobile" component confirmed identical on
+          every page's hero, 2026-09-10) is just 2 plain 2px bars, 40px
+          wide, 6px gap — not a 3-line hamburger. `fixed`, not `sticky` or a
+          layout element, so it never pushes the Hero's own content down
+          (Figma's own row doesn't add height beyond the top-bar text
+          either — it's the same row, not a separate bar). Positioned at
+          `top-8 right-8` (32px) to match that row's own confirmed inset
+          (pixel-measured against Figma's screenshot: 16px from the header
+          + 16px the row itself carries, see `PageHero.tsx`) — `pb-3 pl-3`
+          only (no top/right padding) pads the tap target down/left without
+          shifting the icon's visual top-right anchor. `mix-blend-difference`
+          (not an invented backdrop circle) keeps a plain white icon
+          readable over both the Hero's photo and plain white page content
+          further down, without a background Figma never specified. */}
       <button
         type="button"
         onClick={() => setMobileOpen((v) => !v)}
         aria-expanded={mobileOpen}
         aria-controls="mobile-nav-panel"
         aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
-        className={`md:hidden fixed top-4 right-4 z-40 text-white p-2 ${mobileOpen ? "" : "mix-blend-difference"}`}
+        className={`md:hidden fixed top-8 right-8 z-40 pb-3 pl-3 text-white ${mobileOpen ? "" : "mix-blend-difference"}`}
       >
         {mobileOpen ? (
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
           </svg>
         ) : (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
-          </svg>
+          <span className="flex flex-col gap-[6px] w-10">
+            <span className="h-0.5 w-full bg-white" />
+            <span className="h-0.5 w-full bg-white" />
+          </span>
         )}
       </button>
       <div
@@ -127,7 +150,13 @@ export default function Nav() {
           mobileOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
-        <NavLinks pathname={pathname} activeId={activeId} onNavigate={() => setMobileOpen(false)} />
+        <NavLinks
+          pathname={pathname}
+          activeId={activeId}
+          collapsedSlug={collapsedSlug}
+          onToggleCollapse={setCollapsedSlug}
+          onNavigate={() => setMobileOpen(false)}
+        />
       </div>
     </>
   );
@@ -136,22 +165,47 @@ export default function Nav() {
 function NavLinks({
   pathname,
   activeId,
+  collapsedSlug,
+  onToggleCollapse,
   onNavigate,
 }: {
   pathname: string | null;
   activeId: string | null;
+  collapsedSlug: string | null;
+  onToggleCollapse: (slug: string | null) => void;
   onNavigate?: () => void;
 }) {
   return (
-    <ul className="flex flex-col gap-7 w-full text-white text-base font-medium">
+    // 18px + 14px Medium, matching Figma's "Menu v1 / Predeterminado" node
+    // (239:64, the default/collapsed state) exactly — Sofia pointed at this
+    // specific node 2026-09-10 and asked to match it as-is, superseding the
+    // earlier gap-5/text-base deviation from Round 15 (that was tuned
+    // against a different variant, 528:503, showing an expanded accordion
+    // state with its own different numbers).
+    <ul className="flex flex-col gap-[18px] w-full text-white text-[14px] font-medium">
       {NAV_PAGES.map((page) => {
         const isActive = page.slug === pathname;
+        const isOpen = isActive && collapsedSlug !== page.slug;
         return (
           <li key={page.slug} className="flex flex-col gap-5">
-            <Link href={page.slug} onClick={onNavigate} className="flex items-center gap-1 transition-opacity hover:opacity-80">
+            <Link
+              href={page.slug}
+              onClick={(e) => {
+                // Already on this page: toggle the accordion instead of
+                // navigating (a same-route Link click is a no-op nav-wise,
+                // so without this the section could never collapse).
+                if (isActive) {
+                  e.preventDefault();
+                  onToggleCollapse(isOpen ? page.slug : null);
+                } else {
+                  onNavigate?.();
+                }
+              }}
+              className="flex items-start gap-1 transition-opacity hover:opacity-80"
+            >
               <span>{page.number}</span>
               <span className="flex-1">{page.label}</span>
-              <ChevronIcon open={isActive} />
+              <ChevronIcon open={isOpen} />
             </Link>
 
             {/* Always mounted (not conditionally rendered) so the
@@ -159,7 +213,7 @@ function NavLinks({
                 the sub-items just popping in/out on route change. */}
             <div
               className={`grid transition-[grid-template-rows] duration-300 ease-out ${
-                isActive ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
               }`}
             >
               <div className="overflow-hidden">

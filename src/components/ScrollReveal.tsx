@@ -39,7 +39,13 @@ export default function ScrollReveal() {
           }
         }
       },
-      { threshold: 0.1, rootMargin: "0px 0px -10% 0px" }
+      // threshold: 0 (not 0.1) — a ratio-based threshold is a fraction of
+      // the target's OWN height, so very tall sections (e.g. Aplicaciones'
+      // single-section image gallery, 10000px+) could never reach 10%
+      // visible within one viewport and would stay opacity:0 forever,
+      // reading as a permanent blank gap. Firing on any visible pixel
+      // works regardless of section height.
+      { threshold: 0, rootMargin: "0px 0px -10% 0px" }
     );
 
     targets.forEach((el) => observer.observe(el));

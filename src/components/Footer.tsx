@@ -50,8 +50,12 @@ export default function Footer({
         </div>
       </div>
 
-      {/* Desktop grouping: "Volver arriba"+Preguntas paired, 2026 separate */}
-      <div className="hidden md:flex md:items-center gap-3 text-azul-1 text-[20px] font-medium">
+      {/* Desktop grouping: "Volver arriba"+Preguntas paired, 2026 separate.
+          gap-6 (24px), not Figma's confirmed gap-3 (12px, node 528:256) —
+          a deliberate deviation Sofia asked for 2026-09-10 (Round 15): the
+          two clusters read as too cramped even at Figma's own spacing.
+          Don't "correct" this back to 12px without re-confirming with her. */}
+      <div className="hidden md:flex md:items-center gap-6 text-azul-1 text-[20px] font-medium">
         <div className="flex items-center gap-[18px]">
           <a href={backToTopHref} className="whitespace-nowrap">
             ↑ Volver arriba

@@ -195,8 +195,6 @@ export default function AplicacionesPage() {
         mobileImage="/brand/heroes/hero-design-system-mobile.png"
         number="04"
         titleLines="Aplicaciones master brand"
-        mobileScrim
-        desktopScrim
       />
 
       <section className="px-6 md:px-[38px] py-16 md:py-24 max-w-[676px]">

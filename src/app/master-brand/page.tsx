@@ -95,7 +95,6 @@ export default function MasterBrandPage() {
         mobileImage="/brand/heroes/hero-master-brand-mobile.png"
         number="02"
         titleLines={["Master", "Brand"]}
-        mobileScrim
       />
 
       <section className="px-6 md:px-[38px] py-16 md:py-24 max-w-[905px]">

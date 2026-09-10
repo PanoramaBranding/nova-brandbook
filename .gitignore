@@ -45,3 +45,6 @@ next-env.d.ts
 
 # archivos personales sueltos que no deben versionarse
 Captura de pantalla*.png
+
+# puppeteer screenshot verification (see screenshot.mjs)
+temporary screenshots/
