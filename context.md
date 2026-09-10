@@ -274,18 +274,23 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
    established 1135px content width, 300px doesn't). The shared `Button`
    component was checked too — already pixel-perfect against the "Boton"
    spec, no change needed.
-2. ⚠️ **Assets 3.8/3.9 — the "photography reference images still pending"
-   note above was wrong, corrected in Round 9.** A fresh `get_design_context`
-   fetch on both sections' real nodes (`574:3575`, `578:3976`) found ~30
-   real reference photos already in Figma (lifestyle familiar/individual/
-   mascotas, producto en contexto, render 3D, usos incorrectos) — they were
-   never actually missing, just never fetched directly. The layout is also
-   different from what's built: Prompt Maestro / Negative Prompt render as
-   always-visible bordered boxes (`border border-azul-1 rounded-[15px]`),
-   not the collapsible `<details>` used now. This needs downloading ~30
-   assets and restructuring both sections — flagged to Sofia before
-   touching it given the scope; check back here for her answer before
-   assuming this is still "pending" or still collapsible.
+2. ~~Assets 3.8/3.9 — photography reference images still pending~~ —
+   **resolved in Round 9.** The "still pending" note was wrong: a fresh
+   `get_design_context` fetch on both sections' real nodes (`574:3575`,
+   `578:3976`) found ~30 real reference photos already in Figma (lifestyle
+   familiar/individual/mascotas, producto en contexto, render 3D, usos
+   incorrectos) — they were never actually missing, just never fetched
+   directly. Sofia confirmed downloading everything and rebuilding both
+   sections (asked before touching it, given the scope). All ~30 photos
+   now live in `public/brand/assets/foto/`; Prompt Maestro / Negative
+   Prompt render as Figma's real always-visible bordered boxes
+   (`border border-azul-1 rounded-[15px]`), not the collapsible
+   `<details>` used before. The photo grid layout is a faithful-but-
+   simplified stand-in for Figma's specific per-photo crops (several
+   sub-sections reuse the same 16:9 source at different curated crops)
+   rather than a pixel clone of every individual crop offset — flag for a
+   closer look if the grid arrangement itself (not the photos or box
+   style) ever needs to match more exactly.
 
    Separately, **Assets had the same missing-sections bug as Master
    Brand** — fetched its desktop node directly in Round 7 and found the
@@ -295,8 +300,10 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
    `src/components/ContentsToc.tsx` — Master Brand was refactored to use
    it too instead of its inline copy. Estrategia does
    *not* have this block in Figma (confirmed directly), so don't add it
-   there. The rest of Assets' body (3.1–3.13) was not re-audited this
-   round — it already got a full line-by-line pass in Round 5.
+   there. The rest of Assets' body (3.1–3.13) got a full fresh
+   `get_design_context` pass in Round 9 (see below) — this superseded the
+   Round 5 audit, which had only checked copy content, not layout
+   structure.
 3. **`llms.txt` / `brand.json` / JSON-LD** — the core "AI-readable"
    differentiator from the original brief. Not started.
 4. **GitHub↔Vercel auto-deploy** not connected. Now that the project lives
@@ -562,10 +569,11 @@ seems.
      assuming the reference photos didn't exist yet — a fresh fetch found
      ~30 real generated photos already in Figma across both sections, plus
      a different layout (always-visible bordered Prompt Maestro/Negative
-     Prompt boxes, not the collapsible `<details>` currently used).
-     Flagged to Sofia before touching it — see Pending #2 for her answer
-     once she gives it, and don't assume either the "still pending" status
-     or the collapsible layout going forward.
+     Prompt boxes, not the collapsible `<details>` used before). Flagged
+     to Sofia before touching it given the scope; she confirmed
+     downloading everything and rebuilding — done the same round, see
+     Pending #2 for the full detail. Don't reintroduce the collapsible
+     `<details>` or `AssetPending` here going forward.
    - Not yet re-verified this round: 3.5 (Fuentes tipográficas, only its
      already-fixed button-alignment bug was touched this session) and 3.6
      (Jerarquías) beyond the mechanical `SectionHeading` move — worth a
