@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import AssetPending from "@/components/AssetPending";
 import PageHero from "@/components/PageHero";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
@@ -100,6 +99,7 @@ const TYPO_MISUSE = [
 const PHOTO_LIFESTYLE = [
   {
     title: "Situaciones familiares",
+    photos: ["familia-1", "familia-2", "familia-3", "familia-4", "familia-5", "familia-6"],
     body: "La fotografía de marca debe retratar momentos familiares cotidianos desde una mirada cercana, espontánea y optimista. Las escenas deben sentirse reales y habitadas, con familias colombianas en situaciones reconocibles dentro del hogar, como cocinar, desayunar, jugar, cuidar a los niños o compartir alrededor de la mesa. La acción debe ser siempre el punto de partida, evitando poses rígidas o miradas directas a cámara. Los personajes pueden aparecer parcialmente fuera del encuadre o en diferentes planos para reforzar una sensación natural y observacional.\n\nLa iluminación debe combinar luz natural cálida con un tratamiento editorial limpio que mantenga pieles, materiales y colores bien definidos. Los espacios deben incluir objetos cotidianos, textiles, plantas, juguetes, alimentos y elementos decorativos que aporten carácter sin sentirse excesivamente producidos. El color debe ser alegre y controlado, apoyándose principalmente en vestuario, props y detalles del entorno. El resultado final debe sentirse como una fotografía real de vida familiar colombiana, cercana, contemporánea y cuidadosamente dirigida.",
     prompt:
       "Fotografía lifestyle editorial de una familia colombiana en un momento cotidiano dentro del hogar. Escena real, cálida, espontánea y cuidadosamente dirigida. Mostrar una familia que se vea claramente colombiana, con rasgos, tonos de piel y expresiones naturales propios del contexto colombiano. Evitar cualquier apariencia asiática. La escena debe capturar una acción auténtica y reconocible, como desayunar juntos, cocinar, jugar con los niños, compartir la cena, cuidar a un bebé o reír en un espacio íntimo de la casa. La fotografía debe sentirse observacional y cercana, como si la cámara hubiera encontrado el momento. Nada posado. Nada rígido. Los personajes no deben mirar todos a cámara. Deben interactuar entre sí de forma natural, con gestos reales, expresiones genuinas y energía familiar espontánea. Los niños deben verse activos, curiosos y expresivos. El espacio debe sentirse como un hogar colombiano contemporáneo, cálido y vivido, no como un set artificial. Incluir detalles domésticos reales como muebles de madera, cerámica, textiles, plantas, juguetes, frutas, vajilla, mantas, cojines, dibujos infantiles u objetos cotidianos. El entorno debe verse habitado, con pequeñas imperfecciones visuales que aporten verdad. Iluminación cálida y naturalizada, con sensación de luz de ventana combinada con un carácter editorial limpio. Sombras suaves pero visibles. Pieles bien definidas. Color vibrante pero controlado. La paleta debe apoyarse en tonos cálidos y acentos alegres desde el vestuario, los objetos y el entorno. Composición editorial, cercana y orgánica. Puede haber cuerpos parcialmente cortados, objetos entrando en primer plano y diferentes planos de profundidad para reforzar naturalidad. Cámara a nivel humano, con encuadre íntimo y perspectiva realista. Profundidad de campo moderada para conservar lectura del espacio. Estética premium, contemporánea y auténtica. Formato 16:9. Fotografía publicitaria lifestyle de alto nivel. Muy realista. Nada artificial. Nada genérico. Nada stock. Debe sentirse como una campaña fotográfica contemporánea de marca para Colombia, centrada en familia, hogar y cotidianidad.",
@@ -108,6 +108,7 @@ const PHOTO_LIFESTYLE = [
   },
   {
     title: "Situaciones individuales / no familiares",
+    photos: ["individual-1", "individual-2", "individual-3", "individual-4", "individual-5", "individual-6", "individual-7"],
     body: "La fotografía lifestyle de NovaVenta se centra en personas individuales y en sus momentos cotidianos. Cada escena parte de una acción concreta, como cocinar, comer, descansar, escuchar música o realizar una rutina personal, evitando construir la narrativa alrededor de dinámicas familiares o grupos numerosos.\n\nLa persona debe ser el centro de la composición, acompañada por un entorno doméstico que aporte contexto y personalidad. La iluminación, el color y los objetos de la escena deben reforzar una estética cercana, actual y editorial, manteniendo una sensación espontánea y real.",
     prompt:
       "Fotografía lifestyle editorial centrada en una persona colombiana dentro de un momento cotidiano, íntimo y reconocible. La escena debe sentirse real, espontánea y cuidadosamente dirigida, mostrando a alguien que se vea claramente colombiano, con rasgos, tonos de piel, cabello, actitud y expresiones naturales propios del contexto local. La persona debe estar inmersa en una acción concreta como desayunar sola, cocinar, trabajar desde casa, descansar, escuchar música, hacer ejercicio, leer, arreglarse, organizar su ropa o disfrutar un momento personal. Evitar cualquier apariencia asiática. Nada posado, nada rígido y nada excesivamente perfecto. La expresión debe surgir de la acción y la persona no debe mirar directamente a cámara salvo que la escena realmente lo justifique. El espacio debe sentirse como un hogar colombiano contemporáneo, cálido, creativo y vivido, no como un set artificial. Incluir detalles domésticos reales como muebles de madera, plantas, cerámica, textiles, libros, vajilla, objetos personales, accesorios, frutas, ropa, cojines, arte, pequeños electrodomésticos u objetos cotidianos. La iluminación debe ser direccional y con carácter, como luz natural entrando por una ventana, generando sombras visibles, contraste medio o alto y una sensación editorial limpia. El color debe ser vibrante pero controlado, con acentos claros desde el vestuario y los objetos. La composición debe ser cercana, orgánica y ligeramente imperfecta, con asimetrías, cuerpos parcialmente cortados, objetos entrando desde los bordes y diferentes planos de profundidad. Cámara a nivel humano o ligeramente elevada, con perspectiva realista y profundidad de campo moderada. Formato 16:9. Fotografía publicitaria lifestyle de alto nivel, muy realista, nada genérica, nada stock y nada artificial. Debe sentirse como una campaña contemporánea de marca para Colombia, centrada en identidad personal, rituales cotidianos y una vida doméstica auténtica.",
@@ -116,6 +117,7 @@ const PHOTO_LIFESTYLE = [
   },
   {
     title: "Situaciones con mascotas",
+    photos: ["mascotas-1", "mascotas-2", "mascotas-3", "mascotas-4", "mascotas-5"],
     body: "La fotografía con mascotas debe retratar vínculos cotidianos entre personas y animales dentro de entornos reales y cercanos. Las escenas deben partir de interacciones naturales como alimentar, jugar, descansar o compartir un momento en casa, evitando poses forzadas o situaciones excesivamente construidas.\n\nLa luz debe sentirse cálida y natural, con composiciones cercanas que permitan leer tanto la expresión de la persona como el comportamiento de la mascota. El entorno debe acompañar la escena sin competir con ella y mantener una estética doméstica, contemporánea y creíble.",
     prompt:
       "Fotografía lifestyle editorial de una mascota dentro de un hogar colombiano contemporáneo, cálido y vivido. La escena debe mostrar a un perro o gato compartiendo de forma natural con uno o dos humanos colombianos, con rasgos y tonos de piel propios del contexto colombiano, en un momento cotidiano, afectuoso y espontáneo. La interacción debe sentirse real y observacional, por ejemplo recibiendo una caricia, esperando un snack, descansando junto a su humano, compartiendo el sofá, acompañando en la cocina o participando en una rutina diaria dentro de casa. Los empaques o productos que se quieran promocionar deben estar presentes dentro de la escena y conservarse con total fidelidad visual, pero deben integrarse de manera natural dentro del contexto y nunca convertirse en el primer plano ni en el centro absoluto de la composición. La relación entre la mascota, el humano y la situación cotidiana debe seguir siendo el foco principal. La imagen debe sentirse como una campaña fotográfica premium pero auténtica, con composición cercana, orgánica y ligeramente casual. Iluminación cálida y expresiva, idealmente con mezcla de luz natural de ventana y luz directa tipo flash editorial o rebote controlado, generando contraste suave, sombras visibles y una atmósfera íntima. El espacio debe sentirse verdaderamente habitado, con muebles de madera, textiles, plantas, cerámica, libros, cojines, mantas, vajilla y detalles domésticos reales. Nada posado, nada artificial, nada stock. Color vibrante pero controlado, textura realista en piel, pelo y materiales, estética contemporánea, sensible y emocional. Formato 16:9. Fotografía publicitaria lifestyle de alto nivel, muy realista, enfocada en hogar, mascotas y cotidianidad colombiana.",
@@ -181,6 +183,37 @@ function Fig({ src, alt, aspect }: { src: string; alt: string; aspect: number })
   return (
     <div className="relative w-full" style={{ aspectRatio: aspect }}>
       <Image src={src} alt={alt} fill className="object-cover rounded-lg" />
+    </div>
+  );
+}
+
+// Real reference photos generated for the brand (Figma nodes 574:3575,
+// 578:3976) — grid arrangement is a faithful-but-simplified stand-in for
+// Figma's specific asymmetric crops per photo, not a pixel clone of every
+// individual crop offset.
+function PhotoGrid({
+  photos,
+  defaultAspect = 1672 / 941,
+}: {
+  photos: (string | { src: string; aspect: number })[];
+  defaultAspect?: number;
+}) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+      {photos.map((p) => {
+        const src = typeof p === "string" ? p : p.src;
+        const aspect = typeof p === "string" ? defaultAspect : p.aspect;
+        return <Fig key={src} src={`/brand/assets/foto/${src}.png`} alt="" aspect={aspect} />;
+      })}
+    </div>
+  );
+}
+
+function PromptBox({ label, text, narrow = false }: { label: string; text: string; narrow?: boolean }) {
+  return (
+    <div className={`border border-azul-1 rounded-[15px] px-6 md:px-[60px] py-6 md:py-8 ${narrow ? "md:max-w-[676px]" : ""}`}>
+      <p className="text-[20px] font-bold text-azul-1 mb-4">{label}:</p>
+      <p className="text-xs leading-5 text-azul-1">{text}</p>
     </div>
   );
 }
@@ -469,53 +502,132 @@ export default function AssetsPage() {
         id="estilo-fotografico"
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
-        <SectionHeading number="3.8" title="Estilo fotográfico" />
-        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-10">
-          El sistema fotográfico de NovaVenta se organiza en tres tipos de imagen:
-          fotografía lifestyle, producto en uso y producto. En todos los casos,
-          las imágenes deben mantener una estética natural, cercana y
-          contemporánea, con composiciones claras, buena iluminación y una
-          representación coherente con el universo visual de la marca.
-        </p>
+        <SectionHeading number="3.8" title="Estilo fotográfico">
+          El sistema fotográfico de NovaVenta se organiza en tres tipos de
+          imagen: fotografía lifestyle, producto en uso y producto. Cada
+          categoría cumple una función específica dentro de la comunicación y
+          permite mostrar tanto a las personas y sus contextos como la
+          interacción con los productos y su presentación individual.
+          <br />
+          <br />
+          En todos los casos, las imágenes deben mantener una estética
+          natural, cercana y contemporánea, con composiciones claras, buena
+          iluminación y una representación coherente con el universo visual
+          de la marca.
+        </SectionHeading>
 
-        <p className="text-[20px] font-bold text-azul-2 mb-4">Fotografía lifestyle</p>
-        <div className="flex flex-col gap-6 mb-10">
-          {PHOTO_LIFESTYLE.map((cat) => (
-            <details key={cat.title} className="border border-azul-tint rounded-xl p-6">
-              <summary className="cursor-pointer font-semibold text-azul-2">
-                {cat.title}
-              </summary>
-              <div className="mt-4 flex flex-col gap-4 text-azul-3/80 leading-6">
-                {cat.body.split("\n\n").map((p, i) => (
-                  <p key={i}>{p}</p>
-                ))}
-                <div>
-                  <p className="text-xs font-semibold text-azul-2 mb-1">Prompt Maestro</p>
-                  <p className="text-sm">{cat.prompt}</p>
+        <div className="flex flex-col gap-16">
+          <div className="flex flex-col gap-16">
+            {PHOTO_LIFESTYLE.map((cat) => {
+              const [col1, col2] = cat.body.split("\n\n");
+              return (
+                <div key={cat.title} className="flex flex-col gap-8">
+                  <div className="flex flex-col gap-1">
+                    <p className="text-[20px] font-bold text-azul-2">Fotografía lifestyle</p>
+                    <p className="text-[16px] font-medium text-azul-2">{cat.title}</p>
+                  </div>
+                  <div className="flex flex-col md:flex-row gap-3">
+                    <p className="text-azul-3/80 leading-6 md:w-1/2">{col1}</p>
+                    <p className="text-azul-3/80 leading-6 md:w-1/2">{col2}</p>
+                  </div>
+                  <PhotoGrid photos={cat.photos} />
+                  <PromptBox label="Prompt Maestro" text={cat.prompt} />
+                  <PromptBox label="Negative Prompt" text={cat.negative} narrow />
                 </div>
-                <div>
-                  <p className="text-xs font-semibold text-azul-2 mb-1">Negative Prompt</p>
-                  <p className="text-sm">{cat.negative}</p>
+              );
+            })}
+          </div>
+
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-1">
+              <p className="text-[20px] font-bold text-azul-2">Fotografía de producto</p>
+              <p className="text-[16px] font-medium text-azul-2">Producto en contexto</p>
+            </div>
+            <div className="flex flex-col md:flex-row gap-3">
+              <p className="text-azul-3/80 leading-6 md:w-1/2">
+                La fotografía de producto en contexto muestra el producto
+                integrado en situaciones reales de uso, donde las personas
+                interactúan con él de forma natural. El objetivo es evidenciar
+                su presencia dentro de momentos cotidianos, manteniendo a la
+                persona, la acción y el producto dentro de una misma escena.
+              </p>
+              <p className="text-azul-3/80 leading-6 md:w-1/2">
+                Estas imágenes deben seguir los lineamientos del estilo
+                fotográfico de NovaVenta, con iluminación natural o
+                direccional, composición cercana y entornos contemporáneos.
+                El producto debe ser visible y reconocible, pero sin perder
+                la naturalidad de la interacción ni convertirse en una
+                fotografía rígida de exhibición.
+              </p>
+            </div>
+            <PhotoGrid
+              photos={[
+                { src: "producto-contexto-1", aspect: 1448 / 1086 },
+                { src: "producto-contexto-2", aspect: 1536 / 1024 },
+                { src: "producto-contexto-3", aspect: 1122 / 1402 },
+                { src: "producto-contexto-4", aspect: 1122 / 1402 },
+                { src: "producto-contexto-5", aspect: 1122 / 1402 },
+              ]}
+            />
+          </div>
+
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-1">
+              <p className="text-[20px] font-bold text-azul-2">Fotografía de producto</p>
+              <p className="text-[16px] font-medium text-azul-2">Render 3D</p>
+            </div>
+            <div className="flex flex-col md:flex-row gap-3">
+              <p className="text-azul-3/80 leading-6 md:w-1/2">
+                El render 3D presenta el producto de forma aislada, sin
+                contexto ni elementos de ambientación, para asegurar una
+                lectura clara de su forma, materialidad y diseño. Los
+                productos deben mostrarse suspendidos o flotando en el
+                espacio, con iluminación controlada y una representación
+                realista y consistente.
+              </p>
+              <p className="text-azul-3/80 leading-6 md:w-1/2">
+                En prendas de vestir se utilizará el recurso de ghost model,
+                simulando el volumen y la caída de la prenda sobre un cuerpo
+                invisible. En todos los casos, el producto debe conservar
+                proporciones naturales, materiales creíbles y una
+                presentación limpia, sin elementos que compitan con su
+                lectura.
+              </p>
+            </div>
+            <PhotoGrid photos={["producto-render3d-1", "producto-render3d-2", "producto-render3d-3"]} defaultAspect={1480 / 1336} />
+          </div>
+
+          <div className="flex flex-col gap-8">
+            <p className="text-[20px] font-bold text-azul-2">Usos incorrectos</p>
+            <div className="flex flex-col md:flex-row gap-3">
+              <p className="text-azul-3/80 leading-6 md:w-1/2">
+                Para mantener la consistencia del sistema fotográfico, deben
+                evitarse imágenes con poses forzadas, iluminación artificial
+                excesiva, retoque poco natural, encuadres rígidos o
+                situaciones que no correspondan con el contexto cotidiano de
+                NovaVenta.
+              </p>
+              <p className="text-azul-3/80 leading-6 md:w-1/2">
+                También deben evitarse fotografías con baja calidad, exceso
+                de elementos, colores fuera del sistema, fondos genéricos o
+                escenas que resten protagonismo a la persona, al producto o a
+                la interacción principal.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                { src: "usos-incorrectos-foto-1", label: "No usar fotografías con iluminación plana" },
+                { src: "usos-incorrectos-foto-2", label: "No usar fotografías de stock" },
+                { src: "usos-incorrectos-foto-3", label: "No usar fotografías no alineadas al estilo" },
+              ].map((item) => (
+                <div key={item.src} className="flex flex-col gap-4">
+                  <Fig src={`/brand/assets/foto/${item.src}.png`} alt={item.label} aspect={1341 / 1489} />
+                  <p className="text-azul-3/80">{item.label}</p>
                 </div>
-              </div>
-            </details>
-          ))}
+              ))}
+            </div>
+          </div>
         </div>
-
-        <p className="text-[20px] font-bold text-azul-2 mb-2">Fotografía de producto</p>
-        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-2">
-          <strong>Producto en contexto:</strong> muestra el producto integrado en
-          situaciones reales de uso, donde las personas interactúan con él de
-          forma natural, manteniendo iluminación natural o direccional y
-          composición cercana.
-        </p>
-        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-6">
-          <strong>Render 3D:</strong> presenta el producto de forma aislada, sin
-          contexto ni elementos de ambientación, suspendido o flotando en el
-          espacio, con iluminación controlada. En prendas de vestir se utiliza el
-          recurso de ghost model.
-        </p>
-        <AssetPending label="fotografías de referencia (lifestyle, producto en contexto, render 3D)" />
       </section>
 
       <section
@@ -537,20 +649,30 @@ export default function AssetsPage() {
           el espacio necesario para integrar tipografía, tags, precios o
           producto sin interferir con la lectura principal de la imagen.
         </SectionHeading>
-        <ul className="flex flex-col gap-2 max-w-[640px] mb-6">
-          {[
-            "Fotografía lifestyle completa + texto",
-            "Fotografía lifestyle + contenedor",
-            "Fotografía producto render 3D",
-            "Fotografía lifestyle con resalte de producto",
-            "Fotografía de producto render 3D con tags",
-          ].map((v) => (
-            <li key={v} className="text-azul-3/80">
-              · {v}
-            </li>
-          ))}
-        </ul>
-        <AssetPending label="composiciones de referencia por formato" />
+        <div className="flex flex-col gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {[
+              { src: "uso-foto-1", label: "Fotografía Lifestyle completa + texto" },
+              { src: "uso-foto-2", label: "Fotografía Lifestyle + contenedor" },
+              { src: "uso-foto-3", label: "Fotografía producto render 3D" },
+            ].map((item) => (
+              <div key={item.src} className="flex flex-col gap-3">
+                <Fig src={`/brand/assets/foto/${item.src}.png`} alt={item.label} aspect={1} />
+                <p className="text-azul-3/80">{item.label}</p>
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="flex flex-col gap-3">
+              <Fig src="/brand/assets/foto/uso-foto-4.png" alt="Fotografía Lifestyle con resalte de producto" aspect={2099 / 1564} />
+              <p className="text-azul-3/80">Fotografía Lifestyle con resalte de producto</p>
+            </div>
+            <div className="flex flex-col gap-3">
+              <Fig src="/brand/assets/foto/uso-foto-5.png" alt="Fotografía de producto render 3D con tags" aspect={967 / 1023} />
+              <p className="text-azul-3/80">Fotografía de producto render 3D con tags</p>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Iconografía */}
