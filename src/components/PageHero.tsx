@@ -16,17 +16,32 @@
  * One <picture> does the art-direction (different crop per breakpoint,
  * only one variant fetched) so there's a single real <h1> in the DOM, not
  * two copies toggled by CSS.
+ *
+ * `mobileScrim`: Estrategia's mobile hero is the one exception to "clean,
+ * text-free background". Its "Hero 2 Mobile" frame (529:1846) has no
+ * separate image layer — the photo is a frame-level fill with no
+ * extractable child node — and the raw asset export returns a *different,
+ * more zoomed-in* crop of the same photo than what the frame actually
+ * shows (confirmed by comparing the export against a screenshot of the
+ * frame: different content is visible — a window, a third child — not
+ * just a blank/broken export like the false alarm documented earlier).
+ * So the mobile image here is the screenshot render (correct crop, but
+ * with Figma's own text baked into the pixels), and `mobileScrim` darkens
+ * the top and bottom bands where that baked text sits so the real text
+ * rendered on top reads cleanly instead of double-exposing over it.
  */
 export default function PageHero({
   image,
   mobileImage,
   number,
   titleLines,
+  mobileScrim = false,
 }: {
   image: string;
   mobileImage?: string;
   number: string;
   titleLines: [string, string];
+  mobileScrim?: boolean;
 }) {
   return (
     <header
@@ -40,6 +55,23 @@ export default function PageHero({
           className="absolute inset-0 -z-10 size-full object-cover"
         />
       </picture>
+      {mobileScrim && (
+        <>
+          <div
+            className="md:hidden absolute inset-x-0 top-0 h-32 -z-10"
+            style={{
+              background: "linear-gradient(to bottom, rgba(8,51,94,0.75) 0%, rgba(8,51,94,0) 100%)",
+            }}
+          />
+          <div
+            className="md:hidden absolute inset-x-0 bottom-0 h-[45%] -z-10"
+            style={{
+              background:
+                "linear-gradient(to top, rgba(8,51,94,0.9) 0%, rgba(8,51,94,0.55) 48%, rgba(8,51,94,0) 100%)",
+            }}
+          />
+        </>
+      )}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between text-white gap-3 md:gap-0 text-base md:text-[32px] font-normal">
         <p>Brand Book Guidelines</p>
         <p>2026</p>

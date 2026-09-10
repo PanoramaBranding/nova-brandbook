@@ -23,7 +23,7 @@ export default function Footer({
   const gray = variant === "gray";
   return (
     <footer
-      className={`flex flex-col md:flex-row md:items-center gap-[120px] md:gap-3 pt-16 md:pt-[140px] pb-8 md:pb-[38px] px-4 md:px-[38px] ${
+      className={`flex flex-col items-start md:flex-row md:items-center gap-[120px] md:gap-3 pt-16 md:pt-[140px] pb-8 md:pb-[38px] px-4 md:px-[38px] ${
         gray ? "bg-gris-5 md:justify-end" : "justify-between"
       }`}
     >

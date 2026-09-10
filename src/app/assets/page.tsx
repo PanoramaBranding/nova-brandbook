@@ -167,7 +167,7 @@ function SwatchRow({ label, value }: { label: string; value: string }) {
 function SwatchCard({ swatch }: { swatch: Swatch }) {
   return (
     <div
-      className={`rounded-[10px] flex-1 min-w-0 flex flex-col gap-1 px-9 pt-9 pb-[86px] ${SWATCH_TEXT_CLASS[swatch.textTone]}`}
+      className={`rounded-[10px] flex-1 min-w-0 flex flex-col gap-1 px-[38px] pt-[38px] pb-[86px] ${SWATCH_TEXT_CLASS[swatch.textTone]}`}
       style={{ backgroundColor: swatch.hex }}
     >
       <SwatchRow label="Nombre" value={swatch.name} />
@@ -199,11 +199,20 @@ function PhotoGrid({
   defaultAspect?: number;
 }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+    // flex-wrap (not CSS grid) on purpose: several galleries have a photo
+    // count that isn't a multiple of 3 (5 or 7 photos), and a grid leaves
+    // the incomplete last row's empty cells as visible blank space. Each
+    // item's own basis targets 3-per-row on desktop without creating a
+    // grid track for photos that aren't there.
+    <div className="flex flex-wrap gap-3">
       {photos.map((p) => {
         const src = typeof p === "string" ? p : p.src;
         const aspect = typeof p === "string" ? defaultAspect : p.aspect;
-        return <Fig key={src} src={`/brand/assets/foto/${src}.png`} alt="" aspect={aspect} />;
+        return (
+          <div key={src} className="w-full md:basis-[calc(33.333%-8px)] md:grow-0 md:shrink-0">
+            <Fig src={`/brand/assets/foto/${src}.png`} alt="" aspect={aspect} />
+          </div>
+        );
       })}
     </div>
   );

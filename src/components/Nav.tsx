@@ -96,15 +96,19 @@ export default function Nav() {
       </nav>
 
       {/* Mobile — floating trigger (Figma node 2045:921: a plain hamburger,
-          no bar behind it) + full-screen panel. `fixed`, not `sticky` or a
-          layout element, so it never pushes the Hero's own content down. */}
+          no bar/background behind it) + full-screen panel. `fixed`, not
+          `sticky` or a layout element, so it never pushes the Hero's own
+          content down. `mix-blend-difference` (not an invented backdrop
+          circle) keeps a plain white icon readable over both the Hero's
+          photo and plain white page content further down, without a
+          background Figma never specified. */}
       <button
         type="button"
         onClick={() => setMobileOpen((v) => !v)}
         aria-expanded={mobileOpen}
         aria-controls="mobile-nav-panel"
         aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
-        className="md:hidden fixed top-4 right-4 z-40 text-white p-2.5 rounded-full bg-black/30 backdrop-blur-sm transition-colors hover:bg-black/45"
+        className={`md:hidden fixed top-4 right-4 z-40 text-white p-2 ${mobileOpen ? "" : "mix-blend-difference"}`}
       >
         {mobileOpen ? (
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

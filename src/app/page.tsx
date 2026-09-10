@@ -57,7 +57,9 @@ export default function Home() {
             <div key={page.slug} className="flex flex-col gap-8 md:gap-16">
               <div className="flex flex-col md:flex-row md:justify-between gap-6">
                 <h2 className="text-azul-2 font-semibold text-[28px] md:text-[40px] shrink-0">
-                  {page.number} {page.label}
+                  <Link href={page.slug} className="hover:underline">
+                    {page.number} {page.label}
+                  </Link>
                 </h2>
                 <IndexEntries page={page} />
               </div>
