@@ -4,7 +4,7 @@ A record of how this site was designed, built, deployed, and the decisions made
 along the way — so a future session (or Sofia) can pick this up cold. Last
 updated: 2026-09-09 (Round 14 — Sofia reports Master Brand still broken and
 "04" showing nothing; extensive server-side verification found no bug —
-see Round 14 for the open questions this needs to move forward).
+session paused unresolved, resume here tomorrow).
 
 ## What this is
 
@@ -896,3 +896,14 @@ seems.
       Sofia's confirmation on the exact URL/screenshot before touching
       anything further, to avoid guessing at a fix for a bug that
       couldn't be located.
+    - **Session paused here, unresolved.** Sofia's exact words: "guarda
+      en contexto y seguimos mañana porque todavia no esta" — i.e. as of
+      end of day 2026-09-09 she is *still* seeing the problem live (not
+      a leftover report from earlier in the round), and we did not reach
+      the point of getting the exact URL or a screenshot from her before
+      pausing. **Start tomorrow by asking for those two things again**
+      (which exact URL she's opening; a screenshot of where the blank
+      space/wrong image actually shows) rather than re-doing the same
+      server-side checks from scratch — those already came back clean
+      twice. Do not assume the "stale deployment-specific URL" hypothesis
+      is confirmed; it's still just the leading guess.
