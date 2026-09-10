@@ -30,9 +30,13 @@ ronda por ronda de QA.
   hay que reconectarlo desde la configuración de conectores.
 - Ignorar la sección **"Archivo"** (`543:1131`) — son versiones viejas/duplicadas
   de Master Brand y Assets. La fuente real son los frames de nivel superior.
-- Páginas **"04 DESIGN SYSTEM"** y **"05 SUBMARCA"** existen en el archivo (con
-  numeración 4.x/5.x ya referenciada en el índice de Home y en el nav mobile) pero
-  están **fuera de alcance por ahora** — ocultas del nav y del índice de Home.
+- Página **"04 DESIGN SYSTEM"** (`/aplicaciones`, "Aplicaciones de marca") entró
+  a alcance el 2026-09-09 — Sofia lo confirmó explícitamente ("Sí, metamos 04 al
+  alcance ahora"), incluyendo su versión mobile (nodo `2045:603`, agregada por
+  el equipo de diseño después de que este archivo se documentó por primera vez).
+  Ya está en el nav y en el índice de Home.
+- Página **"05 SUBMARCA"** sigue **fuera de alcance** — no asumir que la decisión
+  de "04" aplica también a "05"; hay que confirmarlo por separado con Sofia.
 
 ## Flujo de verificación pixel-perfect
 Adaptado del proyecto de portafolio (`~/Downloads/portafolio`) que Sofia pidió usar

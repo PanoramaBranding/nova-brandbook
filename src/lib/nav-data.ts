@@ -106,4 +106,10 @@ export const NAV_PAGES: NavPage[] = [
       },
     ],
   },
+  {
+    slug: "/aplicaciones",
+    number: "04",
+    label: "Aplicaciones de marca",
+    sections: [{ id: "aplicaciones-master-brand", number: "4.1", label: "Aplicaciones master brand" }],
+  },
 ];

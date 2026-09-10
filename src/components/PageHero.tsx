@@ -29,6 +29,18 @@
  * with Figma's own text baked into the pixels), and `mobileScrim` darkens
  * the top and bottom bands where that baked text sits so the real text
  * rendered on top reads cleanly instead of double-exposing over it.
+ *
+ * `desktopScrim`: same fix, same reason, for the desktop breakpoint — used
+ * on "04 Aplicaciones de marca" (Hero 3, node 2046:928), whose raw asset
+ * exports were confirmed broken at BOTH breakpoints (simulating the
+ * object-cover crop cut off the "Súper" text), so both heroes there use
+ * screenshot renders with their own baked-in text needing a scrim.
+ *
+ * `titleLines` accepts either the usual 2-line tuple, or a single string
+ * for titles that wrap naturally instead of being explicitly split (04's
+ * "Aplicaciones master brand" wraps to "Aplicaciones" / "master brand" on
+ * its own at this width per Figma's own screenshot — it isn't two authored
+ * lines like the other pages).
  */
 export default function PageHero({
   image,
@@ -36,12 +48,14 @@ export default function PageHero({
   number,
   titleLines,
   mobileScrim = false,
+  desktopScrim = false,
 }: {
   image: string;
   mobileImage?: string;
   number: string;
-  titleLines: [string, string];
+  titleLines: [string, string] | string;
   mobileScrim?: boolean;
+  desktopScrim?: boolean;
 }) {
   return (
     <header
@@ -72,6 +86,23 @@ export default function PageHero({
           />
         </>
       )}
+      {desktopScrim && (
+        <>
+          <div
+            className="hidden md:block absolute inset-x-0 top-0 h-48 -z-10"
+            style={{
+              background: "linear-gradient(to bottom, rgba(8,51,94,0.75) 0%, rgba(8,51,94,0) 100%)",
+            }}
+          />
+          <div
+            className="hidden md:block absolute inset-x-0 bottom-0 h-[45%] -z-10"
+            style={{
+              background:
+                "linear-gradient(to top, rgba(8,51,94,0.9) 0%, rgba(8,51,94,0.55) 48%, rgba(8,51,94,0) 100%)",
+            }}
+          />
+        </>
+      )}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between text-white gap-3 md:gap-0 text-base md:text-[32px] font-normal">
         <p>Brand Book Guidelines</p>
         <p>2026</p>
@@ -79,9 +110,15 @@ export default function PageHero({
       <h1 className="flex flex-col md:flex-row items-start gap-1 md:gap-[123px] text-white font-bold text-[64px] md:text-[96px]">
         <span className="leading-[1.1] md:leading-[120px]">{number}</span>
         <span className="leading-[1.1] md:leading-[96px]">
-          {titleLines[0]}
-          <br />
-          {titleLines[1]}
+          {Array.isArray(titleLines) ? (
+            <>
+              {titleLines[0]}
+              <br />
+              {titleLines[1]}
+            </>
+          ) : (
+            titleLines
+          )}
         </span>
       </h1>
     </header>

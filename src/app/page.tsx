@@ -44,8 +44,8 @@ export default function Home() {
         </p>
       </section>
 
-      {/* Índice — Figma node 505:259. Solo se listan las páginas en alcance
-          (01-03); 04 y 05 existen en Figma pero quedan fuera por ahora. */}
+      {/* Índice — Figma node 505:259. 01-04 en alcance; 05 Submarca existe
+          en Figma pero queda fuera por ahora. */}
       <section id="index" className="flex flex-col gap-8 md:gap-16 px-4 md:px-[38px] pt-16 pb-24">
         <div className="flex flex-col gap-8">
           <h1 className="text-azul-1 font-bold text-5xl md:text-[96px]">Index</h1>
