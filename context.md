@@ -2,8 +2,7 @@
 
 A record of how this site was designed, built, deployed, and the decisions made
 along the way — so a future session (or Sofia) can pick this up cold. Last
-updated: 2026-09-09 (Round 8 — hero/button/nav/footer fixes after Sofia's
-re-review of the Round 7 deploy).
+updated: 2026-09-09 (Round 9 — full Assets page pixel-perfect pass).
 
 ## What this is
 
@@ -275,16 +274,26 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
    established 1135px content width, 300px doesn't). The shared `Button`
    component was checked too — already pixel-perfect against the "Boton"
    spec, no change needed.
-2. **Assets 3.8/3.9 — photography reference images still pending**
-   (`AssetPending` placeholders). Copy is complete (including the AI
-   generation prompts, which Sofia confirmed should be public); only the
-   actual reference photos are missing. Separately, **Assets had the same
-   missing-sections bug as Master Brand** — fetched its desktop node
-   directly in Round 7 and found the same "Quote" block + "Contenidos" TOC
-   block absent (Figma nodes `551:2733` and `553:2736`). Added both. Since
-   the TOC pattern now appears on two pages with identical structure, it's
-   extracted into `src/components/ContentsToc.tsx` — Master Brand was
-   refactored to use it too instead of its inline copy. Estrategia does
+2. ⚠️ **Assets 3.8/3.9 — the "photography reference images still pending"
+   note above was wrong, corrected in Round 9.** A fresh `get_design_context`
+   fetch on both sections' real nodes (`574:3575`, `578:3976`) found ~30
+   real reference photos already in Figma (lifestyle familiar/individual/
+   mascotas, producto en contexto, render 3D, usos incorrectos) — they were
+   never actually missing, just never fetched directly. The layout is also
+   different from what's built: Prompt Maestro / Negative Prompt render as
+   always-visible bordered boxes (`border border-azul-1 rounded-[15px]`),
+   not the collapsible `<details>` used now. This needs downloading ~30
+   assets and restructuring both sections — flagged to Sofia before
+   touching it given the scope; check back here for her answer before
+   assuming this is still "pending" or still collapsible.
+
+   Separately, **Assets had the same missing-sections bug as Master
+   Brand** — fetched its desktop node directly in Round 7 and found the
+   same "Quote" block + "Contenidos" TOC block absent (Figma nodes
+   `551:2733` and `553:2736`). Added both. Since the TOC pattern now
+   appears on two pages with identical structure, it's extracted into
+   `src/components/ContentsToc.tsx` — Master Brand was refactored to use
+   it too instead of its inline copy. Estrategia does
    *not* have this block in Figma (confirmed directly), so don't add it
    there. The rest of Assets' body (3.1–3.13) was not re-audited this
    round — it already got a full line-by-line pass in Round 5.
@@ -517,3 +526,48 @@ seems.
      zoomed screenshot, an assumption about which bug was "confirmed")
      drifted from what Figma actually specifies. When Sofia says something
      still looks off, re-fetch before re-explaining the old diagnosis.
+
+9. **Round 9 (2026-09-09, later same day):** Sofia asked specifically for
+   Assets to be made pixel-perfect. Fetched every one of its 13 numbered
+   subsections directly (most for the first time this project — Round 5
+   had only verified copy content, not layout) and found the same class of
+   structural bug repeated everywhere:
+   - **`SectionHeading` never had a body-text slot.** Every subsection's
+     intro paragraph was stacked underneath the title instead of living in
+     the same side-by-side 447px-title/127px-gap/561px-body column layout
+     already correctly used on Master Brand and Estrategia. Rebuilt the
+     component to take `children`; moved all 13 sections' intro copy into
+     it (mechanical, low-risk once the component itself was right).
+   - **`SwatchCard` (3.1/3.2) didn't match Figma's structure at all** —
+     real cards use discrete label/value rows (16px, medium+regular
+     weight pairs) not flattened single lines at 14px with opacity. Text
+     color per swatch is art-directed in Figma per color, not computed
+     from luminance (the old `isLight()` helper) — Azul IV and the two
+     palest swatches use specific brand colors, not a generic light/dark
+     rule.
+   - **Confirmed a real content bug in Figma itself**: the "HotDays"
+     swatch's RGB/CMYK and its own visual fill all agree on a red/orange
+     color, but its printed HEX label says `#2B7DF6` (copy-pasted from
+     Azul I). Used the color 3-of-4 signals agree on.
+   - Assorted confirmed fixes: 3.4's 7th "contraste básico" image has a
+     different aspect ratio (1135/191, not 4096/1410 like the other six);
+     "Contrastes compuestos" was stacked, not side-by-side; a whole
+     paragraph at the end of 3.4 wasn't in Figma at all and was removed;
+     3.9 was missing its second confirmed paragraph; 3.11's subtitle-to-
+     image gaps were 16px against a confirmed 32px; 3.13's "para
+     catálogos" subsection was stacked instead of side-by-side and its
+     body copy was a shortened paraphrase, replaced with the real (much
+     longer) Figma text; "Uso de color" was missing "del" in its title.
+   - **Found 3.8 and 3.9 (photography) still marked `AssetPending`**
+     assuming the reference photos didn't exist yet — a fresh fetch found
+     ~30 real generated photos already in Figma across both sections, plus
+     a different layout (always-visible bordered Prompt Maestro/Negative
+     Prompt boxes, not the collapsible `<details>` currently used).
+     Flagged to Sofia before touching it — see Pending #2 for her answer
+     once she gives it, and don't assume either the "still pending" status
+     or the collapsible layout going forward.
+   - Not yet re-verified this round: 3.5 (Fuentes tipográficas, only its
+     already-fixed button-alignment bug was touched this session) and 3.6
+     (Jerarquías) beyond the mechanical `SectionHeading` move — worth a
+     closer look if more mismatches turn up, since neither got a full
+     fresh content re-check this round the way 3.1-3.4/3.9/3.11/3.13 did.
