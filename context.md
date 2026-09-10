@@ -2,8 +2,8 @@
 
 A record of how this site was designed, built, deployed, and the decisions made
 along the way — so a future session (or Sofia) can pick this up cold. Last
-updated: 2026-09-09 (Round 11 — footer/hero/nav/gallery fixes; "04 DESIGN
-SYSTEM" brought into scope, mobile included).
+updated: 2026-09-09 (Round 12 — "04 Aplicaciones de marca" built and shipped,
+both breakpoints).
 
 ## What this is
 
@@ -84,12 +84,19 @@ files, not baked into components.
     (`528:286`), `Boton` (`543:672`), `Hero`/`Hero 2`/`Hero 3` (page headers),
     `Footer` variants.
   - Section "Archivo" (`543:1131`) = stale duplicate/old versions. Ignore.
-  - "04 DESIGN SYSTEM" is node `426:887` (desktop, 14274px tall — dozens of
-    mockup rectangles: Nova_Caja, PORTADA, DOBLEPAGINA, NEWSPAPER,
-    REDESSOCIALES, WEBPAGE, APPMOBILE, ICONAPP, PANTALLA, BILLBOARD, etc.).
-    **Brought into scope 2026-09-09 (Round 11), including its mobile
-    version** — was out of scope before that. "05 SUBMARCA" remains
-    **out of scope** — only `04` was confirmed, don't assume `05` follows.
+  - "04 DESIGN SYSTEM" — **brought into scope 2026-09-09 (Round 11), built
+    and shipped as `/aplicaciones` in Round 12 the same day.** Desktop
+    content node `2045:602`, mobile content node `2045:603` ("04 design
+    system - mobile" — newly added by the design team, confirming Sofia's
+    claim it was "ya lista" for mobile), desktop hero `2046:928`, mobile
+    hero `2045:606`, quote `578:4208`. Single section "4.1 Aplicaciones
+    master brand", 19 mockup images (Nova_Caja ×2, [NOVAVENTA]-CAJA2,
+    PORTADA2, DOBLEPAGINA1 ×2, NEWSPAPER, REDESSOCIALES ×2, WEBPAGE ×2,
+    APPMOBILE ×2, ICONAPP, PANTALLA1, BILLBOARD ×4), same 19 files reused
+    at different responsive arrangements/aspect ratios (confirmed via MD5
+    — desktop and mobile fetches export byte-identical images, just
+    different asset IDs). "05 SUBMARCA" remains **out of scope** — only
+    `04` was confirmed, don't assume `05` follows.
 
 ## Decisions confirmed with Sofia
 
@@ -700,10 +707,61 @@ seems.
       already matching the code exactly — the perceived "too low" text
       was the Round 10 root cause (the old full-width sticky nav bar
       pushing the Hero down), already fixed that round.
-    - **"04 Design System" is a large, not-yet-started undertaking** —
-      see the Figma source notes above for its node ID and rough content
-      map. This needs: a fresh page + route, adding it to `nav-data.ts`
-      and Home's Index, a full `get_design_context` pass on both desktop
-      and mobile (the mobile frame's node ID isn't confirmed yet), and
-      downloading a large number of mockup images. Scoped as its own
-      follow-up rather than folded into this round's smaller fixes.
+    - **"04 Design System" was scoped as its own follow-up rather than
+      folded into Round 11's smaller fixes — see Round 12 below.**
+
+12. **Round 12 (2026-09-09, later same day):** "04 Aplicaciones de marca"
+    built and shipped, the same day Sofia confirmed bringing it into
+    scope (Round 11). New route `/aplicaciones`, added to `nav-data.ts`
+    (number `04`, single section `4.1 Aplicaciones master brand`) and
+    picked up automatically by Home's `NAV_PAGES.map` index.
+    - **Both hero exports were confirmed broken — the same wrong-crop bug
+      as Estrategia's mobile hero, this time on BOTH breakpoints.** Raw
+      asset exports for desktop hero `2046:928` and mobile hero `2045:606`
+      were both an oddly-portrait 683×1024 despite the actual frames being
+      landscape/portrait photos of a person holding a "Súper ofertas"
+      flyer. Simulated the `object-cover` crop math with PIL and confirmed
+      it cropped off the "Súper" text — unusable. Fixed the same way as
+      before: downloaded both `get_screenshot` renders instead (which have
+      Figma's own text baked into the pixels) and extended `PageHero` with
+      a new `desktopScrim` prop (mirrors the existing `mobileScrim` — two
+      gradient bands, top and bottom) so the real `<h1>`/top-bar text
+      reads cleanly over the baked-in screenshot text at both breakpoints.
+    - **`PageHero`'s `titleLines` now also accepts a plain string.** Every
+      other page's hero title is an explicit 2-line split; 04's confirmed
+      title "Aplicaciones master brand" is one flowing string that wraps
+      naturally at this width (confirmed via `get_screenshot`, which shows
+      it wrapping to "Aplicaciones" / "master brand" on its own) — forcing
+      it into the `[string, string]` tuple would've been an invented line
+      break, not a real one from Figma.
+    - **Desktop and mobile galleries are two separate JSX trees, not one
+      responsive tree.** Compared `get_design_context` on both content
+      nodes (`2045:602` desktop, `2045:603` mobile): several images change
+      *relative proportion* between breakpoints, not just size — e.g. the
+      "[NOVAVENTA]-CAJA2" mockup is a narrow fixed box on desktop but full
+      width on mobile; the Portada/Doblepágina row is two equal 561px
+      columns on desktop but a much narrower Portada column paired with a
+      wider column on mobile. One shared tree would've meant either wrong
+      proportions or a pile of per-image breakpoint overrides. The *crop
+      insets* for the 7 images using the "oversized image + negative-%
+      inset" zoom pattern (Portada2, Appmobile ×2, Pantalla1, Billboard
+      ×3) turned out to be byte-identical percentages between desktop and
+      mobile in Figma's own generated code — only the containing box's
+      size differs — so those exact percentages are defined once (an
+      `INSET` map) and reused by both trees via a shared `CroppedImg`
+      helper; the remaining 12 images use a `CoverImg` helper (same
+      pattern as Assets' `Fig` helper: relative box + `aspectRatio` style +
+      `next/image fill object-cover`).
+    - **Downscaled the 19 raw mockup exports before committing.** They
+      came out of Figma at up to 4096px on the long edge — 181MB total,
+      several single files 20-30MB — vastly more resolution than they'll
+      ever render at (max ~700px wide in this layout). Resized to a
+      1800px max edge with PIL (`optimize=True`, kept RGBA where present
+      for the ones with transparent mockup corners), bringing the total
+      to 46MB. Not a perf-critical page, so no further compression pass
+      beyond this basic sanity check.
+    - Verified with `npx tsc --noEmit`, `npm run build`, and a local
+      `npm run start` + `curl`/`grep` pass (all 19 images present in both
+      trees, hero assets wired, Home's index link and Nav link present,
+      footer present) — no browser tool available this session, same
+      constraint as prior rounds.
