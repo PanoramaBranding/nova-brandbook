@@ -2,8 +2,8 @@
 
 A record of how this site was designed, built, deployed, and the decisions made
 along the way — so a future session (or Sofia) can pick this up cold. Last
-updated: 2026-09-09 (Round 12 — "04 Aplicaciones de marca" built and shipped,
-both breakpoints).
+updated: 2026-09-09 (Round 13 — confirmed nav/Home index already match
+Figma for "04"; found and fixed Master Brand's missing real mobile hero).
 
 ## What this is
 
@@ -765,3 +765,66 @@ seems.
       trees, hero assets wired, Home's index link and Nav link present,
       footer present) — no browser tool available this session, same
       constraint as prior rounds.
+
+13. **Round 13 (2026-09-09, later same day):** Sofia sent two screenshots
+    (our live Estrategia hero via DevTools, and Figma's own "Hero 2") and
+    asked to (a) confirm "04" is really in the nav/Home index, matching
+    the Figma frame she had open, (b) keep the mobile-menu-with-an-X
+    approach, (c) fill in any missing mobile hero images, (d) keep
+    auditing hero spacing, and (e) check the Brand Tree diagram for
+    distortion.
+    - **(a)/(b) were already done, verified fresh.** Refetched Figma's
+      actual "Menu v1 / Variante 5" (desktop sidebar's "04 active" state,
+      node `528:960`) and Home's Index frame (`505:259`): both already
+      show "04 Aplicaciones de marca" → "4.1 Aplicaciones Master Brand"
+      exactly where `nav-data.ts`'s `NAV_PAGES` entry puts it (it
+      propagates automatically to the sidebar, mobile panel, and Home's
+      index — no separate wiring needed). The mobile trigger Sofia had
+      selected in Figma at the time ("Nav - mobile", node `2048:1276`) is
+      the same bare hamburger + text row already implemented — no new
+      "open" mockup exists to compare against, so our built X-close panel
+      stands as the reasonable interpretation it already was.
+    - **Found one real, unaddressed content contradiction — not fixed,
+      only flagged per the hard "don't average / don't pick — ask" rule.**
+      Figma's sidebar spells the "4.1" sub-label "Aplicaciones **Master
+      Brand**" (title case), but node `2045:602`/`603` (04's own page
+      content, fetched in Round 12) spells it "Aplicaciones **master
+      brand**" (lowercase) — the two Figma sources disagree with each
+      other. Left `nav-data.ts` as lowercase (matching the page's own
+      on-screen heading) and reported the discrepancy rather than
+      silently picking a side.
+    - **(c) Master Brand really was missing its mobile hero — found via
+      a fresh Figma search, not assumed.** A full top-level "02 Master
+      Brand - Mobile" page exists (node `543:519`, a real, fully-built
+      mobile page, not a stray duplicate) with its own hero instance
+      (`543:522`, "02 / Master Brand" over a blue wave-pattern
+      background) — `master-brand/page.tsx` simply never had a
+      `mobileImage` set, so mobile silently fell back to the desktop
+      crop. Same wrong-crop bug as Estrategia/04 confirmed again: the raw
+      MCP export for this hero is the full 4096×1899 landscape
+      background (byte-identical, confirmed via `md5`, to the desktop
+      hero's own already-correct asset) — not the actual 390×844 portrait
+      crop Figma shows for the mobile instance. Fixed the same way:
+      `get_screenshot` render saved as `hero-master-brand-mobile.png`,
+      wired in with the existing `mobileScrim` prop (this hero also has
+      baked-in "Brand Boook Guidelines/2026" text in the screenshot).
+      **Assets was re-confirmed to still have no dedicated mobile hero in
+      Figma** — re-verified fresh rather than trusted from memory, same
+      conclusion as the original Round 8/9 finding: not a gap, no fix
+      needed.
+    - **(d) Estrategia's hero spacing was re-verified against Sofia's own
+      screenshots and matches Figma exactly** (12px top / 38px right /
+      38px bottom / 67px left, confirmed against both the live DevTools
+      readout and Figma's own callouts) — nothing to fix there. Also
+      re-confirmed Master Brand's desktop hero uses the identical
+      `pt-[12px] pr-[38px] pb-[38px] pl-[67px]` padding while fetching its
+      hero for the mobile-image work, so the shared `PageHero` padding
+      still matches Figma everywhere it's been checked.
+    - **(e) Could not reproduce the Brand Tree diagram distortion.**
+      Checked the actual file: native image is 3587×4096 (aspect
+      0.87573), the CSS box is locked to `1134/1295` (aspect 0.87568) —
+      a 0.006% difference — and it renders with `object-contain`, which
+      cannot stretch an image by definition. Confirmed via the live
+      production HTML too. No code-level cause found; flagged to Sofia
+      to send a fresh screenshot of where specifically she's seeing it,
+      in case it's a stale/cached view.
