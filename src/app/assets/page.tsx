@@ -32,11 +32,16 @@ type Swatch = {
   rgb: string;
   hex: string;
   pantone: string;
+  // Figma art-directs text color per swatch (not a computed contrast rule) —
+  // confirmed via get_design_context on nodes 556:2817/556:2962: dark/mid
+  // swatches get white text, but the palest ones (Azul IV, the Azul I tint,
+  // Niños) get a specific brand color instead of a generically dark one.
+  textTone: "white" | "azul3" | "azul1";
 };
 
-// Todo el copy y los valores de color en esta página fueron extraídos de las
-// capas de Figma (nodo 214:273) el 2026-09-02, mientras el MCP seguía
-// bloqueado por el límite de llamadas — ver PLAN.md.
+// Copy y valores de color extraídos de Figma (nodo 214:273); colores
+// principal/secundarios/complementarios re-verificados directamente via
+// get_design_context el 2026-09-09 (nodos 556:2817, 556:2962).
 
 const PRINCIPAL: Swatch = {
   name: "Azul I",
@@ -44,25 +49,31 @@ const PRINCIPAL: Swatch = {
   rgb: "43/125/246",
   hex: "#2B7DF6",
   pantone: "285 C",
+  textTone: "white",
 };
 
 const SECONDARY: Swatch[] = [
-  { name: "Azul III", cmyk: "100/81/39/29", rgb: "8/51/94", hex: "#08335E", pantone: "295 C" },
-  { name: "Azul II", cmyk: "93/57/0/0", rgb: "12/103/193", hex: "#0C67C1", pantone: "2145 C" },
-  { name: "Azul IV", cmyk: "47/10/0/0", rgb: "156/206/255", hex: "#9CCEFF", pantone: "2141 C" },
+  { name: "Azul III", cmyk: "100/81/39/29", rgb: "8/51/94", hex: "#08335E", pantone: "295 C", textTone: "white" },
+  { name: "Azul II", cmyk: "93/57/0/0", rgb: "12/103/193", hex: "#0C67C1", pantone: "2145 C", textTone: "white" },
+  { name: "Azul IV", cmyk: "47/10/0/0", rgb: "156/206/255", hex: "#9CCEFF", pantone: "2141 C", textTone: "azul3" },
   // Nombrado "Azul I" en Figma, duplicado con el principal — ver nota en PLAN.md.
-  { name: "Azul (tinte claro)", cmyk: "19/0/0/0", rgb: "220/239/255", hex: "#DCEFFF", pantone: "545 C" },
+  { name: "Azul (tinte claro)", cmyk: "19/0/0/0", rgb: "220/239/255", hex: "#DCEFFF", pantone: "545 C", textTone: "azul1" },
 ];
 
 const COMPLEMENTARY: Swatch[] = [
-  { name: "Bienestar", cmyk: "11/55/0/0", rgb: "227/151/202", hex: "#E397CA", pantone: "2044 C" },
-  { name: "Hogar", cmyk: "0/84/76/0", rgb: "232/82/66", hex: "#E85242", pantone: "178 C" },
-  { name: "Mascotas", cmyk: "0/52/93/0", rgb: "240/152/55", hex: "#F09837", pantone: "137 C" },
-  { name: "Niños", cmyk: "7/3/61/0", rgb: "252/241/142", hex: "#FCF18E", pantone: "127 C" },
-  { name: "Despensa", cmyk: "67/7/89/0", rgb: "118/177/86", hex: "#76B156", pantone: "360 C" },
-  { name: "Aseo Hogar", cmyk: "799/49/0/0", rgb: "65/132/245", hex: "#4184F5", pantone: "2172 C" },
-  { name: "Personal Care", cmyk: "40/50/0/0", rgb: "190/143/247", hex: "#BE8FF7", pantone: "2567 C" },
-  { name: "HotDays", cmyk: "0/100/83/0", rgb: "228/38/48", hex: "#2B7DF6", pantone: "2347 C" },
+  { name: "Bienestar", cmyk: "11/55/0/0", rgb: "227/151/202", hex: "#E397CA", pantone: "2044 C", textTone: "white" },
+  { name: "Hogar", cmyk: "0/84/76/0", rgb: "232/82/66", hex: "#E85242", pantone: "178 C", textTone: "white" },
+  { name: "Mascotas", cmyk: "0/52/93/0", rgb: "240/152/55", hex: "#F09837", pantone: "137 C", textTone: "white" },
+  { name: "Niños", cmyk: "7/3/61/0", rgb: "252/241/142", hex: "#FCF18E", pantone: "127 C", textTone: "azul1" },
+  { name: "Despensa", cmyk: "67/7/89/0", rgb: "118/177/86", hex: "#76B156", pantone: "360 C", textTone: "white" },
+  { name: "Aseo Hogar", cmyk: "799/49/0/0", rgb: "65/132/245", hex: "#4184F5", pantone: "2172 C", textTone: "white" },
+  { name: "Personal Care", cmyk: "40/50/0/0", rgb: "190/143/247", hex: "#BE8FF7", pantone: "2567 C", textTone: "white" },
+  // Figma's own HEX label for this swatch says "#2B7DF6" (Azul I's hex) but
+  // that's an internal copy-paste error: the swatch's actual fill, and its
+  // own listed RGB (228/38/48) and CMYK both agree on a red/orange, not
+  // blue. Using the color that's actually consistent across 3 of the 4
+  // values shown, not the one outlier label.
+  { name: "HotDays", cmyk: "0/100/83/0", rgb: "228/38/48", hex: "#E42630", pantone: "2347 C", textTone: "white" },
 ];
 
 const FONT_WEIGHTS: { label: string; weight: number }[] = [
@@ -136,30 +147,32 @@ const DESIGN_PILLARS = [
   },
 ];
 
-// Contraste real: un fondo claro (ej. el tinte de Azul I, #DCEFFF) con texto
-// blanco fijo queda ilegible. Se calcula luminancia relativa (WCAG) para
-// decidir texto oscuro vs. claro en vez de asumir siempre blanco.
-function isLight(hex: string) {
-  const n = parseInt(hex.replace("#", ""), 16);
-  const r = (n >> 16) & 255;
-  const g = (n >> 8) & 255;
-  const b = n & 255;
-  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-  return luminance > 0.6;
+const SWATCH_TEXT_CLASS: Record<Swatch["textTone"], string> = {
+  white: "text-white",
+  azul3: "text-azul-3",
+  azul1: "text-azul-1",
+};
+
+function SwatchRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex gap-[10px] items-center">
+      <p className="font-medium leading-6 text-[16px]">{label}:</p>
+      <p className="font-normal leading-6 text-[16px]">{value}</p>
+    </div>
+  );
 }
 
-function SwatchCard({ swatch, big = false }: { swatch: Swatch; big?: boolean }) {
-  const light = isLight(swatch.hex);
+function SwatchCard({ swatch }: { swatch: Swatch }) {
   return (
     <div
-      className={`rounded-xl p-6 flex flex-col justify-end ${light ? "text-azul-3" : "text-white"} ${big ? "min-h-[220px]" : "min-h-[160px]"}`}
+      className={`rounded-[10px] flex-1 min-w-0 flex flex-col gap-1 px-9 pt-9 pb-[86px] ${SWATCH_TEXT_CLASS[swatch.textTone]}`}
       style={{ backgroundColor: swatch.hex }}
     >
-      <p className="text-sm opacity-90">Nombre: {swatch.name}</p>
-      <p className="text-sm opacity-90">CMYK: {swatch.cmyk}</p>
-      <p className="text-sm opacity-90">RGB: {swatch.rgb}</p>
-      <p className="text-sm opacity-90">HEX: {swatch.hex}</p>
-      <p className="text-sm opacity-90">PANTONE: {swatch.pantone}</p>
+      <SwatchRow label="Nombre" value={swatch.name} />
+      <SwatchRow label="CMYK" value={swatch.cmyk} />
+      <SwatchRow label="RGB" value={swatch.rgb} />
+      <SwatchRow label="HEX" value={swatch.hex} />
+      <SwatchRow label="PANTONE" value={swatch.pantone} />
     </div>
   );
 }
@@ -172,12 +185,23 @@ function Fig({ src, alt, aspect }: { src: string; alt: string; aspect: number })
   );
 }
 
-function SectionHeading({ number, title }: { number: string; title: string }) {
+function SectionHeading({
+  number,
+  title,
+  children,
+}: {
+  number: string;
+  title: string;
+  children?: React.ReactNode;
+}) {
   return (
-    <div className="mb-8">
-      <h2 className="text-[28px] md:text-[32px] font-bold text-azul-2">
+    <div className="flex flex-col md:flex-row md:gap-[127px] gap-8 mb-8">
+      <h2 className="text-[28px] md:text-[32px] font-bold text-azul-2 md:w-[447px] shrink-0">
         {number} {title}
       </h2>
+      {children && (
+        <div className="text-azul-3/80 leading-6 md:w-[561px] max-w-[561px]">{children}</div>
+      )}
     </div>
   );
 }
@@ -210,20 +234,23 @@ export default function AssetsPage() {
         id="paleta-cromatica-principal"
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
-        <SectionHeading number="3.1" title="Paleta cromática principal" />
-        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-8">
+        <SectionHeading number="3.1" title="Paleta cromática principal">
           La paleta cromática principal establece los colores base de NovaVenta y
           define su aplicación dentro del sistema visual. Su uso debe mantener las
           combinaciones y proporciones definidas para asegurar reconocimiento,
           contraste y consistencia en todos los puntos de contacto.
-        </p>
-        <p className="text-[20px] font-bold text-azul-2 mb-4">Color principal</p>
-        <SwatchCard swatch={PRINCIPAL} big />
-        <p className="text-[20px] font-bold text-azul-2 mt-10 mb-4">Colores secundarios</p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {SECONDARY.map((s) => (
-            <SwatchCard key={s.name + s.hex} swatch={s} />
-          ))}
+        </SectionHeading>
+        <div className="flex flex-col gap-8">
+          <p className="text-[20px] font-bold text-azul-2">Color principal</p>
+          <SwatchCard swatch={PRINCIPAL} />
+        </div>
+        <div className="flex flex-col gap-8 mt-8">
+          <p className="text-[20px] font-bold text-azul-2">Colores secundarios</p>
+          <div className="flex flex-col md:flex-row gap-4">
+            {SECONDARY.map((s) => (
+              <SwatchCard key={s.name + s.hex} swatch={s} />
+            ))}
+          </div>
         </div>
       </section>
 
@@ -231,15 +258,26 @@ export default function AssetsPage() {
         id="paleta-complementaria"
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
-        <SectionHeading number="3.2" title="Paleta complementaria" />
-        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-8">
-          Colores complementarios por categoría de producto, para diferenciar
-          secciones del catálogo manteniendo la relación con el sistema principal.
-        </p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {COMPLEMENTARY.map((s) => (
-            <SwatchCard key={s.name} swatch={s} />
-          ))}
+        <SectionHeading number="3.2" title="Paleta complementaria">
+          La paleta cromática principal establece los colores base de NovaVenta y
+          define su aplicación dentro del sistema visual. Su uso debe mantener las
+          combinaciones y proporciones definidas para asegurar reconocimiento,
+          contraste y consistencia en todos los puntos de contacto.
+        </SectionHeading>
+        <div className="flex flex-col gap-8">
+          <p className="text-[20px] font-bold text-azul-2">Colores complementarios</p>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col md:flex-row gap-4">
+              {COMPLEMENTARY.slice(0, 4).map((s) => (
+                <SwatchCard key={s.name} swatch={s} />
+              ))}
+            </div>
+            <div className="flex flex-col md:flex-row gap-4">
+              {COMPLEMENTARY.slice(4).map((s) => (
+                <SwatchCard key={s.name} swatch={s} />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -247,14 +285,13 @@ export default function AssetsPage() {
         id="porcentajes-de-color"
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
-        <SectionHeading number="3.3" title="Porcentajes de color" />
-        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-8">
+        <SectionHeading number="3.3" title="Porcentajes de color">
           La distribución cromática organiza la presencia de cada grupo de color
           dentro del sistema visual. El azul principal concentra el 50% del uso,
           los colores secundarios el 30% y los complementarios el 20%,
           estableciendo una jerarquía clara y consistente en las distintas
           aplicaciones de NovaVenta.
-        </p>
+        </SectionHeading>
         <Fig src="/brand/assets/porcentajes-color.png" alt="Distribución de porcentajes de color: 50% principal, 30% secundarios, 20% complementarios" aspect={4096 / 1749} />
       </section>
 
@@ -262,21 +299,24 @@ export default function AssetsPage() {
         id="uso-de-color"
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
-        <SectionHeading number="3.4" title="Uso de color" />
-        <div className="max-w-[640px] flex flex-col gap-8">
-          <p className="text-azul-3/80 leading-6">
-            El sistema cromático define combinaciones de contraste que aseguran
-            legibilidad, jerarquía y consistencia en las distintas aplicaciones de
-            NovaVenta. Los colores principales, secundarios y complementarios
-            pueden combinarse siempre que exista una diferencia suficiente entre
-            fondo y elemento gráfico. Deben evitarse combinaciones con bajo nivel
-            de contraste, saturación similar o proximidad cromática que dificulten
-            la lectura.
-          </p>
+        <SectionHeading number="3.4" title="Uso del color">
+          El sistema cromático define combinaciones de contraste que aseguran
+          legibilidad, jerarquía y consistencia en las distintas aplicaciones de
+          NovaVenta. Los colores principales, secundarios y complementarios
+          pueden combinarse siempre que exista una diferencia suficiente entre
+          fondo y elemento gráfico.
+          <br />
+          <br />
+          Deben evitarse combinaciones con bajo nivel de contraste, saturación
+          similar o proximidad cromática que dificulten la lectura. Los
+          ejemplos de esta sección muestran tanto las combinaciones
+          recomendadas como aquellas que no deben utilizarse.
+        </SectionHeading>
+        <div className="flex flex-col gap-8">
           <div>
-            <p className="text-[20px] font-bold text-azul-2 mb-2">Contrastes básicos</p>
-            <div className="flex flex-col gap-3">
-              {[1, 2, 3, 4, 5, 6, 7].map((n) => (
+            <p className="text-[20px] font-bold text-azul-2 mb-8">Contrastes básicos</p>
+            <div className="flex flex-col gap-8">
+              {[1, 2, 3, 4, 5, 6].map((n) => (
                 <Fig
                   key={n}
                   src={`/brand/assets/contraste-basico-${n}.png`}
@@ -284,28 +324,33 @@ export default function AssetsPage() {
                   aspect={4096 / 1410}
                 />
               ))}
+              <Fig src="/brand/assets/contraste-basico-7.png" alt="Ejemplo de contraste básico 7" aspect={1135 / 191} />
             </div>
           </div>
-          <div>
-            <p className="text-[20px] font-bold text-azul-2 mb-2">Contrastes compuestos</p>
-            <p className="text-azul-3/80 leading-6 mb-2">
-              Los contrastes compuestos combinan un color de fondo, un color
-              tipográfico y uno o más colores complementarios dentro de una misma
-              pieza. Se recomienda trabajar con escalas cromáticas controladas e
-              incorporar colores complementarios de forma puntual.
-            </p>
-            <div className="flex flex-col gap-3">
-              <Fig src="/brand/assets/contraste-compuesto-1.png" alt="Ejemplo de contraste compuesto 1" aspect={1057 / 347} />
-              <Fig src="/brand/assets/contraste-compuesto-2.png" alt="Ejemplo de contraste compuesto 2" aspect={4096 / 1493} />
-              <Fig src="/brand/assets/contraste-compuesto-3.png" alt="Ejemplo de contraste compuesto 3" aspect={4096 / 1493} />
+          <div className="flex flex-col md:flex-row md:gap-[127px] gap-8">
+            <p className="text-[20px] font-bold text-azul-2 md:w-[447px] shrink-0">Contrastes compuestos</p>
+            <div className="flex flex-col gap-8 md:w-[561px] max-w-[561px]">
+              <p className="text-azul-3/80 leading-6">
+                Los contrastes compuestos combinan un color de fondo, un color
+                tipográfico y uno o más colores complementarios dentro de una
+                misma pieza. La selección debe mantener una jerarquía visual
+                clara y asegurar suficiente contraste entre los elementos
+                principales y secundarios.
+                <br />
+                <br />
+                Se recomienda trabajar con escalas cromáticas controladas e
+                incorporar colores complementarios de forma puntual. Deben
+                evitarse combinaciones entre tonos demasiado cercanos, colores
+                con bajo contraste o paletas con demasiados acentos
+                simultáneos.
+              </p>
             </div>
           </div>
-          <p className="text-azul-3/80 leading-6">
-            El sistema permite incorporar variaciones adicionales siempre que se
-            mantengan dentro de la misma familia tonal del color base. No deben
-            introducirse colores que modifiquen el carácter general de la paleta o
-            que generen nuevas familias cromáticas fuera del sistema definido.
-          </p>
+          <div className="flex flex-col gap-8">
+            <Fig src="/brand/assets/contraste-compuesto-1.png" alt="Ejemplo de contraste compuesto 1" aspect={1057 / 347} />
+            <Fig src="/brand/assets/contraste-compuesto-2.png" alt="Ejemplo de contraste compuesto 2" aspect={4096 / 1493} />
+            <Fig src="/brand/assets/contraste-compuesto-3.png" alt="Ejemplo de contraste compuesto 3" aspect={4096 / 1493} />
+          </div>
         </div>
       </section>
 
@@ -365,14 +410,13 @@ export default function AssetsPage() {
         id="jerarquias"
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
-        <SectionHeading number="3.6" title="Jerarquías" />
-        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-4">
+        <SectionHeading number="3.6" title="Jerarquías">
           La jerarquía tipográfica organiza la información de acuerdo con su nivel
           de importancia y facilita una lectura clara en todas las aplicaciones.
           Los tamaños, interlineados y espaciados deben construirse siempre sobre
           una lógica de múltiplos de 4, asegurando consistencia y orden dentro del
           sistema visual.
-        </p>
+        </SectionHeading>
         <div className="flex flex-col gap-10 mt-8">
           <div className="flex gap-6 items-end">
             <span className="text-2xl font-bold text-azul-3 w-10 shrink-0">H1</span>
@@ -404,13 +448,12 @@ export default function AssetsPage() {
         id="usos-incorrectos-tipografia"
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
-        <SectionHeading number="3.7" title="Usos incorrectos" />
-        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-6">
+        <SectionHeading number="3.7" title="Usos incorrectos">
           Para preservar la consistencia tipográfica de NovaVenta, deben
           respetarse las fuentes, pesos, jerarquías y criterios de composición
           definidos en el sistema. La prioridad es mantener siempre una lectura
           clara, ordenada y coherente.
-        </p>
+        </SectionHeading>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {TYPO_MISUSE.map((rule, i) => (
             <div key={rule} className="flex flex-col gap-2">
@@ -479,15 +522,21 @@ export default function AssetsPage() {
         id="uso-de-la-fotografia"
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
-        <SectionHeading number="3.9" title="Uso de la fotografía" />
-        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-6">
+        <SectionHeading number="3.9" title="Uso de la fotografía">
           El uso de la fotografía define cómo las imágenes se integran dentro de
           las piezas de NovaVenta y cómo conviven con los demás elementos del
           sistema visual. Su función puede ser protagónica, de apoyo o
           contextual, dependiendo del contenido y del formato, pero siempre debe
           responder a una jerarquía clara entre imagen, producto, texto y
           elementos gráficos.
-        </p>
+          <br />
+          <br />
+          Las fotografías pueden ocupar fondos completos, contenedores, módulos
+          o recortes específicos dentro de la composición. En todos los casos
+          deben respetarse el punto focal, la legibilidad de la información y
+          el espacio necesario para integrar tipografía, tags, precios o
+          producto sin interferir con la lectura principal de la imagen.
+        </SectionHeading>
         <ul className="flex flex-col gap-2 max-w-[640px] mb-6">
           {[
             "Fotografía lifestyle completa + texto",
@@ -509,8 +558,7 @@ export default function AssetsPage() {
         id="sistema-iconografico"
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
-        <SectionHeading number="3.10" title="Sistema iconográfico" />
-        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-6">
+        <SectionHeading number="3.10" title="Sistema iconográfico">
           El sistema iconográfico de NovaVenta utiliza la familia de{" "}
           <strong>Google Material Symbols</strong>, disponible en Google Fonts,
           como base para construir un lenguaje visual consistente, funcional y
@@ -519,7 +567,7 @@ export default function AssetsPage() {
           grado y tamaño óptico. Como referencia, se recomienda trabajar con un
           Weight medio, Grade neutro y un Optical Size acorde al tamaño final de
           uso.
-        </p>
+        </SectionHeading>
         <div className="flex flex-col md:flex-row gap-6 mb-10 items-start">
           <div className="w-[180px] shrink-0">
             <Fig src="/brand/assets/iconos-referencia.png" alt="Referencia de configuración de Material Symbols" aspect={289 / 430} />
@@ -557,30 +605,34 @@ export default function AssetsPage() {
         id="sistema-de-tags"
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
-        <SectionHeading number="3.11" title="Sistema de tags" />
-        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-8">
-          El sistema de tags organiza información funcional dentro de las piezas
-          de NovaVenta y se divide en dos tipos: tags de navegación y tags
-          promocionales. Los tags de navegación permiten identificar y recorrer
-          categorías, servicios o espacios de la marca, mientras que los tags
-          promocionales destacan información relevante asociada a un producto,
-          como beneficios, novedades, exclusividades o precios especiales.
-        </p>
+        <SectionHeading number="3.11" title="Sistema de tags">
+          El sistema de tags organiza información funcional dentro de las
+          piezas de NovaVenta y se divide en dos tipos: tags de navegación y
+          tags promocionales. Ambos comparten una lógica gráfica consistente,
+          pero cumplen funciones diferentes dentro del sistema.
+          <br />
+          <br />
+          Los tags de navegación permiten identificar y recorrer categorías,
+          servicios o espacios de la marca, mientras que los tags
+          promocionales destacan información relevante asociada a un
+          producto, como beneficios, novedades, exclusividades, precios
+          especiales o condiciones de compra.
+        </SectionHeading>
         <div className="flex flex-col gap-10">
           <div>
-            <p className="text-[20px] font-bold text-azul-2 mb-4">Tags de navegación</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-8">Tags de navegación</p>
             <Fig src="/brand/assets/tags-navegacion.png" alt="Tags de navegación aplicados por categoría" aspect={4096 / 1840} />
           </div>
           <div>
-            <p className="text-[20px] font-bold text-azul-2 mb-4">Construcción de tags de navegación</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-8">Construcción de tags de navegación</p>
             <Fig src="/brand/assets/tags-navegacion-construccion.png" alt="Construcción de tags de navegación" aspect={3262 / 2000} />
           </div>
           <div>
-            <p className="text-[20px] font-bold text-azul-2 mb-4">Tags promocionales</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-8">Tags promocionales</p>
             <Fig src="/brand/assets/tags-promocionales.png" alt="Tags promocionales aplicados" aspect={4096 / 1840} />
           </div>
           <div>
-            <p className="text-[20px] font-bold text-azul-2 mb-4">Construcción de tags promocionales</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-8">Construcción de tags promocionales</p>
             <Fig src="/brand/assets/tags-promocionales-construccion.png" alt="Construcción de tags promocionales" aspect={3038 / 2000} />
           </div>
         </div>
@@ -591,13 +643,12 @@ export default function AssetsPage() {
         id="pilares-de-diseno"
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
-        <SectionHeading number="3.12" title="Pilares de diseño" />
-        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-10">
+        <SectionHeading number="3.12" title="Pilares de diseño">
           El sistema visual de NovaVenta está construido para mantener una
           identidad clara, flexible y reconocible en todos sus puntos de
           contacto. Estos pilares orientan la aplicación del sistema y funcionan
           como criterio para tomar decisiones de diseño.
-        </p>
+        </SectionHeading>
         <div className="flex flex-col gap-10">
           {DESIGN_PILLARS.map((p) => (
             <div key={p.title} className="flex flex-col md:flex-row gap-4 md:gap-8 border-t border-azul-tint pt-8">
@@ -615,48 +666,65 @@ export default function AssetsPage() {
         id="sistema-reticular"
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
-        <SectionHeading number="3.13" title="Sistema reticular" />
-        <p className="text-azul-3/80 leading-6 max-w-[640px] mb-4">
+        <SectionHeading number="3.13" title="Sistema reticular">
           El sistema reticular de NovaVenta establece la estructura base para
           organizar los elementos dentro de cada composición. Su función es
-          asegurar alineación, orden y consistencia entre tipografía, fotografía,
-          producto, tags, iconografía y demás recursos gráficos. La retícula
-          puede adaptarse según el formato y el tipo de pieza pero debe conservar
-          criterios comunes de márgenes, columnas, módulos y espaciados.
-        </p>
+          asegurar alineación, orden y consistencia entre tipografía,
+          fotografía, producto, tags, iconografía y demás recursos gráficos.
+          <br />
+          <br />
+          La retícula puede adaptarse según el formato y el tipo de pieza pero
+          debe conservar criterios comunes de márgenes, columnas, módulos y
+          espaciados. A partir de esta base se definirán configuraciones
+          específicas para cada aplicación, garantizando flexibilidad sin
+          perder coherencia visual.
+        </SectionHeading>
         <div className="flex flex-col gap-10">
           <div>
-            <p className="text-[20px] font-bold text-azul-2 mb-4">Retícula básica</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-8">Retícula básica</p>
             <Fig src="/brand/assets/reticula-basica.png" alt="Retícula básica" aspect={1841 / 2000} />
           </div>
           <div>
-            <p className="text-[20px] font-bold text-azul-2 mb-4">Ubicación de elementos en la retícula</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-8">Ubicación de elementos en la retícula</p>
             <Fig src="/brand/assets/reticula-ubicacion.png" alt="Ubicación de elementos en la retícula" aspect={1841 / 2000} />
           </div>
           <div>
-            <p className="text-[20px] font-bold text-azul-2 mb-4">Creación de la pieza gráfica</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-8">Creación de la pieza gráfica</p>
             <Fig src="/brand/assets/reticula-creacion.png" alt="Creación de la pieza gráfica" aspect={1841 / 2000} />
           </div>
-          <div>
-            <p className="text-[20px] font-bold text-azul-2 mb-2">Sistema reticular para catálogos</p>
-            <p className="text-azul-3/80 leading-6 mb-4">
-              Para catálogos y piezas impresas, la retícula organiza la
-              información mediante una estructura modular de columnas y áreas de
-              contenido, admitiendo configuraciones de una, dos o más columnas,
-              además de módulos destinados a imagen o contenido destacado.
-            </p>
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-col md:flex-row md:gap-[127px] gap-8">
+              <p className="text-[20px] font-bold text-azul-2 md:w-[447px] shrink-0">
+                Sistema reticular para catálogos
+              </p>
+              <p className="text-azul-3/80 leading-6 md:w-[561px] max-w-[561px]">
+                La retícula para catálogos y piezas impresas organiza la
+                información mediante una estructura modular de columnas y
+                áreas de contenido. Su función es establecer alineaciones
+                claras entre texto, fotografía, producto, precios y elementos
+                gráficos, permitiendo construir composiciones consistentes en
+                diferentes formatos editoriales.
+                <br />
+                <br />
+                El sistema admite configuraciones de una, dos o más columnas,
+                así como módulos destinados a imagen o contenido destacado.
+                Estas variaciones deben conservar márgenes, proporciones y
+                relaciones espaciales coherentes para asegurar continuidad
+                visual entre páginas y facilitar la lectura.
+              </p>
+            </div>
             <Fig src="/brand/assets/reticula-catalogos.png" alt="Sistema reticular para catálogos" aspect={1974 / 2000} />
           </div>
           <div>
-            <p className="text-[20px] font-bold text-azul-2 mb-4">Doble páginas promocionales</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-8">Doble páginas promocionales</p>
             <Fig src="/brand/assets/reticula-doble-pagina.png" alt="Doble páginas promocionales" aspect={4096 / 1397} />
           </div>
           <div>
-            <p className="text-[20px] font-bold text-azul-2 mb-4">Páginas especiales / Banners promocionales</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-8">Páginas especiales / Banners promocionales</p>
             <Fig src="/brand/assets/reticula-banners.png" alt="Páginas especiales y banners promocionales" aspect={1920 / 1080} />
           </div>
           <div>
-            <p className="text-[20px] font-bold text-azul-2 mb-4">Portada catálogo</p>
+            <p className="text-[20px] font-bold text-azul-2 mb-8">Portada catálogo</p>
             <Fig src="/brand/assets/reticula-portada.png" alt="Portada de catálogo" aspect={3556 / 2000} />
           </div>
         </div>
