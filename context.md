@@ -2,7 +2,8 @@
 
 A record of how this site was designed, built, deployed, and the decisions made
 along the way — so a future session (or Sofia) can pick this up cold. Last
-updated: 2026-09-09 (Round 10 — nav/hero/button fixes + scroll animations).
+updated: 2026-09-09 (Round 11 — footer/hero/nav/gallery fixes; "04 DESIGN
+SYSTEM" brought into scope, mobile included).
 
 ## What this is
 
@@ -83,9 +84,12 @@ files, not baked into components.
     (`528:286`), `Boton` (`543:672`), `Hero`/`Hero 2`/`Hero 3` (page headers),
     `Footer` variants.
   - Section "Archivo" (`543:1131`) = stale duplicate/old versions. Ignore.
-  - Pages "04 DESIGN SYSTEM" and "05 SUBMARCA" exist and are numbered 4.x/5.x
-    in the site's own index/nav data, but are **out of scope for now**
-    (confirmed with Sofia) — hidden from the nav.
+  - "04 DESIGN SYSTEM" is node `426:887` (desktop, 14274px tall — dozens of
+    mockup rectangles: Nova_Caja, PORTADA, DOBLEPAGINA, NEWSPAPER,
+    REDESSOCIALES, WEBPAGE, APPMOBILE, ICONAPP, PANTALLA, BILLBOARD, etc.).
+    **Brought into scope 2026-09-09 (Round 11), including its mobile
+    version** — was out of scope before that. "05 SUBMARCA" remains
+    **out of scope** — only `04` was confirmed, don't assume `05` follows.
 
 ## Decisions confirmed with Sofia
 
@@ -93,8 +97,12 @@ files, not baked into components.
    on Vercel.
 2. **Reusable system:** components (`src/components/`) stay generic; Nova
    content lives in `src/lib/` data and each page's own file.
-3. **Scope:** 4 pages for now — Home, Estrategia (`01`), Master Brand (`02`),
-   Assets (`03`). Sections `04`/`05` exist in Figma, out of scope.
+3. **Scope:** Home, Estrategia (`01`), Master Brand (`02`), Assets (`03`),
+   and — as of 2026-09-09, Round 11 — **`04` "Design System" is now in
+   scope too**, including its mobile version (Sofia confirmed explicitly
+   after this had been out of scope since the project started). `05`
+   "Submarca" is **still out of scope** — only `04` was brought in; don't
+   assume `05` follows automatically without asking separately.
 4. **Azul I = `#2B7DF6`** (the documented value in Figma's 3.1 palette page),
    **not** `#007EFA` (the value baked into Figma's Variables/components,
    which is stale). Use `#2B7DF6` everywhere "Azul I" appears.
@@ -636,3 +644,66 @@ seems.
     - Footer was re-checked against all 3 nodes Sofia linked (`543:407`
       mobile, `528:254` home, `528:256` other pages) — all three already
       matched the Round 8 rebuild exactly; nothing to fix there.
+
+11. **Round 11 (2026-09-09, later same day):** Sofia sent more specific
+    complaints (blank gaps in Assets, a "too low" hero margin, the Brand
+    Tree image "deforming", "el nav en mobile no está bien", the mobile
+    footer logo deforming, footers looking cramped, Home's index titles
+    not being clickable) and confirmed bringing "04 Design System" into
+    scope (see "Decisions confirmed with Sofia" #3 and the Figma source
+    notes above).
+    - **Footer logo really was being stretched on mobile.** The footer's
+      `flex-col` container had no `items-start`, so default
+      `align-items: stretch` forced the logo `<img>` (`width: auto`) to
+      fill the container's full width while its `h-[97px]` stayed fixed —
+      a wide, vertically-squished mark. Added `items-start`; this was
+      likely the main cause of "cosas muy pegadas" too, since an
+      oversized stretched logo crowds everything below it.
+    - **Estrategia's mobile hero photo was a genuine wrong-crop bug, not
+      the "blank export" issue corrected two rounds ago.** Node `529:1846`
+      ("Hero 2 Mobile") has no separate image child layer to fetch
+      cleanly — the photo is a frame-level fill — and its raw asset
+      export returns a *different, more zoomed-in* crop of the photo than
+      what the frame's own screenshot shows (confirmed: the screenshot
+      has a window and a third person visible that the raw export
+      doesn't). Simulated the old crop with the actual math (a 1024×572
+      photo forced to `object-cover` a 390×844 container) and it showed
+      almost nothing recognizable — this is what "se está deformando"
+      meant. Swapped in the screenshot render (the correct 390×844 crop)
+      and reintroduced a scoped `mobileScrim` prop on `PageHero` (mobile
+      only, two gradient bands — a lighter one at the very top, a
+      stronger one at the bottom) to hide the screenshot's own baked-in
+      text so the real text on top reads cleanly. This is a *different*
+      bug from the false alarm in Round 8/9 — that one was about a
+      *blank* export; this one is about a *wrong* export — don't conflate
+      them if this comes up again.
+    - **Assets' blank gaps**: several photo galleries (3.8/3.9) have
+      counts that aren't multiples of 3 (5 or 7 photos), so `grid-
+      cols-3` left the incomplete last row's unused cells as visible
+      blank space. Switched `PhotoGrid` from CSS grid to `flex-wrap`
+      with a fixed basis, which doesn't reserve a track for photos that
+      aren't there. Also fixed a 36px-vs-confirmed-38px padding slip in
+      `SwatchCard` found along the way.
+    - **Nav's mobile hamburger had an invented dark circular backdrop**
+      (from Round 10) that isn't in Figma's actual design — just a bare
+      icon, no background. Replaced with `mix-blend-difference` so a
+      plain white icon stays readable over both the Hero's photo and
+      plain white page content below, without inventing a background
+      Figma never specified. This was likely "el nav en mobile no está
+      bien" — if that complaint persists, it may be about something
+      beyond styling; ask for specifics rather than guessing again.
+    - **Home's Index titles** (01 Brand Tree, 02 Master Brand, 03 Brand
+      Assets) are now real links to each page — they were static text
+      before, only their sub-items were clickable.
+    - **The hero "20px top margin" note turned out to already be fixed**:
+      the confirmed Figma value (`528:1282`/`509:725`) is `pt-[12px]`,
+      already matching the code exactly — the perceived "too low" text
+      was the Round 10 root cause (the old full-width sticky nav bar
+      pushing the Hero down), already fixed that round.
+    - **"04 Design System" is a large, not-yet-started undertaking** —
+      see the Figma source notes above for its node ID and rough content
+      map. This needs: a fresh page + route, adding it to `nav-data.ts`
+      and Home's Index, a full `get_design_context` pass on both desktop
+      and mobile (the mobile frame's node ID isn't confirmed yet), and
+      downloading a large number of mockup images. Scoped as its own
+      follow-up rather than folded into this round's smaller fixes.
