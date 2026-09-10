@@ -1637,4 +1637,14 @@ seems.
       not a fallback after calibrating a screenshot+scrim workaround.
       Updated `PageHero.tsx`'s doc comment accordingly.
     - Verified with `npx tsc --noEmit` and `npm run build`.
-    - **Still not committed/pushed/deployed.**
+
+    - **Committed, pushed, and deployed** (2026-09-10, end of this
+      session): commit `dfcded2` on `main`, pushed to
+      `github.com/soysoff/nova-brandbook`. Deployed with
+      `npx vercel@latest --prod --yes --scope panoramabranding`
+      (deployment `dpl_H28NcbnqMyckHDpynWRy93J5nPco`), aliased to
+      `nova-brandbook-nine.vercel.app` as usual. Verified live: `/`,
+      `/estrategia`, `/submarca` all return 200. Everything from Rounds
+      15-16 (hero spacing root-cause fix, scrim removal on all 4 photo
+      heroes, nav spacing/alignment fixes, "05 Sub-marcas" page,
+      `screenshot.mjs` verification setup) is now live in production.
