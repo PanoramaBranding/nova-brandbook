@@ -1824,3 +1824,18 @@ seems.
       to show Sofia concretely what these look like (plain text / raw JSON,
       no visual page — by design, since they're for crawlers/LLMs, not
       human visitors) rather than just describing them.
+
+    - **Same-day follow-up: favicon set to the Nova mark, white on Azul I.**
+      Added `src/app/icon.svg` (the existing `nova-logo-white.svg` paths,
+      composited onto a 100×100 `#2B7DF6` square, centered with padding —
+      Next.js's App Router icon-file convention, served with `sizes="any"`
+      since it's scalable) and regenerated `src/app/favicon.ico` from the
+      same composition (previously the untouched Next.js default) as a
+      16/32/48px multi-resolution ICO for legacy/pinned-tab contexts that
+      don't read `icon.svg`. Built with `sharp` (already a transitive
+      dependency via Next's image optimizer) to rasterize, then a small
+      one-off script to hand-assemble the ICO container (PNG-in-ICO, the
+      modern convention every current OS/browser reads) — no ImageMagick/
+      `rsvg-convert`/etc. available in this environment. Verified both
+      `<link rel="icon">` tags are present and correct in the rendered
+      `<head>` and that `/icon.svg` renders as expected before committing.
