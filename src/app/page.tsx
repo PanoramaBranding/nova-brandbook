@@ -44,8 +44,10 @@ export default function Home() {
         </p>
       </section>
 
-      {/* Índice — Figma node 505:259. 01-04 en alcance; 05 Submarca existe
-          en Figma pero queda fuera por ahora. */}
+      {/* Índice — Figma node 505:259, all 5 pages in scope (stale note about
+          05 being out of scope removed 2026-09-11 — it's been in since
+          Round 15). 05's own entry groups into "Externas"/"Internas" in
+          Figma (node 2073:915), unlike 01-04's flat rows — see nav-data.ts. */}
       <section id="index" className="flex flex-col gap-8 md:gap-16 px-4 md:px-[38px] pt-16 pb-24">
         <div className="flex flex-col gap-8">
           <h1 className="text-azul-1 font-bold text-5xl md:text-[96px]">Index</h1>

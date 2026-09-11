@@ -116,10 +116,29 @@ export const NAV_PAGES: NavPage[] = [
     slug: "/submarca",
     number: "05",
     label: "Sub-marcas",
+    // Grouped ("Externas"/"Internas"), not flat — confirmed 2026-09-11 via
+    // get_design_context on both the sidebar's expanded state (Menu v1
+    // "Variante 6", node 2046:950) and Home's index entry (2073:915): both
+    // group 5.1/5.2 under "Externas" and 5.3 under "Internas". Figma's own
+    // on-page text for 5.3 in both nodes says "Marcas de visibilidad
+    // externa" (should be "interna", a real content bug — same class as
+    // the other TOC/heading drift documented elsewhere); using the correct
+    // label here regardless, per the site-wide rule of following intended
+    // meaning over a copy-paste error.
     sections: [
-      { id: "arquitectura-de-marca", number: "5.1", label: "Arquitectura de marca" },
-      { id: "marcas-de-visibilidad-externa", number: "5.2", label: "Marcas de visibilidad externa" },
-      { id: "marcas-de-visibilidad-interna", number: "5.3", label: "Marcas de visibilidad interna" },
+      {
+        heading: "Externas",
+        items: [
+          { id: "arquitectura-de-marca", number: "5.1", label: "Arquitectura de marca" },
+          { id: "marcas-de-visibilidad-externa", number: "5.2", label: "Marcas de visibilidad externa" },
+        ],
+      },
+      {
+        heading: "Internas",
+        items: [
+          { id: "marcas-de-visibilidad-interna", number: "5.3", label: "Marcas de visibilidad interna" },
+        ],
+      },
     ],
   },
 ];
