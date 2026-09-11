@@ -2,17 +2,22 @@
 
 A record of how this site was designed, built, deployed, and the decisions made
 along the way — so a future session (or Sofia) can pick this up cold. Last
-updated: 2026-09-10 (Round 16 — found the Round 15 hero-spacing fix never
-actually worked: a real Chromium `display:contents`+`<source>` bug was still
-pushing every page hero's top-bar text down by ~1/3 of the hero's height,
-caught only by pixel-measuring the live site instead of trusting a
-screenshot glance. Fixed at the root, plus 3 confirmed mobile hero/nav spec
-corrections from a fresh Figma fetch — see Round 16 below. Round 15 itself
-found and fixed 4 real code bugs from a fresh Sofia complaint list, incl. a
-hero text-ghosting bug only found after setting up real screenshot
-verification (`screenshot.mjs`); two other complaints re-verified as already
-matching Figma exactly, then deliberately overridden per Sofia's explicit
-go-ahead — see Round 15 below).
+updated: 2026-09-11 (Round 17 — planned and executed the AI-readable layer
+(`/llms.txt`, `/brand.json`, JSON-LD) for the first time; confirmed
+GitHub→Vercel auto-deploy is genuinely working (a real git push now
+auto-builds and auto-promotes to production, verified across 4 pushes this
+round — the project-level link was already there, `vercel project inspect`
+just doesn't surface it); rebuilt the mobile menu to Sofia's own design
+(unfold-down panel, logo swap, hamburger→X morph); fixed the Round 16
+typography-overflow bug and a real Assets 3.8/3.9 photo-layout mismatch
+(uniform 3-col grid vs. Figma's actual bespoke per-gallery rows). See
+Round 17 below for full detail. Round 16 found the Round 15 hero-spacing fix
+never actually worked: a real Chromium `display:contents`+`<source>` bug was
+still pushing every page hero's top-bar text down by ~1/3 of the hero's
+height, caught only by pixel-measuring the live site instead of trusting a
+screenshot glance. Round 15 found and fixed 4 real code bugs from a fresh
+Sofia complaint list, incl. a hero text-ghosting bug only found after setting
+up real screenshot verification (`screenshot.mjs`).
 
 ## What this is
 
@@ -53,21 +58,30 @@ files, not baked into components.
   abandoned.** If anyone goes looking for this site and finds a
   `nova-brandbook-*.vercel.app` URL that looks stale or won't load, that's
   why; the current one is `nova-brandbook-nine.vercel.app`.
-- **Auto-deploy: NOT connected.** When first attempted (on the old account),
-  Vercel's GitHub App couldn't attach to the repo ("Failed to connect
-  soysoff/nova-brandbook to project") — likely because the Vercel GitHub App
-  only had access to a limited repo list under that account. Re-check this
-  from scratch on the `panoramabranding` team — it may just work now, or may
-  need the same fix (https://github.com/settings/installations → "Vercel" →
-  Configure → add `nova-brandbook` to repository access) applied to whichever
-  GitHub account/org is connected to the `panoramabranding` Vercel team.
-- **Manual deploy (current workflow):**
+- **Auto-deploy: CONFIRMED WORKING (2026-09-11, Round 17).** Previously
+  documented as "NOT connected" based on `vercel project inspect` showing no
+  "Git Repository" section — that turned out to be a red herring: `vercel
+  project inspect`'s output in this CLI version just doesn't surface the git
+  link at all, connected or not. `npx vercel@latest git connect --scope
+  panoramabranding` reported "soysoff/nova-brandbook is already connected to
+  your project", and a real `git push origin main` immediately triggered an
+  automatic Production deployment (confirmed via `vercel ls`, no manual
+  `vercel --prod` involved) that auto-promoted to the
+  `nova-brandbook-nine.vercel.app` alias on its own — repeated successfully
+  across all 4 pushes this round. **`npx vercel@latest --prod` is no longer
+  needed for a normal code change** — `git push origin main` alone deploys.
+  Keep the manual command as a fallback only (e.g. if a push ever doesn't
+  trigger a build).
+- **Deploy workflow (current):**
   ```bash
   git add -A && git commit -m "..." && git push origin main
+  # auto-deploys — check status with:
+  npx vercel@latest ls nova-brandbook --scope panoramabranding
+  ```
+  Manual fallback, if a push ever doesn't auto-deploy:
+  ```bash
   npx vercel@latest --prod --yes --scope panoramabranding
   ```
-  (`.vercel/project.json` is already linked to the right project, so
-  `--scope` may not even be required — include it anyway to be safe.)
 - **Git identity (local repo only):** Sofia Suarez / sofia@panoramabranding.co
   — set via `git config user.name`/`user.email` in this repo, not globally.
   ⚠️ Not yet confirmed whether this email is verified on the `soysoff` GitHub
@@ -207,12 +221,20 @@ so don't "fix" them by changing our code without checking Figma first:
 
 ```
 src/app/
-  layout.tsx           root layout: fonts, <Nav/>, flex row (col on mobile)
+  layout.tsx           root layout: fonts, <Nav/>, flex row (col on mobile),
+                        Organization/WebSite JSON-LD (Round 17)
   globals.css          design tokens (Tailwind v4 @theme)
   page.tsx             Home
   estrategia/page.tsx  01 · Estrategia de marca (Brand Tree)
   master-brand/page.tsx  02 · Master Brand
   assets/page.tsx      03 · Brand Assets
+  aplicaciones/page.tsx  04 · Aplicaciones de marca
+  submarca/page.tsx    05 · Sub-marcas
+  brand.json/route.ts  machine-readable brand tokens (Round 17) — reads
+                        src/lib/brand-data.ts + nav-data.ts, not a static file
+  llms.txt/route.ts    llms.txt-convention plain-text index (Round 17) — same
+                        source data, generated so it can't drift from the
+                        real sitemap
 src/components/
   Nav.tsx              sticky sidebar (desktop) + floating hamburger button
                         + full-screen panel (mobile, `fixed` not `sticky`
@@ -238,6 +260,9 @@ src/components/
                         Assets) — duplicates the sidebar nav on purpose,
                         see the component's own doc comment for why
 src/lib/nav-data.ts     sitemap data: page slugs/labels + anchor ids per page
+src/lib/brand-data.ts   color/typography tokens + known Figma content-bug
+                        list (Round 17) — single source for assets/page.tsx,
+                        /brand.json, and /llms.txt
 public/brand/           downloaded Figma assets, one subfolder per page/use
   home/ estrategia/ master-brand/ assets/ heroes/
 ```
@@ -280,20 +305,19 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
 
 ## Pending / open follow-ups (pick up here tomorrow)
 
-0. **Verify Andrés accepted the GitHub collaborator invite** (`PanoramaBranding`,
-   read access, invited 2026-09-02 for a security review) — still couldn't
-   confirm on 2026-09-09 (retried at the start of Round 7): `gh` and `brew`
-   are both unavailable in this environment, and an unauthenticated
-   `curl https://api.github.com/users/soysoff` returns no public email (most
-   users keep it private, expected). Check via
-   `gh api repos/soysoff/nova-brandbook/invitations` from a machine with `gh`
-   installed, or the repo's Settings → Collaborators page.
-0b. **GitHub account email vs. Vercel/git identity** — same blocker as
-   above (no `gh`/`brew` this session). Sofia needs to check
-   `github.com/settings/emails` herself to confirm the `soysoff` GitHub
-   account's verified email matches `sofia@panoramabranding.co` (the email
-   used for the local git identity and the Vercel account) — matters once
-   GitHub↔Vercel auto-deploy is connected.
+0. ~~Verify Andrés accepted the GitHub collaborator invite~~ — **confirmed
+   2026-09-11 (Round 17):** `gh` is now available in this environment (unlike
+   every prior session). `gh api repos/soysoff/nova-brandbook/collaborators`
+   shows `PanoramaBranding` as a real collaborator (pull:true/push:false/
+   admin:false) — the invite was accepted, and `gh api
+   .../invitations` returns empty (nothing pending).
+0b. **GitHub account email vs. Vercel/git identity** — still not checked;
+   `gh`'s own token doesn't expose another account's private email. Sofia
+   still needs to check `github.com/settings/emails` herself to confirm the
+   `soysoff` GitHub account's verified email matches
+   `sofia@panoramabranding.co`. Lower priority now that auto-deploy is
+   confirmed working without this being checked — only matters if deploys
+   start silently failing on a commit-author mismatch.
 1. ~~Master Brand — needs the same rigorous re-audit Assets just got~~ —
    **done in Round 7:** fetched `get_design_context` fresh on both the
    mobile frame (`543:519`) and the desktop node (`99:283`). Desktop turned
@@ -320,12 +344,14 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
    now live in `public/brand/assets/foto/`; Prompt Maestro / Negative
    Prompt render as Figma's real always-visible bordered boxes
    (`border border-azul-1 rounded-[15px]`), not the collapsible
-   `<details>` used before. The photo grid layout is a faithful-but-
-   simplified stand-in for Figma's specific per-photo crops (several
-   sub-sections reuse the same 16:9 source at different curated crops)
-   rather than a pixel clone of every individual crop offset — flag for a
-   closer look if the grid arrangement itself (not the photos or box
-   style) ever needs to match more exactly.
+   `<details>` used before. ~~The photo grid layout is a faithful-but-
+   simplified stand-in for Figma's specific per-photo crops... flag for a
+   closer look if the grid arrangement itself... ever needs to match more
+   exactly~~ — **the grid arrangement itself was fixed in Round 17**: see
+   Round 17 below (`PhotoRow`/`PhotoRows` replacing the uniform 3-col
+   `PhotoGrid` for the galleries that aren't actually uniform in Figma).
+   Per-photo exact crop-zoom insets are still not attempted — that
+   narrower gap remains open.
 
    Separately, **Assets had the same missing-sections bug as Master
    Brand** — fetched its desktop node directly in Round 7 and found the
@@ -339,13 +365,14 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
    `get_design_context` pass in Round 9 (see below) — this superseded the
    Round 5 audit, which had only checked copy content, not layout
    structure.
-3. **`llms.txt` / `brand.json` / JSON-LD** — the core "AI-readable"
-   differentiator from the original brief. Not started.
-4. **GitHub↔Vercel auto-deploy** not connected. Now that the project lives
-   under the correct `panoramabranding` Vercel team (see "Where it lives"),
-   try `vercel git connect --scope panoramabranding` fresh before assuming
-   the old GitHub-App-permissions fix is still needed — the earlier failure
-   happened on the wrong account and may not recur.
+3. ~~`llms.txt` / `brand.json` / JSON-LD~~ — **built in Round 17.** See
+   Round 17 below and "Where it lives" — `/llms.txt` and `/brand.json` are
+   route handlers (not static `public/` files) generated from
+   `src/lib/brand-data.ts` and `nav-data.ts`, plus Organization/WebSite
+   JSON-LD in `layout.tsx`.
+4. ~~GitHub↔Vercel auto-deploy not connected~~ — **confirmed actually
+   working in Round 17** (see "Where it lives" for the full story — it was
+   a `vercel project inspect` display gap, not a real disconnection).
 5. ~~Mobile responsive pass — only spot-checked~~ — **substantially done in
    Round 7:** Home, Estrategia, and Master Brand were all audited directly
    against their real Figma mobile frames (not just CSS breakpoints assumed
@@ -1648,3 +1675,125 @@ seems.
       15-16 (hero spacing root-cause fix, scrim removal on all 4 photo
       heroes, nav spacing/alignment fixes, "05 Sub-marcas" page,
       `screenshot.mjs` verification setup) is now live in production.
+
+19. **Round 17 (2026-09-11) — Sofia asked for a plan covering everything
+    pending: the AI-readable layer (called out as high priority), the
+    GitHub↔Vercel auto-deploy status ("no entiendo por qué no está
+    conectado"), and a new list of complaints (footer spacing, footer logo
+    not linking home, a mobile menu redesign she mocked up herself, Assets'
+    photography section diagramming). Planned via `EnterPlanMode`/
+    `ExitPlanMode`, approved, then executed in one session.**
+    - **Auto-deploy: was actually already connected — the "NOT connected"
+      conclusion in earlier rounds was wrong, based on an incomplete signal.**
+      `vercel project inspect nova-brandbook --scope panoramabranding` shows
+      no "Git Repository" section at all — that's just a display gap in this
+      CLI version, not proof of no connection. `npx vercel@latest git
+      connect --scope panoramabranding` reported "already connected", and a
+      real `git push origin main` immediately triggered an automatic
+      Production build (confirmed via `vercel ls`, not a manual `vercel
+      --prod`) that auto-promoted to the `nova-brandbook-nine.vercel.app`
+      alias — repeated successfully across all 4 pushes this round. **Manual
+      `vercel --prod` deploys are no longer necessary** for a normal code
+      change; see "Where it lives" for the corrected story. Also confirmed
+      via `gh` (now available in this environment, unlike every prior
+      session) that Andrés/`PanoramaBranding` is a real accepted
+      collaborator (read-only) — closes that long-open pending item.
+    - **Built the AI-readable layer for the first time** (`src/lib/
+      brand-data.ts`, `src/app/brand.json/route.ts`,
+      `src/app/llms.txt/route.ts`, JSON-LD in `layout.tsx`). Route handlers,
+      not static `public/` files — both read the same confirmed color/
+      typography constants `assets/page.tsx` renders (moved there from an
+      inline copy) and the same `NAV_PAGES` tree `Nav.tsx`/`ContentsToc` use,
+      so neither can drift out of sync with the actual site. `/brand.json`
+      also carries a `knownContentIssues` array (the Figma-source content
+      bugs documented elsewhere in this file) explicitly marked as "not part
+      of the brand system" for any human or model reading it. Verified live
+      (both endpoints 200, JSON-LD present in page source) before and after
+      deploy.
+    - **Mobile menu rebuilt to Sofia's own design** (she doesn't consider
+      this Figma-sourced — no mockup exists there either; this is her
+      explicit design, given via two screenshots/node links). `Nav.tsx`:
+      the panel now unfolds downward (a `translate-y` slide on an
+      `overflow-hidden`-clipped wrapper) instead of fading in place; its top
+      row swaps "Brand Book Guidelines / 2026" for the Nova logo while open;
+      the hamburger's 2 bars morph into an X via `transform` (translate +
+      rotate) instead of being swapped for an unrelated SVG path, and
+      reverse the same way on close. **Found and fixed a real bug while
+      building this**: the panel's blue background was on the outer,
+      always-full-height wrapper instead of the inner sliding element, so
+      the "closed" state still covered the whole screen solid blue — caught
+      via screenshot, not assumed. Verified with a real click-through
+      (open → screenshot matches Sofia's mockup almost exactly, X visible,
+      list state correct → close → reverts cleanly).
+    - **Home links added**: `PageHero`'s "Brand Book Guidelines" top-bar
+      text (and Home's own equivalent text), the footer mark, and the new
+      mobile-menu Nova logo all link to `/` now — confirmed via
+      `read_page`/click test, not just visual inspection.
+    - **Fixed the Round 16 typography-overflow bug** (never fixed, only
+      diagnosed): `PageHero` titles jumped from 56px straight to 96px with
+      no step between, overflowing the viewport at ~768-1024px widths.
+      Replaced with `clamp(3.5rem,1rem+6vw,6rem)` — unchanged at normal
+      desktop widths (confirmed exactly 96px at 1440px), scales down at
+      in-between widths. That alone wasn't enough for 04's one-line title
+      ("Aplicaciones master brand"): even after the font shrank, a flex
+      item's default `min-width:auto` still refused to shrink below its one
+      unbroken longest word ("Aplicaciones"), confirmed via
+      `getComputedStyle` (not just a screenshot) showing the box genuinely
+      unchanged after adding `break-words` alone. Added `min-w-0` too, which
+      actually fixed it — the standard fix for this specific flexbox
+      behavior, worth remembering if a similar overflow shows up elsewhere.
+    - **Assets 3.8/3.9 photography — genuine layout mismatch fixed, not just
+      re-flagged.** Sofia's complaint ("la diagramación de las fotos no es
+      la misma... de Figma") was correct: a fresh `get_design_context` fetch
+      on both real nodes (`574:3575`, `578:3976`) confirmed every gallery
+      has its own bespoke row composition in Figma (1 full-width photo then
+      3-equal then an asymmetric 523:373 pair for "Situaciones familiares";
+      3-equal then two asymmetric 332:676 pairs for "Individuales" and
+      "Mascotas"; 2-equal then an asymmetric 332:390:332 triple for
+      "Producto en contexto") — never the flat, uniform 3-column wrap the
+      old `PhotoGrid` always produced. Added `PhotoRow`/`PhotoRows`
+      (relative `flex-grow` per photo, configurable inter-row gap) and
+      rewired those galleries to it; "Render 3D" and "Usos incorrectos"
+      keep the plain `PhotoGrid`/grid since both really are 3-equal in
+      Figma too. 3.9's own two-image row also had a wrong gap (`gap-3`/12px
+      coded vs. Figma's real `gap-[92px]`) and a wrong width split (equal
+      `grid-cols-2` vs. Figma's real 676:367 ratio) — fixed the same way.
+      **Does not attempt Figma's exact per-photo crop-zoom insets** (e.g. a
+      photo shifted -50% and scaled to 198% to select part of itself) —
+      that's a further level of fidelity than the row/grouping structure
+      this fixed; flag for a closer look if that specific gap ever matters.
+    - **Footer — investigated, not changed.** Sofia said the footer looks
+      "muy pegado" (cramped) again. Pixel-measured the actual live gaps
+      instead of guessing: 18px between "Volver arriba" and "¿Preguntas?"
+      (matches Figma's own `gap-[18px]`), 24px between that cluster and the
+      copyright block (matches Round 15's own deliberate widening from
+      Figma's 12px, done at Sofia's explicit request that round) — both
+      breakpoints currently match either a confirmed Figma value or her own
+      prior explicit ask, nothing found "cramped" on `localhost:3000`
+      itself. **Not changed** pending her confirmation — don't re-tune these
+      numbers again without a fresh screenshot/specific complaint, per the
+      "don't guess, verify" rule this project keeps re-learning the hard
+      way. Only the footer logo→home link (see above) was actually touched.
+    - **Not done this round, explicitly deferred:**
+      - The full pixel-perfect audit pass across all 5 pages (this plan's
+        own "do this last" phase) — everything above was itself a
+        substantial round; this needs its own dedicated pass.
+      - Sending the consolidated Figma-source content-bug list (Azul I
+        duplicate naming, HotDays hex, Nova Express copy-pasted CMYK/RGB/
+        PANTONE, numbering drift, duplicated Where/Who and iNova text — all
+        already listed under "Known content bugs" above and now also in
+        `/brand.json`'s `knownContentIssues`) to the design team — that's
+        Sofia's action, not a code change.
+      - `identificador-1.png`/`versiones-color-1.png` (Master Brand,
+        byte-identical since the original Sept 2 download, Round 14) —
+        still needs Sofia to confirm which one is actually correct before
+        re-downloading anything.
+    - Verified with `npx tsc --noEmit` and `npm run build` after every
+      change (not just at the end), plus live browser checks (screenshots,
+      `getComputedStyle`/`getBoundingClientRect`, and click-throughs) for
+      every visual change — see above per item.
+    - **Committed in 4 separate pushes, each auto-deployed** (see auto-deploy
+      note above): AI-readable layer, mobile-menu + home-links, the
+      typography fix, and the photography rebuild. All verified live on
+      `nova-brandbook-nine.vercel.app` after each push, not just built
+      locally.
