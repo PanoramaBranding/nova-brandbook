@@ -97,7 +97,13 @@ export default function MasterBrandPage() {
         titleLines={["Master", "Brand"]}
       />
 
-      <section className="px-6 md:px-[38px] py-16 md:py-24 max-w-[905px]">
+      {/* pl-[297px] on desktop, not the page's usual 38px — confirmed via
+          get_design_context on the Quote component instance itself (node
+          528:1242, Round 17): same shared pl-297/pr-38 as Estrategia's own
+          Quote, just longer text (kept at max-w-905, which happens to be
+          exactly what's left over — 1240-297-38 — rather than removing the
+          cap, so line length doesn't grow unbounded on very wide monitors). */}
+      <section className="px-6 md:pl-[297px] md:pr-[38px] py-16 md:py-24 max-w-[905px]">
         <p className="text-[32px] md:text-[52px] leading-[1.2] md:leading-[60px] text-azul-1 font-bold">
           Una marca evoluciona con la forma en que las personas se relacionan
           con ella. NovaVenta responde a ese cambio con una identidad más
@@ -121,6 +127,11 @@ export default function MasterBrandPage() {
           establece una relación más clara entre la marca Nova y el descriptor
           Venta.
         </SectionHeading>
+        {/* Logo evolution timeline (2000/2009/2026) — was missing entirely,
+            confirmed via get_design_context on node 543:773 (Round 17). */}
+        <div className="mt-8">
+          <Fig src="/brand/master-brand/background-1.jpg" alt="Evolución del logo NovaVenta: 2000, 2009, 2026" aspect={4096 / 1273} />
+        </div>
       </section>
 
       <section id="identificador" className="px-6 md:px-[38px] py-12 md:py-16 border-t border-azul-tint scroll-mt-8">
@@ -220,10 +231,15 @@ export default function MasterBrandPage() {
           <Fig src="/brand/master-brand/endoso-2.png" alt="Construcción de submarcas de nombre corto" aspect={1135 / 761} />
         </div>
 
-        <div className="mt-12 flex flex-col md:flex-row md:gap-[127px] gap-8">
-          <p className="md:w-[447px] shrink-0 text-[20px] font-bold text-azul-2">Marcas de nombre largo</p>
-          <div className="md:w-[561px] max-w-[561px] flex flex-col gap-8 md:gap-6">
-            <p className="text-azul-3/80 leading-6">
+        {/* These 3 images render full-width below their label+text row, same
+            as "Marcas de nombre corto" above — confirmed via
+            get_design_context on node 543:1199 (Round 17): they were
+            previously squeezed into the 561px text column instead. Gaps
+            also corrected to the confirmed 64px between blocks (was 48px). */}
+        <div className="mt-16 flex flex-col gap-8">
+          <div className="flex flex-col md:flex-row md:gap-[127px] gap-8">
+            <p className="md:w-[447px] shrink-0 text-[20px] font-bold text-azul-2">Marcas de nombre largo</p>
+            <p className="md:w-[561px] max-w-[561px] text-azul-3/80 leading-6">
               Las submarcas de nombre largo mantienen a Nova como elemento
               principal y ubican el descriptor en una segunda línea para
               preservar la legibilidad y el equilibrio de la composición. Esta
@@ -231,28 +247,28 @@ export default function MasterBrandPage() {
               alterar las proporciones del sistema ni comprometer la jerarquía
               visual de la marca.
             </p>
-            <Fig src="/brand/master-brand/submarca-nombre-largo.png" alt="Construcción de submarcas de nombre largo" aspect={1920 / 991} />
           </div>
+          <Fig src="/brand/master-brand/submarca-nombre-largo.png" alt="Construcción de submarcas de nombre largo" aspect={1920 / 991} />
         </div>
 
-        <div className="mt-12 flex flex-col md:flex-row md:gap-[127px] gap-8">
-          <p className="md:w-[447px] shrink-0 text-[20px] font-bold text-azul-2">Construcción horizontal de submarcas</p>
-          <div className="md:w-[561px] max-w-[561px] flex flex-col gap-8 md:gap-6">
-            <p className="text-azul-3/80 leading-6">
+        <div className="mt-16 flex flex-col gap-8">
+          <div className="flex flex-col md:flex-row md:gap-[127px] gap-8">
+            <p className="md:w-[447px] shrink-0 text-[20px] font-bold text-azul-2">Construcción horizontal de submarcas</p>
+            <p className="md:w-[561px] max-w-[561px] text-azul-3/80 leading-6">
               Las submarcas pueden utilizar una composición horizontal en la que
               el descriptor se alinea a la derecha de Nova. La distancia,
               proporción y alineación entre ambos elementos son constantes y
               deben respetarse en todas las aplicaciones para mantener unidad y
               coherencia dentro del sistema.
             </p>
-            <Fig src="/brand/master-brand/submarca-horizontal.png" alt="Construcción horizontal de submarcas" aspect={1920 / 991} />
           </div>
+          <Fig src="/brand/master-brand/submarca-horizontal.png" alt="Construcción horizontal de submarcas" aspect={1920 / 991} />
         </div>
 
-        <div className="mt-12 flex flex-col md:flex-row md:gap-[127px] gap-8">
-          <p className="md:w-[447px] shrink-0 text-[20px] font-bold text-azul-2">Submarca de construcción especial</p>
-          <div className="md:w-[561px] max-w-[561px] flex flex-col gap-8 md:gap-6">
-            <p className="text-azul-3/80 leading-6">
+        <div className="mt-16 flex flex-col gap-8">
+          <div className="flex flex-col md:flex-row md:gap-[127px] gap-8">
+            <p className="md:w-[447px] shrink-0 text-[20px] font-bold text-azul-2">Submarca de construcción especial</p>
+            <p className="md:w-[561px] max-w-[561px] text-azul-3/80 leading-6">
               iNova es una excepción dentro del sistema de sub-marcas. A
               diferencia de las demás, no incorpora un descriptor independiente
               junto al logotipo de Nova, sino que integra la letra inicial
@@ -261,8 +277,8 @@ export default function MasterBrandPage() {
               utilizarse únicamente para iNova. No debe tomarse como referencia
               para la creación de nuevas sub-marcas.
             </p>
-            <Fig src="/brand/master-brand/submarca-inova.png" alt="Construcción especial de la submarca iNova" aspect={1920 / 991} />
           </div>
+          <Fig src="/brand/master-brand/submarca-inova.png" alt="Construcción especial de la submarca iNova" aspect={1920 / 991} />
         </div>
       </section>
 

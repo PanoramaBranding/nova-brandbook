@@ -57,6 +57,16 @@ export default function Home() {
         <div className="flex flex-col gap-[120px] md:gap-16">
           {NAV_PAGES.map((page) => (
             <div key={page.slug} className="flex flex-col gap-8 md:gap-16">
+              {/* Sub-marcas only (Figma node 2073:912/2073:913) — confirmed
+                  intentional with Sofia 2026-09-11, not built for 01-04. */}
+              {page.homeDividerTitle && (
+                <div className="flex flex-col gap-8">
+                  <h2 className="text-azul-1 font-bold text-5xl md:text-[96px]">
+                    {page.homeDividerTitle}
+                  </h2>
+                  <div className="border-t border-azul-1/30" />
+                </div>
+              )}
               <div className="flex flex-col md:flex-row md:justify-between gap-6">
                 <h2 className="text-azul-2 font-semibold text-[28px] md:text-[40px] shrink-0">
                   <Link href={page.slug} className="hover:underline">

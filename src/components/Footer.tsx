@@ -43,7 +43,9 @@ export default function Footer({
           <p>
             ¿Preguntas?
             <br />
-            contacto@panoramabranding.co
+            <a href="mailto:contacto@panoramabranding.co" className="hover:underline">
+              contacto@panoramabranding.co
+            </a>
           </p>
           <p>
             2026 Nova Venta.
@@ -66,7 +68,9 @@ export default function Footer({
           <p>
             ¿Preguntas?
             <br />
-            contacto@panoramabranding.co
+            <a href="mailto:contacto@panoramabranding.co" className="hover:underline">
+              contacto@panoramabranding.co
+            </a>
           </p>
         </div>
         <p>

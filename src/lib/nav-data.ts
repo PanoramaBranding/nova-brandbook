@@ -15,6 +15,12 @@ export type NavPage = {
   label: string;
   /** Flat list of anchors, OR groups with sub-headings (Assets page). */
   sections: NavLeaf[] | NavGroup[];
+  /**
+   * Home's index only: a big divider title shown above this page's index
+   * row (Figma node 2073:915/2073:913, confirmed with Sofia 2026-09-11 —
+   * a one-off treatment, only Sub-marcas has it, 01-04 don't get one).
+   */
+  homeDividerTitle?: string;
 };
 
 function isGroups(
@@ -116,6 +122,7 @@ export const NAV_PAGES: NavPage[] = [
     slug: "/submarca",
     number: "05",
     label: "Sub-marcas",
+    homeDividerTitle: "Sub-Marcas",
     // Grouped ("Externas"/"Internas"), not flat — confirmed 2026-09-11 via
     // get_design_context on both the sidebar's expanded state (Menu v1
     // "Variante 6", node 2046:950) and Home's index entry (2073:915): both
