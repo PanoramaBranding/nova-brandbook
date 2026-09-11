@@ -1860,3 +1860,38 @@ seems.
       added herself recently — but since it'd be a one-off visual treatment
       applied to only one of the 5 index entries, asked her to confirm
       intent before building it rather than assuming either way.
+
+    - **Same-day follow-up: Sofia confirmed the divider title and sent 3
+      more Figma links + a footer request.**
+      - **Built the "Sub-Marcas" divider title** on Home (confirmed
+        intentional) — `nav-data.ts`'s `NavPage` gained an optional
+        `homeDividerTitle` field (only Sub-marcas sets it), rendered in
+        `page.tsx`'s index loop before that page's row. 01-04 unaffected.
+      - **Footer email is now a real `mailto:contacto@panoramabranding.co`
+        link** (both breakpoints).
+      - **Quote margins (Estrategia, node `509:919`)**: fixed — but not the
+        way first assumed. Initially tried `md:mx-auto` (treating it as
+        centered), then fetched Master Brand's own Quote *component
+        instance* (node `528:1242`, since Master Brand's version is a real
+        instance of the shared "Quote" symbol, not a custom frame like
+        Estrategia's) to cross-check, and found both actually use an
+        identical `pl-[297px] pr-[38px]` — a fixed large *left inset*, not
+        centering (Master Brand's longer text fills the row edge-to-edge at
+        pr-38; Estrategia's shorter text stops at a fixed 676px, which only
+        *looks* centered by coincidence). Fixed both pages this way. Did
+        **not** touch Aplicaciones'/Submarca's visually-similar intro
+        blocks — confirmed via `get_metadata` that those are a different
+        Figma element (a plain intro paragraph, the same pattern Assets'
+        intro already uses), not an instance of the "Quote" symbol, so no
+        evidence they need the same change.
+      - **Master Brand — missing image (node `543:773`)**: 2.1 Background
+        had text only, no image at all. Added the logo evolution image
+        (2000/2009/2026 timeline) — downloaded, downscaled 4096px→1800px
+        max edge (579KB→59KB, same precedent as Round 12's mockup images).
+      - **Master Brand — "the image goes big" (node `543:1199`)**: 3 of the
+        4 Sub-marcas images (nombre largo, horizontal, especial/iNova) were
+        squeezed into the 561px text column next to their label, instead of
+        rendering full-width below it like the first one ("nombre corto")
+        already correctly did. Restructured to match; also corrected the
+        gap between these blocks (48px coded → confirmed 64px).
+      - All verified live via screenshot after deploy, not just built.
