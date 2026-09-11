@@ -257,11 +257,19 @@ function PhotoGrid({
   );
 }
 
+// Prompt Maestro (the wide, non-narrow variant) flows its text into 2
+// columns on desktop, confirmed via get_design_context on nodes 576:3649/
+// 3673/3701 (Round 17) — was a single column. `columns-2` (CSS multi-column),
+// not a manually split string: Figma's own 2-column split is just where its
+// fixed-width text box happened to wrap, not a curated 2-part structure, so
+// letting the browser balance it is more robust than hardcoding a break
+// point. Negative Prompt (narrow) stays single-column, matching Figma.
+// Padding also corrected 60px→114px to match both variants.
 function PromptBox({ label, text, narrow = false }: { label: string; text: string; narrow?: boolean }) {
   return (
-    <div className={`border border-azul-1 rounded-[15px] px-6 md:px-[60px] py-6 md:py-8 ${narrow ? "md:max-w-[676px]" : ""}`}>
+    <div className={`border border-azul-1 rounded-[15px] px-6 md:px-[114px] py-6 md:py-8 ${narrow ? "md:max-w-[676px]" : ""}`}>
       <p className="text-[20px] font-bold text-azul-1 mb-4">{label}:</p>
-      <p className="text-xs leading-5 text-azul-1">{text}</p>
+      <p className={`text-xs leading-5 text-azul-1 ${narrow ? "" : "md:columns-2 md:gap-12"}`}>{text}</p>
     </div>
   );
 }
@@ -396,18 +404,42 @@ export default function AssetsPage() {
         <div className="flex flex-col gap-8">
           <div>
             <p className="text-[20px] font-bold text-azul-2 mb-8">Contrastes básicos</p>
+            {/* A thin divider between each pair of examples (not before the
+                first or after the last) — confirmed via get_design_context
+                on node 558:3249 (Round 17), previously missing entirely. */}
             <div className="flex flex-col gap-8">
               {[1, 2, 3, 4, 5, 6].map((n) => (
-                <Fig
-                  key={n}
-                  src={`/brand/assets/contraste-basico-${n}.png`}
-                  alt={`Ejemplo de contraste básico ${n}`}
-                  aspect={4096 / 1410}
-                />
+                <div key={n} className={n > 1 ? "pt-8 border-t border-azul-tint" : ""}>
+                  <Fig src={`/brand/assets/contraste-basico-${n}.png`} alt={`Ejemplo de contraste básico ${n}`} aspect={4096 / 1410} />
+                </div>
               ))}
-              <Fig src="/brand/assets/contraste-basico-7.png" alt="Ejemplo de contraste básico 7" aspect={1135 / 191} />
+              <div className="pt-8 border-t border-azul-tint">
+                <Fig src="/brand/assets/contraste-basico-7.png" alt="Ejemplo de contraste básico 7" aspect={1135 / 191} />
+              </div>
             </div>
           </div>
+
+          {/* "Añadir colores a la paleta cromática" — a whole subsection
+              missing entirely before, confirmed via get_design_context on
+              node 558:3347 (Round 17). */}
+          <div className="flex flex-col gap-8 pt-8 border-t border-azul-tint">
+            <div className="flex flex-col md:flex-row md:gap-[127px] gap-8">
+              <p className="text-[20px] font-bold text-azul-2 md:w-[447px] shrink-0">
+                Añadir colores a la paleta cromática
+              </p>
+              <p className="text-azul-3/80 leading-6 md:w-[561px] max-w-[561px]">
+                El sistema permite incorporar variaciones adicionales siempre que
+                se mantengan dentro de la misma familia tonal del color base.
+                Estas extensiones pueden ajustar luminosidad, saturación o
+                intensidad, pero deben conservar una relación cromática evidente
+                con el tono original. No deben introducirse colores que
+                modifiquen el carácter general de la paleta o que generen nuevas
+                familias cromáticas fuera del sistema definido.
+              </p>
+            </div>
+            <Fig src="/brand/assets/gamas-colores.png" alt="Gamas de colores derivadas de la paleta cromática" aspect={4096 / 1462} />
+          </div>
+
           <div className="flex flex-col md:flex-row md:gap-[127px] gap-8">
             <p className="text-[20px] font-bold text-azul-2 md:w-[447px] shrink-0">Contrastes compuestos</p>
             <div className="flex flex-col gap-8 md:w-[561px] max-w-[561px]">
@@ -429,8 +461,12 @@ export default function AssetsPage() {
           </div>
           <div className="flex flex-col gap-8">
             <Fig src="/brand/assets/contraste-compuesto-1.png" alt="Ejemplo de contraste compuesto 1" aspect={1057 / 347} />
-            <Fig src="/brand/assets/contraste-compuesto-2.png" alt="Ejemplo de contraste compuesto 2" aspect={4096 / 1493} />
-            <Fig src="/brand/assets/contraste-compuesto-3.png" alt="Ejemplo de contraste compuesto 3" aspect={4096 / 1493} />
+            <div className="pt-8 border-t border-azul-tint">
+              <Fig src="/brand/assets/contraste-compuesto-2.png" alt="Ejemplo de contraste compuesto 2" aspect={4096 / 1493} />
+            </div>
+            <div className="pt-8 border-t border-azul-tint">
+              <Fig src="/brand/assets/contraste-compuesto-3.png" alt="Ejemplo de contraste compuesto 3" aspect={4096 / 1493} />
+            </div>
           </div>
         </div>
       </section>
@@ -440,29 +476,39 @@ export default function AssetsPage() {
         id="fuentes-tipograficas"
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
-        <SectionHeading number="3.5" title="Fuentes tipográficas" />
-        <div className="flex flex-col md:flex-row md:justify-between gap-8 mb-16 items-start">
-          <p className="text-azul-3/80 leading-6 max-w-[561px]">
+        {/* Body text lives in SectionHeading's own children column (matches
+            every other section) and the button sits BELOW that row,
+            right-aligned — not beside the paragraph in a justify-between
+            row like before. Confirmed via get_design_context on node
+            558:3355 (Round 17), same round that fixed the specimen sizes
+            and weight table below (also confirmed wrong). */}
+        <div className="flex flex-col md:items-end mb-16">
+          <SectionHeading number="3.5" title="Fuentes tipográficas">
             La tipografía principal de NovaVenta es Plus Jakarta Sans, seleccionada
             por su legibilidad, versatilidad y buen desempeño en aplicaciones
             impresas y digitales. El sistema utiliza sus diferentes pesos para
             construir jerarquías claras y mantener consistencia en todos los puntos
-            de contacto. Plus Jakarta Sans es una tipografía de uso libre disponible
-            a través de Google Fonts.
-          </p>
-          <Button variant="outline" className="shrink-0">
-            Descargar fuente
-          </Button>
+            de contacto.
+            <br />
+            <br />
+            Plus Jakarta Sans es una tipografía de uso libre disponible a través
+            de Google Fonts.
+          </SectionHeading>
+          <Button variant="outline">Descargar fuente</Button>
         </div>
 
-        <div className="flex flex-col gap-8 mb-16">
-          <p className="text-azul-1 font-bold text-4xl md:text-[80px] leading-[1.1]">
-            Tu mundo comienza aquí,
-            <br />
-            en NovaVenta.
-          </p>
-          <p className="text-azul-1 font-bold text-2xl md:text-[40px]">Plus Jakarta Sans</p>
-          <p className="text-azul-1 text-xl md:text-[28px] leading-[1.3] max-w-[900px]">
+        <div className="flex flex-col gap-12 mb-[120px]">
+          <div className="flex flex-col gap-12">
+            <p className="text-azul-1 font-bold text-4xl md:text-[128px] leading-[1.1] md:leading-[120px]">
+              Tu mundo comienza aquí,
+              <br />
+              en NovaVenta.
+            </p>
+            <p className="text-azul-1 font-bold text-2xl md:text-[64px] leading-[1.1] md:leading-[120px]">
+              Plus Jakarta Sans
+            </p>
+          </div>
+          <p className="text-azul-1 text-xl md:text-[36px] leading-[1.3] md:leading-[40px] max-w-[900px]">
             NovaVenta es más que una tienda: es tu mundo. Un lugar donde todo se
             encuentra, donde conviven marcas, categorías y soluciones pensadas
             para ti. En NovaVenta, cada necesidad tiene su espacio y cada
@@ -471,19 +517,27 @@ export default function AssetsPage() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-6">
-          {FONT_WEIGHTS.map((f) => (
-            <div key={f.label} className="flex flex-col md:flex-row gap-2 md:gap-4">
-              <p className="w-full md:w-[140px] shrink-0 text-azul-1 text-lg md:text-[28px]">{f.label}</p>
-              <p className="text-azul-1 text-lg md:text-[28px]" style={{ fontWeight: f.weight }}>
-                ABCDEFGHIJKLMNOPQRSTUVWXYZ
-                <br />
-                abcdefghijklmnopqrstuvwxyz
-                <br />
-                {`!@#$%^&*()?+`}
-              </p>
-            </div>
-          ))}
+        {/* "Plus Jakarta Sans" label appears once, to the left of the whole
+            table — it was repeating per-row before; sizes were 28px, real
+            spec is 32px throughout (label + specimens). */}
+        <div className="flex flex-col md:flex-row gap-6 md:gap-[13px]">
+          <p className="text-azul-1 font-normal text-lg md:text-[32px] md:w-[217px] shrink-0">
+            Plus Jakarta Sans
+          </p>
+          <div className="flex flex-col gap-6 md:gap-12">
+            {FONT_WEIGHTS.map((f) => (
+              <div key={f.label} className="flex flex-col md:flex-row gap-2 md:gap-3">
+                <p className="w-full md:w-[217px] shrink-0 text-azul-1 text-lg md:text-[32px]">{f.label}</p>
+                <p className="text-azul-1 text-lg md:text-[32px]" style={{ fontWeight: f.weight }}>
+                  ABCDEFGHIJKLMNOPQRSTUVWXYZ
+                  <br />
+                  abcdefghijklmnopqrstuvwxyz
+                  <br />
+                  {`!@#$%^&*()?+`}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -498,30 +552,53 @@ export default function AssetsPage() {
           una lógica de múltiplos de 4, asegurando consistencia y orden dentro del
           sistema visual.
         </SectionHeading>
-        <div className="flex flex-col gap-10 mt-8">
-          <div className="flex gap-6 items-end">
-            <span className="text-2xl font-bold text-azul-3 w-10 shrink-0">H1</span>
-            <p className="text-azul-1 font-bold text-6xl md:text-[100px] leading-[1]">Hogar</p>
+        {/* Sizes/gaps confirmed via get_design_context on nodes 558:3402/
+            562:3468 (Round 17): H1 100→160px, H2 64→80px, H3 36→40px, H4
+            leading 28→24px, label column 40→63px, number-to-text gap
+            24→52px, row-to-row gap 40→120px. H4's text was also truncated
+            to its first sentence — completed to match (it's lorem ipsum
+            placeholder copy either way, not real brand text). */}
+        <div className="flex flex-col gap-[120px] mt-8">
+          <div className="flex gap-[52px] items-end">
+            <span className="text-2xl font-bold text-azul-3 w-[63px] shrink-0">H1</span>
+            <p className="text-azul-1 font-bold text-6xl md:text-[160px] leading-[1]">Hogar</p>
           </div>
-          <div className="flex gap-6 items-end">
-            <span className="text-2xl font-bold text-azul-3 w-10 shrink-0">H2</span>
-            <p className="text-azul-3 font-bold text-5xl md:text-[64px] leading-[1]">$49.000</p>
+          <div className="flex gap-[52px] items-end">
+            <span className="text-2xl font-bold text-azul-3 w-[63px] shrink-0">H2</span>
+            <p className="text-azul-3 font-bold text-5xl md:text-[80px] leading-[1]">$49.000</p>
           </div>
-          <div className="flex gap-6 items-start">
-            <span className="text-2xl font-bold text-azul-3 w-10 shrink-0">H3</span>
-            <p className="text-azul-3 font-bold text-2xl md:text-[36px] leading-[1.2] max-w-[700px]">
+          <div className="flex gap-[52px] items-start">
+            <span className="text-2xl font-bold text-azul-3 w-[63px] shrink-0">H3</span>
+            <p className="text-azul-3 font-bold text-2xl md:text-[40px] leading-[1.2] max-w-[790px]">
               Descripcion larga de producto, lorem ipsum dolor sit amet,
               consectetuer adipiscing elit.
             </p>
           </div>
-          <div className="flex gap-6 items-start">
-            <span className="text-2xl font-bold text-azul-3 w-10 shrink-0">H4</span>
-            <p className="text-azul-3 text-lg md:text-[20px] leading-7 max-w-[700px]">
+          <div className="flex gap-[52px] items-start">
+            <span className="text-2xl font-bold text-azul-3 w-[63px] shrink-0">H4</span>
+            <p className="text-azul-3 text-lg md:text-[20px] leading-6 max-w-[790px]">
               Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
               nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
-              volutpat.
+              volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+              ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo
+              consequat. Duis autem vel eum iriure dolor in hendrerit in
+              vulputate velit esse molestie consequat, vel illum dolore eu
+              feugiat nulla facilisis at vero eros et accumsan et iusto odio
+              dignissim qui blandit praesent luptatum zzril delenit augue duis
+              dolore te feugait nulla facilisi.
             </p>
           </div>
+        </div>
+
+        {/* "Escalas de tamaños" — missing entirely before, confirmed via
+            get_design_context on node 562:3469 (Round 17). */}
+        <div className="flex flex-col gap-8 mt-16">
+          <p className="text-[20px] font-bold text-azul-2">Escalas de tamaños</p>
+          <Fig
+            src="/brand/assets/escalas-tamanos.png"
+            alt="Escala de tamaños tipográficos: 16, 24, 48, 96, 128 y 180 puntos"
+            aspect={4096 / 668}
+          />
         </div>
       </section>
 
@@ -529,15 +606,21 @@ export default function AssetsPage() {
         id="usos-incorrectos-tipografia"
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
+        {/* 2 middle sentences were missing — confirmed via
+            get_design_context on node 562:3481 (Round 17). */}
         <SectionHeading number="3.7" title="Usos incorrectos">
           Para preservar la consistencia tipográfica de NovaVenta, deben
           respetarse las fuentes, pesos, jerarquías y criterios de composición
-          definidos en el sistema. La prioridad es mantener siempre una lectura
-          clara, ordenada y coherente.
+          definidos en el sistema. No se deben utilizar outlines, tipografías
+          externas, combinaciones con bajo contraste ni cambios de peso dentro
+          de una misma frase o bloque de texto. También deben evitarse textos
+          extensos completamente en mayúsculas y composiciones que rompan las
+          reglas de capitalización establecidas. La prioridad es mantener
+          siempre una lectura clara, ordenada y coherente.
         </SectionHeading>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {TYPO_MISUSE.map((rule, i) => (
-            <div key={rule} className="flex flex-col gap-2">
+            <div key={rule} className="flex flex-col gap-4">
               <Fig src={`/brand/assets/tipo-mal-${i + 1}.png`} alt={rule} aspect={1479 / 921} />
               <p className="text-azul-3/80">{rule}</p>
             </div>
@@ -584,6 +667,42 @@ export default function AssetsPage() {
                 </div>
               );
             })}
+          </div>
+
+          {/* "Usos incorrectos" moved here (was after Render 3D, at the very
+              end) — confirmed via get_design_context on node 574:3575: it
+              comes right after the 3 lifestyle categories in Figma, before
+              "Producto en contexto"/"Render 3D", not last (Round 17). Grid
+              gap also corrected 24px→12px per the same fetch. */}
+          <div className="flex flex-col gap-8">
+            <p className="text-[20px] font-bold text-azul-2">Usos incorrectos</p>
+            <div className="flex flex-col md:flex-row gap-3">
+              <p className="text-azul-3/80 leading-6 md:w-1/2">
+                Para mantener la consistencia del sistema fotográfico, deben
+                evitarse imágenes con poses forzadas, iluminación artificial
+                excesiva, retoque poco natural, encuadres rígidos o
+                situaciones que no correspondan con el contexto cotidiano de
+                NovaVenta.
+              </p>
+              <p className="text-azul-3/80 leading-6 md:w-1/2">
+                También deben evitarse fotografías con baja calidad, exceso
+                de elementos, colores fuera del sistema, fondos genéricos o
+                escenas que resten protagonismo a la persona, al producto o a
+                la interacción principal.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {[
+                { src: "usos-incorrectos-foto-1", label: "No usar fotografías con iluminación plana" },
+                { src: "usos-incorrectos-foto-2", label: "No usar fotografías de stock" },
+                { src: "usos-incorrectos-foto-3", label: "No usar fotografías no alineadas al estilo" },
+              ].map((item) => (
+                <div key={item.src} className="flex flex-col gap-4">
+                  <Fig src={`/brand/assets/foto/${item.src}.png`} alt={item.label} aspect={1341 / 1489} />
+                  <p className="text-azul-3/80">{item.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="flex flex-col gap-8">
@@ -655,37 +774,6 @@ export default function AssetsPage() {
             </div>
             <PhotoGrid photos={["producto-render3d-1", "producto-render3d-2", "producto-render3d-3"]} defaultAspect={1480 / 1336} />
           </div>
-
-          <div className="flex flex-col gap-8">
-            <p className="text-[20px] font-bold text-azul-2">Usos incorrectos</p>
-            <div className="flex flex-col md:flex-row gap-3">
-              <p className="text-azul-3/80 leading-6 md:w-1/2">
-                Para mantener la consistencia del sistema fotográfico, deben
-                evitarse imágenes con poses forzadas, iluminación artificial
-                excesiva, retoque poco natural, encuadres rígidos o
-                situaciones que no correspondan con el contexto cotidiano de
-                NovaVenta.
-              </p>
-              <p className="text-azul-3/80 leading-6 md:w-1/2">
-                También deben evitarse fotografías con baja calidad, exceso
-                de elementos, colores fuera del sistema, fondos genéricos o
-                escenas que resten protagonismo a la persona, al producto o a
-                la interacción principal.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                { src: "usos-incorrectos-foto-1", label: "No usar fotografías con iluminación plana" },
-                { src: "usos-incorrectos-foto-2", label: "No usar fotografías de stock" },
-                { src: "usos-incorrectos-foto-3", label: "No usar fotografías no alineadas al estilo" },
-              ].map((item) => (
-                <div key={item.src} className="flex flex-col gap-4">
-                  <Fig src={`/brand/assets/foto/${item.src}.png`} alt={item.label} aspect={1341 / 1489} />
-                  <p className="text-azul-3/80">{item.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
@@ -743,21 +831,39 @@ export default function AssetsPage() {
         id="sistema-iconografico"
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
-        <SectionHeading number="3.10" title="Sistema iconográfico">
-          El sistema iconográfico de NovaVenta utiliza la familia de{" "}
-          <strong>Google Material Symbols</strong>, disponible en Google Fonts,
-          como base para construir un lenguaje visual consistente, funcional y
-          fácilmente escalable. Los íconos deben utilizarse en versión{" "}
-          <strong>Fill</strong>, manteniendo una configuración uniforme de peso,
-          grado y tamaño óptico. Como referencia, se recomienda trabajar con un
-          Weight medio, Grade neutro y un Optical Size acorde al tamaño final de
-          uso.
-        </SectionHeading>
-        <div className="flex flex-col md:flex-row gap-6 mb-10 items-start">
-          <div className="w-[180px] shrink-0">
+        {/* Custom title row (not the shared SectionHeading) — the
+            "Descargar íconos" button sits in the title column, below the
+            title, not below the whole row like 3.5's button. Confirmed via
+            get_design_context on node 578:4002 (Round 17), which also
+            confirmed this button was missing entirely and the reference
+            image (below) was undersized. */}
+        <div className="flex flex-col md:flex-row md:gap-[127px] gap-8 mb-8">
+          <div className="flex flex-col gap-8 md:gap-[127px] md:w-[447px] shrink-0">
+            <h2 className="text-[28px] md:text-[32px] font-bold text-azul-2">
+              3.10 Sistema iconográfico
+            </h2>
+            <Button variant="outline" className="self-start">
+              Descargar íconos
+            </Button>
+          </div>
+          <div className="text-azul-3/80 leading-6 md:w-[561px] max-w-[561px]">
+            El sistema iconográfico de NovaVenta utiliza la familia de{" "}
+            <strong>Google Material Symbols</strong>, disponible en Google Fonts,
+            como base para construir un lenguaje visual consistente, funcional y
+            fácilmente escalable. Los íconos deben utilizarse en versión{" "}
+            <strong>Fill</strong>, manteniendo una configuración uniforme de peso,
+            grado y tamaño óptico. Como referencia, se recomienda trabajar con un
+            Weight medio, Grade neutro y un Optical Size acorde al tamaño final de
+            uso.
+          </div>
+        </div>
+        {/* Fixed 289px/832px columns (they sum to the page's 1135px content
+            width exactly) — was an arbitrary 180px, confirmed too small. */}
+        <div className="flex flex-col md:flex-row gap-6 md:gap-[14px] mb-10 items-start">
+          <div className="w-full md:w-[289px] shrink-0">
             <Fig src="/brand/assets/iconos-referencia.png" alt="Referencia de configuración de Material Symbols" aspect={289 / 430} />
           </div>
-          <div className="flex-1">
+          <div className="w-full md:w-[832px] shrink-0">
             <Fig src="/brand/assets/iconos-set-1.png" alt="Set de íconos NovaVenta" aspect={832 / 430} />
           </div>
         </div>

@@ -29,9 +29,18 @@ export default function ContentsToc({
           <p className="text-[28px] md:text-[32px] font-semibold md:font-bold text-azul-2 md:w-[447px]">
             Contenidos
           </p>
-          <Button variant="outline" className="hidden md:inline-flex">
-            {buttonLabel}
-          </Button>
+          {/* Wrapped in a plain div (not `hidden md:inline-flex` directly on
+              the Button) — Button's own base classes already include an
+              unconditional `inline-flex`, and concatenating that with an
+              override `hidden` on the same element is a real Tailwind
+              footgun: which one wins depends on generated stylesheet order,
+              not class-list order, and here it lost — both buttons stayed
+              visible on mobile at once (confirmed via computedDisplay,
+              Round 17). A wrapper div's hidden/block has no such
+              conflict. */}
+          <div className="hidden md:block">
+            <Button variant="outline">{buttonLabel}</Button>
+          </div>
         </div>
         <div className="flex flex-col md:flex-row gap-4 md:gap-[97px]">
           {columns.map((column, i) => (
@@ -49,9 +58,9 @@ export default function ContentsToc({
             </div>
           ))}
         </div>
-        <Button variant="outline" className="self-start md:hidden">
-          {buttonLabel}
-        </Button>
+        <div className="self-start md:hidden">
+          <Button variant="outline">{buttonLabel}</Button>
+        </div>
       </div>
     </section>
   );
