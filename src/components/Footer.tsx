@@ -11,9 +11,12 @@ import Link from "next/link";
  *    desktop but genuinely IS shown on mobile in Figma — not an oversight,
  *    both mobile variants include the logo, only the desktop ones differ.
  * The three links group differently per breakpoint, not just re-wrapped:
- * desktop pairs "Volver arriba" with the contact block (18px gap) next to
- * the copyright block (12px gap away); mobile pairs the contact+copyright
- * blocks together (32px gap) with "Volver arriba" alone above (64px gap).
+ * desktop pairs "Volver arriba" with the contact block next to the copyright
+ * block; mobile pairs the contact+copyright blocks together (32px gap) with
+ * "Volver arriba" alone above (64px gap). Desktop's own two gaps are both
+ * 72px (Sofia's explicit ask, 2026-09-11, Round 17 — supersedes Round 15's
+ * 18px/24px deviation, which itself already superseded Figma's original
+ * 18px/12px). Don't "correct" this back down without re-confirming with her.
  */
 export default function Footer({
   variant = "gray",
@@ -51,12 +54,12 @@ export default function Footer({
       </div>
 
       {/* Desktop grouping: "Volver arriba"+Preguntas paired, 2026 separate.
-          gap-6 (24px), not Figma's confirmed gap-3 (12px, node 528:256) —
-          a deliberate deviation Sofia asked for 2026-09-10 (Round 15): the
-          two clusters read as too cramped even at Figma's own spacing.
-          Don't "correct" this back to 12px without re-confirming with her. */}
-      <div className="hidden md:flex md:items-center gap-6 text-azul-1 text-[20px] font-medium">
-        <div className="flex items-center gap-[18px]">
+          Both gaps 72px — Sofia's explicit ask 2026-09-11 (Round 17),
+          replacing Round 15's own 18px/24px deviation (itself already a
+          deliberate departure from Figma's original 18px/12px). Don't
+          "correct" this back down without re-confirming with her. */}
+      <div className="hidden md:flex md:items-center gap-[72px] text-azul-1 text-[20px] font-medium">
+        <div className="flex items-center gap-[72px]">
           <a href={backToTopHref} className="whitespace-nowrap">
             ↑ Volver arriba
           </a>

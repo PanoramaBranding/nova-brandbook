@@ -1784,10 +1784,21 @@ seems.
         already listed under "Known content bugs" above and now also in
         `/brand.json`'s `knownContentIssues`) to the design team — that's
         Sofia's action, not a code change.
-      - `identificador-1.png`/`versiones-color-1.png` (Master Brand,
-        byte-identical since the original Sept 2 download, Round 14) —
-        still needs Sofia to confirm which one is actually correct before
-        re-downloading anything.
+      - ~~`identificador-1.png`/`versiones-color-1.png` (Master Brand,
+        byte-identical since the original Sept 2 download, Round 14)~~ —
+        **Sofia confirmed same-day ("la imagen de master brand esta bien"):
+        no fix needed, leave both as they are.** Closed, not a bug after all.
+    - **Same-day follow-up: footer desktop spacing set to a specific value
+      Sofia gave directly** ("dejemos esos espacios en footer desktop de
+      72px") rather than the investigate-first path above — both desktop
+      gaps (`Footer.tsx`: "Volver arriba"↔"¿Preguntas?" and that cluster↔the
+      copyright block) are now `gap-[72px]`, up from Round 15's own
+      18px/24px. Third value for this same pair of gaps across 3 rounds
+      (Figma's original 18px/12px → Round 15's 18px/24px → this). Verified
+      via `getBoundingClientRect` (both gaps exactly 72px) — screenshots
+      themselves rendered blank again this session (same known Browser-pane
+      flakiness noted elsewhere in this file), pixel-measurement is what
+      actually confirmed it.
     - Verified with `npx tsc --noEmit` and `npm run build` after every
       change (not just at the end), plus live browser checks (screenshots,
       `getComputedStyle`/`getBoundingClientRect`, and click-throughs) for
