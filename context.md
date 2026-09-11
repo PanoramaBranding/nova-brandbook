@@ -1978,3 +1978,17 @@ seems.
         no-op'd during this check, a repeat of the pane's known scroll
         quirk documented elsewhere in this file; switched to a one-off
         Puppeteer script instead of trusting that reading).
+
+    - **Same-day follow-up: Sofia noticed only Estrategia's phrase module
+      actually looked right.** Real bug in the pl-297 change itself:
+      Master Brand/Aplicaciones/Submarca still had `max-w-[676px]`/
+      `[905px]` on the `<section>` (unchanged from before), not moved to
+      the `<p>` the way Estrategia's fix already did. With pl-297 added to
+      a section ALSO capped at max-w-676, the 297+38=335px of padding eats
+      out of that 676px budget, leaving ~341px for the actual text and
+      stopping the section short of the page's real content width —
+      visually broken (cramped text, dead space to the right of the
+      section) in a way that's easy to miss without a side-by-side
+      comparison against the one page built correctly. Moved max-w to the
+      `<p>` on all 3, matching Estrategia; verified via screenshot on all
+      4 pages side-by-side this time before shipping.
