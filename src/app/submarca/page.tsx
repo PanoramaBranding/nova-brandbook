@@ -209,9 +209,12 @@ export default function SubmarcaPage() {
       />
 
       {/* pl-[297px] on desktop — same site-wide "frase" module fix as
-          Estrategia/Master Brand/Aplicaciones (Round 17). */}
-      <section className="px-6 md:pl-[297px] md:pr-[38px] py-16 md:py-24 max-w-[676px]">
-        <p className="text-[32px] md:text-[52px] leading-[1.3] md:leading-[60px] text-azul-1 font-bold">
+          Estrategia/Master Brand/Aplicaciones (Round 17). max-w moved to
+          the <p> — on the <section> it caps the section's own box
+          (padding included) instead of just the text, which is what made
+          this page look wrong while Estrategia didn't. */}
+      <section className="px-6 md:pl-[297px] md:pr-[38px] py-16 md:py-24">
+        <p className="max-w-[676px] text-[32px] md:text-[52px] leading-[1.3] md:leading-[60px] text-azul-1 font-bold">
           Las sub-marcas de NovaVenta organizan las distintas expresiones del
           ecosistema bajo una lógica común, permitiendo diferenciar canales,
           negocios y servicios sin perder la relación con la master brand.

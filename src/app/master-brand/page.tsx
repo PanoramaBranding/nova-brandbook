@@ -102,9 +102,17 @@ export default function MasterBrandPage() {
           528:1242, Round 17): same shared pl-297/pr-38 as Estrategia's own
           Quote, just longer text (kept at max-w-905, which happens to be
           exactly what's left over — 1240-297-38 — rather than removing the
-          cap, so line length doesn't grow unbounded on very wide monitors). */}
-      <section className="px-6 md:pl-[297px] md:pr-[38px] py-16 md:py-24 max-w-[905px]">
-        <p className="text-[32px] md:text-[52px] leading-[1.2] md:leading-[60px] text-azul-1 font-bold">
+          cap, so line length doesn't grow unbounded on very wide monitors).
+          max-w lives on the <p>, not the <section> — putting it on the
+          section itself (as briefly happened here) caps the section's
+          total box at 905px, swallowing the 297+38 padding out of that
+          budget and leaving only ~570px for the actual text, with the
+          section sitting short of the real content width instead of
+          filling it. Confirmed as the reason Master Brand/Aplicaciones/
+          Submarca looked wrong while Estrategia (built right from the
+          start) didn't. */}
+      <section className="px-6 md:pl-[297px] md:pr-[38px] py-16 md:py-24">
+        <p className="max-w-[905px] text-[32px] md:text-[52px] leading-[1.2] md:leading-[60px] text-azul-1 font-bold">
           Una marca evoluciona con la forma en que las personas se relacionan
           con ella. NovaVenta responde a ese cambio con una identidad más
           simple, clara y flexible.
