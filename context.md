@@ -1895,3 +1895,58 @@ seems.
         already correctly did. Restructured to match; also corrected the
         gap between these blocks (48px coded → confirmed 64px).
       - All verified live via screenshot after deploy, not just built.
+
+    - **Same-day follow-up: Sofia sent 15 more Figma links in one message,
+      covering Assets 3.4-3.11 and Master Brand's mobile Contenidos block.**
+      Each fetched fresh via `get_design_context` and checked against the
+      live page before touching anything. 11 confirmed real mismatches
+      fixed:
+      1. **Real bug, not a Figma drift**: `ContentsToc.tsx`'s mobile
+         "Descargar assets" showed 2 buttons at once. Root cause: `Button`'s
+         own base classes hard-code `inline-flex`; passing `"hidden
+         md:inline-flex"` as an override className on the same element is a
+         known Tailwind footgun — which utility wins depends on generated
+         stylesheet order, not class-list order, and `inline-flex` won here
+         (confirmed via `computedDisplay`, not assumed). Fixed by wrapping
+         each `<Button>` in a plain `hidden md:block` / `md:hidden` div
+         instead of overriding display on the Button itself.
+      2. 3.4 Uso del color (558:3249): dividers between each contrast
+         example were missing entirely — added.
+      3. 3.4 (558:3347): a whole subsection, "Añadir colores a la paleta
+         cromática", didn't exist in code at all — added with its image.
+      4. 3.5 Fuentes tipográficas (558:3355): button was beside the intro
+         text, should be below it; specimen sizes were 80/40/28px, real
+         spec is 128/64/36px; the weight table repeated "Plus Jakarta Sans"
+         per row instead of once on the left, samples were 28px not 32px.
+      5. 3.6 Jerarquías (558:3402): H1 100→160px, H2 64→80px, number-label
+         gap 24→52px, row gap 40→120px; H4's lorem ipsum was cut to one
+         sentence, completed to match (still placeholder copy either way).
+      6. 3.6 (562:3469): "Escalas de tamaños" subsection didn't exist —
+         added with its image.
+      7. 3.7 Usos incorrectos/tipografía (562:3481): intro paragraph was
+         missing its 2 middle sentences — restored; grid gap 24→12px.
+      8. 3.8 Estilo fotográfico (576:3649/3673/3701): "Prompt Maestro"
+         boxes were 1 column, Figma flows them into 2 — used CSS
+         `columns-2` (not a hand-split string; Figma's own split is just a
+         word-wrap artifact of a fixed-width box, not curated content), and
+         fixed padding 60px→114px.
+      9. 3.8 (574:3575 confirmed the real order): "Usos incorrectos" was
+         last in the section; Figma has it right after the 3 lifestyle
+         categories, before "Producto en contexto"/"Render 3D" — moved.
+      10. 3.10 Sistema iconográfico (578:4002): "Descargar íconos" button
+          didn't exist; the reference image was fixed at 180px instead of
+          the confirmed 289px (paired with an 832px image, summing to
+          exactly the page's 1135px content column) — both fixed.
+      11. 3.11 Sistema de tags: `tags-navegacion.png` and
+          `tags-promocionales.png` were swapped with each other (opened
+          both files directly and compared to Figma's screenshots to
+          confirm, rather than trusting the code's own labels) — swapped
+          back on disk.
+      - Everything verified with `npx tsc --noEmit`, `npm run build`, and
+        `screenshot.mjs`/live DOM checks per item (not just built) before
+        committing. One node (578:4019, the second "3.9 Sistema
+        Iconográfico" duplicate frame Sofia flagged as "le falta título y
+        texto") was intentionally **not** changed — Round 9 already merged
+        this duplicate Figma frame's images into one section with the
+        title/description shown once, a deliberate decision, not a bug;
+        flagged back to Sofia rather than silently reversing it.
