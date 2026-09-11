@@ -1992,3 +1992,12 @@ seems.
       comparison against the one page built correctly. Moved max-w to the
       `<p>` on all 3, matching Estrategia; verified via screenshot on all
       4 pages side-by-side this time before shipping.
+
+    - **Same-day follow-up: Sofia asked to bring the "frase" module's left
+      inset down from 297px to 220px, and to include Assets' own intro
+      paragraph too** (which isn't literally a Figma "Quote" symbol
+      instance like the other 4, but she confirmed she treats it as the
+      same module). Applied `pl-[220px]` to all 5 pages — a deliberate
+      departure from Figma's own confirmed 297px (node 528:1242), same
+      class of intentional deviation as the nav/footer spacing changes.
+      Verified all 5 side-by-side via screenshot before shipping.
