@@ -1839,3 +1839,24 @@ seems.
       `rsvg-convert`/etc. available in this environment. Verified both
       `<link rel="icon">` tags are present and correct in the rendered
       `<head>` and that `/icon.svg` renders as expected before committing.
+
+    - **Same-day follow-up: Sofia pointed at a specific new Figma node
+      (`2073:915`) and asked to review Home.** Fetched it fresh plus the
+      sidebar's matching "05 active" state (Menu v1 "Variante 6", node
+      `2046:950`, via `get_metadata` on the "Componentes" section first to
+      find it) — both confirm Sub-marcas' 3 subsections are grouped
+      ("Externas": 5.1/5.2, "Internas": 5.3), not the flat list the site had.
+      Fixed in `nav-data.ts` (same `NavGroup[]` shape Assets already uses),
+      which `Nav.tsx` and Home's `IndexEntries` both already render
+      generically — no other code changes needed. Verified on both surfaces
+      (sidebar accordion, Home index) via screenshot.
+    - **Found something NOT yet built, flagged rather than assumed**: node
+      `2073:915` also has a big 96px "Sub-Marcas" divider title + its own
+      horizontal rule sitting directly above the 05 row — a treatment 01-04
+      don't get anywhere in the index (they're just a plain thin divider +
+      the page name at normal heading size). High node-id numbers (`2073:*`)
+      match the same range as Sofia's own recent additions (her mobile-menu
+      mockup nodes were `2047:*`/`2062:*`), so this is likely something she
+      added herself recently — but since it'd be a one-off visual treatment
+      applied to only one of the 5 index entries, asked her to confirm
+      intent before building it rather than assuming either way.
