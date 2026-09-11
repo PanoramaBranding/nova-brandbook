@@ -192,9 +192,25 @@ export default function PageHero({
         <p>Brand Book Guidelines</p>
         <p>2026</p>
       </Link>
-      <h1 className="flex flex-col md:flex-row items-start gap-3 md:gap-[123px] text-white font-bold text-[56px] md:text-[96px]">
+      {/* `clamp()`, not a flat 96px: at in-between widths (~768-1024px,
+          confirmed 2026-09-10) a flat 96px title overflows the viewport —
+          nothing steps down between the 56px mobile size and 96px desktop.
+          Scales from ~56px at 768px wide up to exactly 96px at ~1333px+, so
+          normal desktop viewports (1440/1920, already pixel-verified) are
+          unchanged. */}
+      <h1 className="flex flex-col md:flex-row items-start gap-3 md:gap-[123px] text-white font-bold text-[56px] md:text-[clamp(3.5rem,1rem+6vw,6rem)]">
         <span className="leading-[1.1] md:leading-[120px]">{number}</span>
-        <span className="leading-[1.1] md:leading-[96px]">
+        {/* `min-w-0 break-words`: a flex item's default `min-width:auto`
+            refuses to shrink below its longest unbroken word — confirmed at
+            768px on 04's one-line title ("Aplicaciones master brand"),
+            where "Aplicaciones" alone stayed wider than the clamped column
+            and overflowed past the viewport even after the font-size fix
+            above (`break-words` alone measurably did not change the box —
+            checked via getComputedStyle, not just a screenshot). `min-w-0`
+            overrides that default so the flex item actually shrinks to the
+            space flexbox gives it; `break-words` then lets the now-narrower
+            box wrap "Aplicaciones" mid-word instead of overflowing. */}
+        <span className="leading-[1.1] md:leading-[96px] min-w-0 break-words">
           {Array.isArray(titleLines) ? (
             <>
               {titleLines[0]}
