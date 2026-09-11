@@ -97,7 +97,7 @@ function AplicacionesHeading() {
 
 function DesktopGallery() {
   return (
-    <div className="hidden md:flex flex-col gap-[34px] items-end w-full md:max-w-[1135px]">
+    <div className="hidden md:flex flex-col gap-[34px] items-end w-full">
       <div className="flex flex-col gap-[34px] items-end w-full">
         <CoverImg src={`${D}/nova-caja-1.png`} alt="" aspect={2528 / 1680} className="w-full" />
         <CoverImg src={`${D}/caja2-1.png`} alt="" aspect={791 / 988} className="w-[791px]" />
@@ -197,7 +197,11 @@ export default function AplicacionesPage() {
         titleLines="Aplicaciones master brand"
       />
 
-      <section className="px-6 md:px-[38px] py-16 md:py-24 max-w-[676px]">
+      {/* pl-[297px] on desktop, matching the "frase" module's confirmed
+          pl-297/pr-38 site-wide (Sofia's explicit ask, Round 17, checked
+          against node 528:1242) — same fixed left inset as Estrategia/
+          Master Brand's Quote, not a plain 38px page margin. */}
+      <section className="px-6 md:pl-[297px] md:pr-[38px] py-16 md:py-24 max-w-[676px]">
         <p className="text-[32px] md:text-[52px] leading-[1.3] md:leading-[60px] text-azul-1 font-bold">
           Las aplicaciones de la master brand muestran cómo NovaVenta se
           implementa en diferentes formatos y puntos de contacto, manteniendo
@@ -211,7 +215,15 @@ export default function AplicacionesPage() {
         </p>
       </section>
 
-      <section id="aplicaciones-master-brand" className="px-6 md:px-[38px] pb-16 md:pb-24 scroll-mt-8">
+      {/* pl-67/pr-38, not symmetric px-38 — confirmed via get_design_context
+          on node 2045:601/602 (Round 17): its own content frame sits offset
+          67px from the sidebar and 38px from the right edge, same as every
+          other page's body content. Combined with DesktopGallery's old
+          `md:max-w-[1135px]` cap (removed below), the old symmetric padding
+          left a growing, unwanted gap on the right at wider viewports
+          instead of the gallery filling the real available width — that's
+          what Sofia was seeing. */}
+      <section id="aplicaciones-master-brand" className="px-6 md:pl-[67px] md:pr-[38px] pb-16 md:pb-24 scroll-mt-8">
         <div className="flex flex-col gap-8">
           <AplicacionesHeading />
           <DesktopGallery />

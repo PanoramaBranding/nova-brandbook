@@ -208,7 +208,9 @@ export default function SubmarcaPage() {
         titleLines="Sub-marcas"
       />
 
-      <section className="px-6 md:px-[38px] py-16 md:py-24 max-w-[676px]">
+      {/* pl-[297px] on desktop — same site-wide "frase" module fix as
+          Estrategia/Master Brand/Aplicaciones (Round 17). */}
+      <section className="px-6 md:pl-[297px] md:pr-[38px] py-16 md:py-24 max-w-[676px]">
         <p className="text-[32px] md:text-[52px] leading-[1.3] md:leading-[60px] text-azul-1 font-bold">
           Las sub-marcas de NovaVenta organizan las distintas expresiones del
           ecosistema bajo una lógica común, permitiendo diferenciar canales,
