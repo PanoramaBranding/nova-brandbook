@@ -4,6 +4,13 @@ import PageHero from "@/components/PageHero";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
 import ContentsToc, { type TocItem } from "@/components/ContentsToc";
+import {
+  type Swatch,
+  PRINCIPAL,
+  SECONDARY,
+  COMPLEMENTARY,
+  FONT_WEIGHTS,
+} from "@/lib/brand-data";
 
 export const metadata: Metadata = { title: "03 · Brand Assets" };
 
@@ -23,65 +30,6 @@ const TOC: TocItem[] = [
   { number: "3.11", label: "Sistema de tags", id: "sistema-de-tags" },
   { number: "3.12", label: "Pilares de diseño", id: "pilares-de-diseno" },
   { number: "3.13", label: "Sistema reticular", id: "sistema-reticular" },
-];
-
-type Swatch = {
-  name: string;
-  cmyk: string;
-  rgb: string;
-  hex: string;
-  pantone: string;
-  // Figma art-directs text color per swatch (not a computed contrast rule) —
-  // confirmed via get_design_context on nodes 556:2817/556:2962: dark/mid
-  // swatches get white text, but the palest ones (Azul IV, the Azul I tint,
-  // Niños) get a specific brand color instead of a generically dark one.
-  textTone: "white" | "azul3" | "azul1";
-};
-
-// Copy y valores de color extraídos de Figma (nodo 214:273); colores
-// principal/secundarios/complementarios re-verificados directamente via
-// get_design_context el 2026-09-09 (nodos 556:2817, 556:2962).
-
-const PRINCIPAL: Swatch = {
-  name: "Azul I",
-  cmyk: "87/50/0/0",
-  rgb: "43/125/246",
-  hex: "#2B7DF6",
-  pantone: "285 C",
-  textTone: "white",
-};
-
-const SECONDARY: Swatch[] = [
-  { name: "Azul III", cmyk: "100/81/39/29", rgb: "8/51/94", hex: "#08335E", pantone: "295 C", textTone: "white" },
-  { name: "Azul II", cmyk: "93/57/0/0", rgb: "12/103/193", hex: "#0C67C1", pantone: "2145 C", textTone: "white" },
-  { name: "Azul IV", cmyk: "47/10/0/0", rgb: "156/206/255", hex: "#9CCEFF", pantone: "2141 C", textTone: "azul3" },
-  // Nombrado "Azul I" en Figma, duplicado con el principal — ver nota en PLAN.md.
-  { name: "Azul (tinte claro)", cmyk: "19/0/0/0", rgb: "220/239/255", hex: "#DCEFFF", pantone: "545 C", textTone: "azul1" },
-];
-
-const COMPLEMENTARY: Swatch[] = [
-  { name: "Bienestar", cmyk: "11/55/0/0", rgb: "227/151/202", hex: "#E397CA", pantone: "2044 C", textTone: "white" },
-  { name: "Hogar", cmyk: "0/84/76/0", rgb: "232/82/66", hex: "#E85242", pantone: "178 C", textTone: "white" },
-  { name: "Mascotas", cmyk: "0/52/93/0", rgb: "240/152/55", hex: "#F09837", pantone: "137 C", textTone: "white" },
-  { name: "Niños", cmyk: "7/3/61/0", rgb: "252/241/142", hex: "#FCF18E", pantone: "127 C", textTone: "azul1" },
-  { name: "Despensa", cmyk: "67/7/89/0", rgb: "118/177/86", hex: "#76B156", pantone: "360 C", textTone: "white" },
-  { name: "Aseo Hogar", cmyk: "799/49/0/0", rgb: "65/132/245", hex: "#4184F5", pantone: "2172 C", textTone: "white" },
-  { name: "Personal Care", cmyk: "40/50/0/0", rgb: "190/143/247", hex: "#BE8FF7", pantone: "2567 C", textTone: "white" },
-  // Figma's own HEX label for this swatch says "#2B7DF6" (Azul I's hex) but
-  // that's an internal copy-paste error: the swatch's actual fill, and its
-  // own listed RGB (228/38/48) and CMYK both agree on a red/orange, not
-  // blue. Using the color that's actually consistent across 3 of the 4
-  // values shown, not the one outlier label.
-  { name: "HotDays", cmyk: "0/100/83/0", rgb: "228/38/48", hex: "#E42630", pantone: "2347 C", textTone: "white" },
-];
-
-const FONT_WEIGHTS: { label: string; weight: number }[] = [
-  { label: "Light", weight: 300 },
-  { label: "Regular", weight: 400 },
-  { label: "Medium", weight: 500 },
-  { label: "Semibold", weight: 600 },
-  { label: "Bold", weight: 700 },
-  { label: "ExtraBold", weight: 800 },
 ];
 
 const TYPO_MISUSE = [
