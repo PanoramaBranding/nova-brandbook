@@ -311,13 +311,12 @@ public/brand/           downloaded Figma assets, one subfolder per page/use
    shows `PanoramaBranding` as a real collaborator (pull:true/push:false/
    admin:false) — the invite was accepted, and `gh api
    .../invitations` returns empty (nothing pending).
-0b. **GitHub account email vs. Vercel/git identity** — still not checked;
-   `gh`'s own token doesn't expose another account's private email. Sofia
-   still needs to check `github.com/settings/emails` herself to confirm the
-   `soysoff` GitHub account's verified email matches
-   `sofia@panoramabranding.co`. Lower priority now that auto-deploy is
-   confirmed working without this being checked — only matters if deploys
-   start silently failing on a commit-author mismatch.
+0b. ~~GitHub account email vs. Vercel/git identity~~ — **closed 2026-09-11:**
+   Sofia confirmed directly that `soysoff` is her own account (Panorama
+   Branding), not a separate/unverified identity — moot now anyway since
+   auto-deploy already works end-to-end (Round 17). Not confirmed which
+   *email* the account uses, but that only matters if deploys start
+   silently failing on a commit-author mismatch.
 1. ~~Master Brand — needs the same rigorous re-audit Assets just got~~ —
    **done in Round 7:** fetched `get_design_context` fresh on both the
    mobile frame (`543:519`) and the desktop node (`99:283`). Desktop turned
@@ -1808,3 +1807,20 @@ seems.
       typography fix, and the photography rebuild. All verified live on
       `nova-brandbook-nine.vercel.app` after each push, not just built
       locally.
+
+    - **Same-day follow-up: Sofia confirmed the mobile menu "esta
+      perfecto"** (no further changes requested), confirmed `soysoff` is her
+      own GitHub identity (closes pending 0b above), and asked exactly what
+      to send the design team — surfaced two content-bug items that were in
+      this file's older "Known content bugs" list but missing from
+      `KNOWN_CONTENT_ISSUES`/`brand.json` (added 2026-09-09/07 originally,
+      before that array existed): the "Brand Boook Guidelines" typo (baked
+      into every Hero instance site-wide) and Estrategia's 4th-stage ("Why")
+      heading text bug (still reads as a duplicate of stage 3's heading).
+      Added both to `src/lib/brand-data.ts` so `/brand.json` now carries the
+      complete list, not a subset — verified via `get https://nova-
+      brandbook-nine.vercel.app/brand.json` after deploy. Also ran
+      `screenshot.mjs` against the live `/llms.txt` and `/brand.json` URLs
+      to show Sofia concretely what these look like (plain text / raw JSON,
+      no visual page — by design, since they're for crawlers/LLMs, not
+      human visitors) rather than just describing them.

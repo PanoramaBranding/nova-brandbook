@@ -98,6 +98,16 @@ export const KNOWN_CONTENT_ISSUES: { topic: string; issue: string }[] = [
       'El archivo de diseño fuente etiqueta dos colores distintos como "Azul I": el color principal (#2B7DF6) y un tono claro sin nombre propio (#DCEFFF). Este sitio usa "Azul I" solo para el principal.',
   },
   {
+    topic: '"Brand Boook Guidelines" (con doble "o")',
+    issue:
+      'El componente "Hero" del archivo fuente tiene ese typo escrito así en cada instancia (Home, Estrategia, Master Brand, Assets, Aplicaciones, Sub-marcas) — no es un error de una sola página. Este sitio usa la ortografía correcta ("Brand Book Guidelines") en todas partes.',
+  },
+  {
+    topic: 'Heading de la etapa 4 "Why" (Brand Tree)',
+    issue:
+      'El texto on-page de esta etapa dice "3 What - Reasons to believe & brand Role" (duplicado literal del heading de la etapa 3) en vez de "4 Why - Why the brand exists". El contenido real de la etapa (Visión: "Acompañamos la vida") sí es correcto — solo el heading está mal. Este sitio usa el número/label correcto.',
+  },
+  {
     topic: "Swatch HotDays",
     issue:
       "El archivo fuente etiqueta el HEX de este color como #2B7DF6 (el de Azul I) por un error de copiado; su color real, confirmado por su fill visual y sus valores CMYK/RGB, es #E42630.",
