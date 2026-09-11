@@ -1950,3 +1950,31 @@ seems.
         this duplicate Figma frame's images into one section with the
         title/description shown once, a deliberate decision, not a bug;
         flagged back to Sofia rather than silently reversing it.
+
+    - **Same-day follow-up: 2 more real bugs, 1 site-wide styling request,
+      2 reports that didn't reproduce.**
+      - **Real bug — Aplicaciones (04) had an unwanted right margin on wide
+        viewports.** Root cause: `DesktopGallery` was capped at a hardcoded
+        `md:max-w-[1135px]`, while its parent section used symmetric
+        `px-38` padding — exactly matched at 1440px canvas width, but at
+        any wider viewport the section's real available width exceeds
+        1135px and the leftover space sat as dead space on the right
+        (confirmed via `get_design_context` on node 2045:601/602: the real
+        content frame is offset `pl-67/pr-38`, same as every other page,
+        not a fixed-width box). Removed the cap, fixed the section's own
+        padding to `pl-67/pr-38` — now scales correctly at any width.
+      - **Sofia's request — the Quote module's `pl-[297px]/pr-[38px]`
+        (confirmed on node 528:1242, applied to Estrategia/Master Brand
+        earlier this round) now also applies to Aplicaciones' and
+        Submarca's own "frase" intro blocks**, per her explicit ask to make
+        it consistent on every page that has one.
+      - **Investigated, could not reproduce**: Assets' mobile "Contenidos"
+        two-button report (checked live — only one button renders; this
+        was already fixed by the `ContentsToc` change earlier this round,
+        she likely caught it before that deploy finished) and Sistema
+        Iconográfico's 2 images "not showing" on mobile (a dedicated
+        headless check at 390px shows both loading and rendering
+        correctly — the Browser pane's own `window.scrollTo` silently
+        no-op'd during this check, a repeat of the pane's known scroll
+        quirk documented elsewhere in this file; switched to a one-off
+        Puppeteer script instead of trusting that reading).
