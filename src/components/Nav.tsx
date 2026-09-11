@@ -123,7 +123,11 @@ export default function Nav() {
           shifting the icon's visual top-right anchor. `mix-blend-difference`
           (not an invented backdrop circle) keeps a plain white icon
           readable over both the Hero's photo and plain white page content
-          further down, without a background Figma never specified. */}
+          further down, without a background Figma never specified.
+          2026-09-11: the same 2 bars now morph into an X via `transform`
+          (translate + rotate) instead of being swapped for an unrelated SVG
+          path — Sofia's own request; no Figma mockup exists for either the
+          X or the morph (per Round 13), this is her explicit design. */}
       <button
         type="button"
         onClick={() => setMobileOpen((v) => !v)}
@@ -132,31 +136,59 @@ export default function Nav() {
         aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
         className={`md:hidden fixed top-8 right-8 z-40 pb-3 pl-3 text-white ${mobileOpen ? "" : "mix-blend-difference"}`}
       >
-        {mobileOpen ? (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
-          </svg>
-        ) : (
-          <span className="flex flex-col gap-[6px] w-10">
-            <span className="h-0.5 w-full bg-white" />
-            <span className="h-0.5 w-full bg-white" />
-          </span>
-        )}
+        <span className="relative block w-10 h-[10px]">
+          <span
+            className={`absolute inset-x-0 top-0 h-0.5 bg-white transition-transform duration-300 ease-out ${
+              mobileOpen ? "translate-y-1 rotate-45" : "translate-y-0 rotate-0"
+            }`}
+          />
+          <span
+            className={`absolute inset-x-0 top-0 h-0.5 bg-white transition-transform duration-300 ease-out ${
+              mobileOpen ? "translate-y-1 -rotate-45" : "translate-y-2 rotate-0"
+            }`}
+          />
+        </span>
       </button>
+      {/* Mobile panel — unfolds downward from the top instead of fading in
+          place (Sofia's own mockup, Figma nodes 2047:1250/2062:899 — no
+          Figma spec exists for this state either, same "her explicit
+          design" caveat as the button above). `translate-y` on an inner
+          `h-full` wrapper inside a fixed, viewport-height, `overflow-hidden`
+          outer div: closed, the inner sits translated fully above the
+          clipped area (invisible, `pointer-events-none` on the outer so it
+          can't intercept taps on the page underneath); open, it slides down
+          into place. The top row swaps the Hero's own "Brand Book
+          Guidelines / 2026" text for the Nova logo while open, per node
+          `2062:899`'s before/after — the Hero's own top bar underneath is
+          untouched, only this panel's own copy changes. Logo links home. */}
       <div
         id="mobile-nav-panel"
         aria-hidden={!mobileOpen}
-        className={`md:hidden fixed inset-0 z-30 bg-azul-1 overflow-y-auto px-6 py-8 transition-opacity duration-300 ${
-          mobileOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        className={`md:hidden fixed inset-x-0 top-0 h-svh z-30 overflow-hidden ${
+          mobileOpen ? "" : "pointer-events-none"
         }`}
       >
-        <NavLinks
-          pathname={pathname}
-          activeId={activeId}
-          collapsedSlug={collapsedSlug}
-          onToggleCollapse={setCollapsedSlug}
-          onNavigate={() => setMobileOpen(false)}
-        />
+        <div
+          className={`h-full overflow-y-auto bg-azul-1 px-8 pt-8 pb-8 transition-transform duration-500 ease-out ${
+            mobileOpen ? "translate-y-0" : "-translate-y-full"
+          }`}
+        >
+          <Link
+            href="/"
+            onClick={() => setMobileOpen(false)}
+            aria-label="Ir a inicio"
+            className="inline-block mb-16 w-16"
+          >
+            <Image src="/brand/nova-logo-white.svg" alt="NovaVenta" width={64} height={60} />
+          </Link>
+          <NavLinks
+            pathname={pathname}
+            activeId={activeId}
+            collapsedSlug={collapsedSlug}
+            onToggleCollapse={setCollapsedSlug}
+            onNavigate={() => setMobileOpen(false)}
+          />
+        </div>
       </div>
     </>
   );

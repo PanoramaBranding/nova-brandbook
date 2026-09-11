@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 /**
  * Page header (Figma "Hero 2"/"Hero 3" desktop, "Hero 2 Mobile" mobile —
  * node 509:725/528:1227/551:2723 desktop, 529:1846/543:522 mobile). Real
@@ -183,10 +185,13 @@ export default function PageHero({
           }}
         />
       )}
-      <div className="p-4 md:p-0 flex flex-col md:flex-row md:items-center md:justify-between text-white gap-5 md:gap-0 text-[20px] md:text-[32px] font-normal">
+      <Link
+        href="/"
+        className="p-4 md:p-0 flex flex-col md:flex-row md:items-center md:justify-between text-white gap-5 md:gap-0 text-[20px] md:text-[32px] font-normal"
+      >
         <p>Brand Book Guidelines</p>
         <p>2026</p>
-      </div>
+      </Link>
       <h1 className="flex flex-col md:flex-row items-start gap-3 md:gap-[123px] text-white font-bold text-[56px] md:text-[96px]">
         <span className="leading-[1.1] md:leading-[120px]">{number}</span>
         <span className="leading-[1.1] md:leading-[96px]">

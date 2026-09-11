@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 /**
  * Site footer — Figma "Footer" component, 2 variants (confirmed via
  * get_design_context on both breakpoints: desktop node 528:254
@@ -27,11 +29,9 @@ export default function Footer({
         gray ? "bg-gris-5 md:justify-end" : "justify-between"
       }`}
     >
-      <img
-        src="/brand/footer-mark.svg"
-        alt="NovaVenta"
-        className={`h-[97px] w-auto ${gray ? "md:hidden" : ""}`}
-      />
+      <Link href="/" aria-label="Ir a inicio" className={gray ? "md:hidden" : ""}>
+        <img src="/brand/footer-mark.svg" alt="NovaVenta" className="h-[97px] w-auto" />
+      </Link>
 
       {/* Mobile grouping: "Volver arriba" alone, then Preguntas+2026 paired */}
       <div className="flex flex-col gap-16 items-start text-azul-1 text-[20px] font-medium md:hidden">

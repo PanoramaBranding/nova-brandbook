@@ -17,7 +17,7 @@ export default function Home() {
       <section className="bg-azul-1 flex flex-col justify-between h-svh md:h-screen py-8 md:pt-3 md:pb-9 px-4 md:px-[38px]">
         <div className="text-white text-2xl md:text-[32px] font-normal">
           <div className="flex flex-col gap-6 md:hidden">
-            <p>Brand Book Guidelines</p>
+            <Link href="/">Brand Book Guidelines</Link>
             <div className="flex gap-5">
               <p>Nova</p>
               <p>2026</p>
@@ -26,7 +26,7 @@ export default function Home() {
           <div className="hidden md:flex md:items-center md:justify-between">
             <div className="flex gap-[150px]">
               <p>Nova</p>
-              <p>Brand Book Guidelines</p>
+              <Link href="/">Brand Book Guidelines</Link>
             </div>
             <p>2026</p>
           </div>
