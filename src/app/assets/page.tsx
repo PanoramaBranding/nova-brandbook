@@ -47,7 +47,21 @@ const TYPO_MISUSE = [
 const PHOTO_LIFESTYLE = [
   {
     title: "Situaciones familiares",
-    photos: ["familia-1", "familia-2", "familia-3", "familia-4", "familia-5", "familia-6"],
+    // Real Figma layout (node 574:3638-3645): 1 full-width photo, then 3
+    // equal, then 2 asymmetric (523:373 width ratio) — not a uniform grid.
+    rows: [
+      [{ src: "familia-1", aspect: 791 / 445 }],
+      [
+        { src: "familia-2", aspect: 1672 / 941 },
+        { src: "familia-3", aspect: 1672 / 941 },
+        { src: "familia-4", aspect: 1672 / 941 },
+      ],
+      [
+        { src: "familia-5", aspect: 523 / 295, grow: 523 },
+        { src: "familia-6", aspect: 373 / 210, grow: 373 },
+      ],
+    ] as { src: string; aspect: number; grow?: number }[][],
+    rowGap: "loose" as const,
     body: "La fotografía de marca debe retratar momentos familiares cotidianos desde una mirada cercana, espontánea y optimista. Las escenas deben sentirse reales y habitadas, con familias colombianas en situaciones reconocibles dentro del hogar, como cocinar, desayunar, jugar, cuidar a los niños o compartir alrededor de la mesa. La acción debe ser siempre el punto de partida, evitando poses rígidas o miradas directas a cámara. Los personajes pueden aparecer parcialmente fuera del encuadre o en diferentes planos para reforzar una sensación natural y observacional.\n\nLa iluminación debe combinar luz natural cálida con un tratamiento editorial limpio que mantenga pieles, materiales y colores bien definidos. Los espacios deben incluir objetos cotidianos, textiles, plantas, juguetes, alimentos y elementos decorativos que aporten carácter sin sentirse excesivamente producidos. El color debe ser alegre y controlado, apoyándose principalmente en vestuario, props y detalles del entorno. El resultado final debe sentirse como una fotografía real de vida familiar colombiana, cercana, contemporánea y cuidadosamente dirigida.",
     prompt:
       "Fotografía lifestyle editorial de una familia colombiana en un momento cotidiano dentro del hogar. Escena real, cálida, espontánea y cuidadosamente dirigida. Mostrar una familia que se vea claramente colombiana, con rasgos, tonos de piel y expresiones naturales propios del contexto colombiano. Evitar cualquier apariencia asiática. La escena debe capturar una acción auténtica y reconocible, como desayunar juntos, cocinar, jugar con los niños, compartir la cena, cuidar a un bebé o reír en un espacio íntimo de la casa. La fotografía debe sentirse observacional y cercana, como si la cámara hubiera encontrado el momento. Nada posado. Nada rígido. Los personajes no deben mirar todos a cámara. Deben interactuar entre sí de forma natural, con gestos reales, expresiones genuinas y energía familiar espontánea. Los niños deben verse activos, curiosos y expresivos. El espacio debe sentirse como un hogar colombiano contemporáneo, cálido y vivido, no como un set artificial. Incluir detalles domésticos reales como muebles de madera, cerámica, textiles, plantas, juguetes, frutas, vajilla, mantas, cojines, dibujos infantiles u objetos cotidianos. El entorno debe verse habitado, con pequeñas imperfecciones visuales que aporten verdad. Iluminación cálida y naturalizada, con sensación de luz de ventana combinada con un carácter editorial limpio. Sombras suaves pero visibles. Pieles bien definidas. Color vibrante pero controlado. La paleta debe apoyarse en tonos cálidos y acentos alegres desde el vestuario, los objetos y el entorno. Composición editorial, cercana y orgánica. Puede haber cuerpos parcialmente cortados, objetos entrando en primer plano y diferentes planos de profundidad para reforzar naturalidad. Cámara a nivel humano, con encuadre íntimo y perspectiva realista. Profundidad de campo moderada para conservar lectura del espacio. Estética premium, contemporánea y auténtica. Formato 16:9. Fotografía publicitaria lifestyle de alto nivel. Muy realista. Nada artificial. Nada genérico. Nada stock. Debe sentirse como una campaña fotográfica contemporánea de marca para Colombia, centrada en familia, hogar y cotidianidad.",
@@ -56,7 +70,27 @@ const PHOTO_LIFESTYLE = [
   },
   {
     title: "Situaciones individuales / no familiares",
-    photos: ["individual-1", "individual-2", "individual-3", "individual-4", "individual-5", "individual-6", "individual-7"],
+    // Real Figma layout (node 576:3668-3670): 3 equal, then narrow+wide,
+    // then wide+narrow (332:676 width ratio) — not a uniform grid. Which
+    // specific interchangeable reference photo sits in which slot isn't
+    // semantically meaningful (these are generic style references, not
+    // branded assets), so the existing local files just keep their order.
+    rows: [
+      [
+        { src: "individual-1", aspect: 332 / 371 },
+        { src: "individual-2", aspect: 332 / 371 },
+        { src: "individual-3", aspect: 332 / 371 },
+      ],
+      [
+        { src: "individual-4", aspect: 332 / 371, grow: 332 },
+        { src: "individual-5", aspect: 676 / 371, grow: 676 },
+      ],
+      [
+        { src: "individual-6", aspect: 676 / 371, grow: 676 },
+        { src: "individual-7", aspect: 332 / 371, grow: 332 },
+      ],
+    ] as { src: string; aspect: number; grow?: number }[][],
+    rowGap: "tight" as const,
     body: "La fotografía lifestyle de NovaVenta se centra en personas individuales y en sus momentos cotidianos. Cada escena parte de una acción concreta, como cocinar, comer, descansar, escuchar música o realizar una rutina personal, evitando construir la narrativa alrededor de dinámicas familiares o grupos numerosos.\n\nLa persona debe ser el centro de la composición, acompañada por un entorno doméstico que aporte contexto y personalidad. La iluminación, el color y los objetos de la escena deben reforzar una estética cercana, actual y editorial, manteniendo una sensación espontánea y real.",
     prompt:
       "Fotografía lifestyle editorial centrada en una persona colombiana dentro de un momento cotidiano, íntimo y reconocible. La escena debe sentirse real, espontánea y cuidadosamente dirigida, mostrando a alguien que se vea claramente colombiano, con rasgos, tonos de piel, cabello, actitud y expresiones naturales propios del contexto local. La persona debe estar inmersa en una acción concreta como desayunar sola, cocinar, trabajar desde casa, descansar, escuchar música, hacer ejercicio, leer, arreglarse, organizar su ropa o disfrutar un momento personal. Evitar cualquier apariencia asiática. Nada posado, nada rígido y nada excesivamente perfecto. La expresión debe surgir de la acción y la persona no debe mirar directamente a cámara salvo que la escena realmente lo justifique. El espacio debe sentirse como un hogar colombiano contemporáneo, cálido, creativo y vivido, no como un set artificial. Incluir detalles domésticos reales como muebles de madera, plantas, cerámica, textiles, libros, vajilla, objetos personales, accesorios, frutas, ropa, cojines, arte, pequeños electrodomésticos u objetos cotidianos. La iluminación debe ser direccional y con carácter, como luz natural entrando por una ventana, generando sombras visibles, contraste medio o alto y una sensación editorial limpia. El color debe ser vibrante pero controlado, con acentos claros desde el vestuario y los objetos. La composición debe ser cercana, orgánica y ligeramente imperfecta, con asimetrías, cuerpos parcialmente cortados, objetos entrando desde los bordes y diferentes planos de profundidad. Cámara a nivel humano o ligeramente elevada, con perspectiva realista y profundidad de campo moderada. Formato 16:9. Fotografía publicitaria lifestyle de alto nivel, muy realista, nada genérica, nada stock y nada artificial. Debe sentirse como una campaña contemporánea de marca para Colombia, centrada en identidad personal, rituales cotidianos y una vida doméstica auténtica.",
@@ -65,7 +99,20 @@ const PHOTO_LIFESTYLE = [
   },
   {
     title: "Situaciones con mascotas",
-    photos: ["mascotas-1", "mascotas-2", "mascotas-3", "mascotas-4", "mascotas-5"],
+    // Real Figma layout (node 576:3722-3726): 3 equal, then narrow+wide
+    // (332:676 width ratio) — not a uniform grid.
+    rows: [
+      [
+        { src: "mascotas-1", aspect: 332 / 371 },
+        { src: "mascotas-2", aspect: 332 / 371 },
+        { src: "mascotas-3", aspect: 332 / 371 },
+      ],
+      [
+        { src: "mascotas-4", aspect: 332 / 371, grow: 332 },
+        { src: "mascotas-5", aspect: 676 / 371, grow: 676 },
+      ],
+    ] as { src: string; aspect: number; grow?: number }[][],
+    rowGap: "tight" as const,
     body: "La fotografía con mascotas debe retratar vínculos cotidianos entre personas y animales dentro de entornos reales y cercanos. Las escenas deben partir de interacciones naturales como alimentar, jugar, descansar o compartir un momento en casa, evitando poses forzadas o situaciones excesivamente construidas.\n\nLa luz debe sentirse cálida y natural, con composiciones cercanas que permitan leer tanto la expresión de la persona como el comportamiento de la mascota. El entorno debe acompañar la escena sin competir con ella y mantener una estética doméstica, contemporánea y creíble.",
     prompt:
       "Fotografía lifestyle editorial de una mascota dentro de un hogar colombiano contemporáneo, cálido y vivido. La escena debe mostrar a un perro o gato compartiendo de forma natural con uno o dos humanos colombianos, con rasgos y tonos de piel propios del contexto colombiano, en un momento cotidiano, afectuoso y espontáneo. La interacción debe sentirse real y observacional, por ejemplo recibiendo una caricia, esperando un snack, descansando junto a su humano, compartiendo el sofá, acompañando en la cocina o participando en una rutina diaria dentro de casa. Los empaques o productos que se quieran promocionar deben estar presentes dentro de la escena y conservarse con total fidelidad visual, pero deben integrarse de manera natural dentro del contexto y nunca convertirse en el primer plano ni en el centro absoluto de la composición. La relación entre la mascota, el humano y la situación cotidiana debe seguir siendo el foco principal. La imagen debe sentirse como una campaña fotográfica premium pero auténtica, con composición cercana, orgánica y ligeramente casual. Iluminación cálida y expresiva, idealmente con mezcla de luz natural de ventana y luz directa tipo flash editorial o rebote controlado, generando contraste suave, sombras visibles y una atmósfera íntima. El espacio debe sentirse verdaderamente habitado, con muebles de madera, textiles, plantas, cerámica, libros, cojines, mantas, vajilla y detalles domésticos reales. Nada posado, nada artificial, nada stock. Color vibrante pero controlado, textura realista en piel, pelo y materiales, estética contemporánea, sensible y emocional. Formato 16:9. Fotografía publicitaria lifestyle de alto nivel, muy realista, enfocada en hogar, mascotas y cotidianidad colombiana.",
@@ -136,9 +183,53 @@ function Fig({ src, alt, aspect }: { src: string; alt: string; aspect: number })
 }
 
 // Real reference photos generated for the brand (Figma nodes 574:3575,
-// 578:3976) — grid arrangement is a faithful-but-simplified stand-in for
-// Figma's specific asymmetric crops per photo, not a pixel clone of every
-// individual crop offset.
+// 578:3976). `PhotoRow`/`ROW_GAP` reproduce Figma's actual per-gallery row
+// composition (full-width photo, 3-equal, or asymmetric pairs — re-fetched
+// 2026-09-11, Round 17), which a uniform 3-col wrap never matched; `PhotoGrid`
+// stays for the 2 galleries that genuinely are uniform (Render 3D, Usos
+// incorrectos — both exactly 3 equal items in Figma too). Neither attempts
+// Figma's exact per-photo crop-zoom insets (e.g. a photo shifted -50% and
+// scaled 198% to select part of itself) — those are a further level of
+// fidelity than the row/grouping structure this fixes; flag for a closer
+// look if that specific gap matters later.
+function PhotoRow({
+  items,
+}: {
+  items: { src: string; aspect: number; grow?: number }[];
+}) {
+  return (
+    <div className="flex flex-col md:flex-row gap-3">
+      {items.map((item) => (
+        <div
+          key={item.src}
+          className="w-full min-w-0"
+          style={{ flex: `${item.grow ?? 1} 1 0px` }}
+        >
+          <Fig src={`/brand/assets/foto/${item.src}.png`} alt="" aspect={item.aspect} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const ROW_GAP = { tight: "gap-3", loose: "gap-8" } as const;
+
+function PhotoRows({
+  rows,
+  gap = "tight",
+}: {
+  rows: { src: string; aspect: number; grow?: number }[][];
+  gap?: keyof typeof ROW_GAP;
+}) {
+  return (
+    <div className={`flex flex-col ${ROW_GAP[gap]}`}>
+      {rows.map((row, i) => (
+        <PhotoRow key={i} items={row} />
+      ))}
+    </div>
+  );
+}
+
 function PhotoGrid({
   photos,
   defaultAspect = 1672 / 941,
@@ -487,7 +578,7 @@ export default function AssetsPage() {
                     <p className="text-azul-3/80 leading-6 md:w-1/2">{col1}</p>
                     <p className="text-azul-3/80 leading-6 md:w-1/2">{col2}</p>
                   </div>
-                  <PhotoGrid photos={cat.photos} />
+                  <PhotoRows rows={cat.rows} gap={cat.rowGap} />
                   <PromptBox label="Prompt Maestro" text={cat.prompt} />
                   <PromptBox label="Negative Prompt" text={cat.negative} narrow />
                 </div>
@@ -517,13 +608,24 @@ export default function AssetsPage() {
                 fotografía rígida de exhibición.
               </p>
             </div>
-            <PhotoGrid
-              photos={[
-                { src: "producto-contexto-1", aspect: 1448 / 1086 },
-                { src: "producto-contexto-2", aspect: 1536 / 1024 },
-                { src: "producto-contexto-3", aspect: 1122 / 1402 },
-                { src: "producto-contexto-4", aspect: 1122 / 1402 },
-                { src: "producto-contexto-5", aspect: 1122 / 1402 },
+            {/* Real Figma layout (node 576:3775/3771): 2 equal, then
+                narrow+wide+narrow (332:390:332 width ratio) — not a
+                uniform grid. The middle photo's own aspect here is the
+                Figma display box's shape (~390/371, near-square), not
+                necessarily the source file's native aspect — object-cover
+                crops to whatever box it's given either way. */}
+            <PhotoRows
+              gap="tight"
+              rows={[
+                [
+                  { src: "producto-contexto-1", aspect: 1448 / 1086 },
+                  { src: "producto-contexto-2", aspect: 1536 / 1024 },
+                ],
+                [
+                  { src: "producto-contexto-3", aspect: 332 / 371, grow: 332 },
+                  { src: "producto-contexto-4", aspect: 390 / 371, grow: 390 },
+                  { src: "producto-contexto-5", aspect: 332 / 371, grow: 332 },
+                ],
               ]}
             />
           </div>
@@ -606,25 +708,29 @@ export default function AssetsPage() {
           el espacio necesario para integrar tipografía, tags, precios o
           producto sin interferir con la lectura principal de la imagen.
         </SectionHeading>
-        <div className="flex flex-col gap-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {/* Row2's real gap (node 578:3994) is 92px, not a plain grid-cols-2
+            50/50 split — the two photos are 676px/367px (≈65/35), re-fetched
+            fresh 2026-09-11 (Round 17). Outer gap between the two row groups
+            is also 32px in Figma, not 24px. */}
+        <div className="flex flex-col gap-8">
+          <div className="flex flex-col md:flex-row gap-3">
             {[
               { src: "uso-foto-1", label: "Fotografía Lifestyle completa + texto" },
               { src: "uso-foto-2", label: "Fotografía Lifestyle + contenedor" },
               { src: "uso-foto-3", label: "Fotografía producto render 3D" },
             ].map((item) => (
-              <div key={item.src} className="flex flex-col gap-3">
+              <div key={item.src} className="flex-1 min-w-0 flex flex-col gap-3">
                 <Fig src={`/brand/assets/foto/${item.src}.png`} alt={item.label} aspect={1} />
                 <p className="text-azul-3/80">{item.label}</p>
               </div>
             ))}
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="flex flex-col gap-3">
+          <div className="flex flex-col md:flex-row gap-[92px]">
+            <div className="min-w-0 flex flex-col gap-3" style={{ flex: "676 1 0px" }}>
               <Fig src="/brand/assets/foto/uso-foto-4.png" alt="Fotografía Lifestyle con resalte de producto" aspect={2099 / 1564} />
               <p className="text-azul-3/80">Fotografía Lifestyle con resalte de producto</p>
             </div>
-            <div className="flex flex-col gap-3">
+            <div className="min-w-0 flex flex-col gap-3" style={{ flex: "367 1 0px" }}>
               <Fig src="/brand/assets/foto/uso-foto-5.png" alt="Fotografía de producto render 3D con tags" aspect={967 / 1023} />
               <p className="text-azul-3/80">Fotografía de producto render 3D con tags</p>
             </div>
