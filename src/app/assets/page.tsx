@@ -304,8 +304,15 @@ export default function AssetsPage() {
         titleLines={["Brand", "Assets"]}
       />
 
-      <section className="px-6 md:px-[38px] py-16 md:py-24 max-w-[905px]">
-        <p className="text-[32px] md:text-[52px] leading-[1.2] md:leading-[60px] text-azul-1 font-bold">
+      {/* Same "frase" module treatment as Estrategia/Master Brand/
+          Aplicaciones/Submarca — pl-[220px] on desktop (Sofia's ask,
+          2026-09-11), max-w on the <p> not the <section> (see those pages'
+          own comments for why putting it on the section broke them). This
+          page's own intro paragraph isn't literally the Figma "Quote"
+          symbol instance the others use, but Sofia treats it as the same
+          module — asked explicitly to include it here too. */}
+      <section className="px-6 md:pl-[220px] md:pr-[38px] py-16 md:py-24">
+        <p className="max-w-[905px] text-[32px] md:text-[52px] leading-[1.2] md:leading-[60px] text-azul-1 font-bold">
           Los brand assets reúnen los recursos visuales que construyen la
           identidad de NovaVenta.
           <br />

@@ -122,14 +122,13 @@ export default function EstrategiaPage() {
         titleLines={["Brand", "Tree"]}
       />
 
-      {/* pl-[297px] on desktop, not the page's usual 38px — confirmed via
-          get_design_context on node 509:919 (Round 17): the Quote
-          component's left inset is a distinct, much larger value than the
-          rest of the page's body content, unrelated to centering (Master
-          Brand's own Quote instance, node 528:1242, uses the identical
-          pl-297/pr-38 — same shared pattern, just a longer text that grows
-          to fill the row instead of stopping at a fixed 676px). */}
-      <section className="px-6 md:pl-[297px] md:pr-[38px] py-16 md:py-24">
+      {/* pl-[220px] on desktop, not the page's usual 38px. Figma's own
+          Quote component (node 509:919/528:1242) confirms pl-297, but
+          Sofia asked to bring it in to 220px site-wide (2026-09-11) — a
+          deliberate departure from Figma, same as the nav/footer spacing
+          deviations elsewhere. Don't "correct" this back to 297 without
+          re-confirming with her. */}
+      <section className="px-6 md:pl-[220px] md:pr-[38px] py-16 md:py-24">
         <p className="max-w-[676px] text-[32px] md:text-[52px] leading-[1.3] md:leading-[60px] text-azul-1 font-bold">
           “Las marcas no entran a Nova, habitan en ella. Y el cliente no visita
           Nova, está en Nova.”

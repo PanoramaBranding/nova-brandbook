@@ -97,21 +97,16 @@ export default function MasterBrandPage() {
         titleLines={["Master", "Brand"]}
       />
 
-      {/* pl-[297px] on desktop, not the page's usual 38px — confirmed via
-          get_design_context on the Quote component instance itself (node
-          528:1242, Round 17): same shared pl-297/pr-38 as Estrategia's own
-          Quote, just longer text (kept at max-w-905, which happens to be
-          exactly what's left over — 1240-297-38 — rather than removing the
-          cap, so line length doesn't grow unbounded on very wide monitors).
-          max-w lives on the <p>, not the <section> — putting it on the
-          section itself (as briefly happened here) caps the section's
-          total box at 905px, swallowing the 297+38 padding out of that
-          budget and leaving only ~570px for the actual text, with the
-          section sitting short of the real content width instead of
-          filling it. Confirmed as the reason Master Brand/Aplicaciones/
-          Submarca looked wrong while Estrategia (built right from the
-          start) didn't. */}
-      <section className="px-6 md:pl-[297px] md:pr-[38px] py-16 md:py-24">
+      {/* pl-[220px] on desktop, not the page's usual 38px. Figma's own
+          Quote instance (node 528:1242) confirms pl-297, but Sofia asked
+          to bring it to 220px site-wide (2026-09-11) — deliberate, don't
+          revert without asking. max-w-905 lives on the <p>, not the
+          <section> — putting it on the section itself (as briefly
+          happened here) caps the section's total box at 905px, swallowing
+          the left/right padding out of that budget instead of filling the
+          real content width; confirmed as why this page looked wrong
+          right after the pl-297 change while Estrategia didn't. */}
+      <section className="px-6 md:pl-[220px] md:pr-[38px] py-16 md:py-24">
         <p className="max-w-[905px] text-[32px] md:text-[52px] leading-[1.2] md:leading-[60px] text-azul-1 font-bold">
           Una marca evoluciona con la forma en que las personas se relacionan
           con ella. NovaVenta responde a ese cambio con una identidad más

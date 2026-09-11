@@ -197,16 +197,16 @@ export default function AplicacionesPage() {
         titleLines="Aplicaciones master brand"
       />
 
-      {/* pl-[297px] on desktop, matching the "frase" module's confirmed
-          pl-297/pr-38 site-wide (Sofia's explicit ask, Round 17, checked
-          against node 528:1242) — same fixed left inset as Estrategia/
-          Master Brand's Quote, not a plain 38px page margin. max-w moved
-          to the <p> — on the <section> it caps the section's own box
-          (padding included), leaving far less than 676px for the actual
-          text and stopping the section short of the real content width;
-          confirmed as why this page (and Submarca/Master Brand) looked
-          wrong while Estrategia didn't. */}
-      <section className="px-6 md:pl-[297px] md:pr-[38px] py-16 md:py-24">
+      {/* pl-[220px] on desktop, matching the "frase" module site-wide.
+          Figma's own Quote instance (node 528:1242) confirms pl-297, but
+          Sofia asked to bring it to 220px everywhere (2026-09-11) —
+          deliberate, don't revert without asking. max-w lives on the <p>
+          — on the <section> it caps the section's own box (padding
+          included), leaving far less room for the actual text and
+          stopping the section short of the real content width; confirmed
+          as why this page (and Submarca/Master Brand) looked wrong right
+          after the pl-297 change while Estrategia didn't. */}
+      <section className="px-6 md:pl-[220px] md:pr-[38px] py-16 md:py-24">
         <p className="max-w-[676px] text-[32px] md:text-[52px] leading-[1.3] md:leading-[60px] text-azul-1 font-bold">
           Las aplicaciones de la master brand muestran cómo NovaVenta se
           implementa en diferentes formatos y puntos de contacto, manteniendo

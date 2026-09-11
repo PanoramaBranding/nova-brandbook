@@ -208,12 +208,14 @@ export default function SubmarcaPage() {
         titleLines="Sub-marcas"
       />
 
-      {/* pl-[297px] on desktop — same site-wide "frase" module fix as
-          Estrategia/Master Brand/Aplicaciones (Round 17). max-w moved to
-          the <p> — on the <section> it caps the section's own box
-          (padding included) instead of just the text, which is what made
-          this page look wrong while Estrategia didn't. */}
-      <section className="px-6 md:pl-[297px] md:pr-[38px] py-16 md:py-24">
+      {/* pl-[220px] on desktop — same site-wide "frase" module fix as
+          Estrategia/Master Brand/Aplicaciones/Assets. Figma's own Quote
+          confirms pl-297, but Sofia asked to bring it to 220px everywhere
+          (2026-09-11) — deliberate, don't revert without asking. max-w
+          lives on the <p> — on the <section> it caps the section's own
+          box (padding included) instead of just the text, which is what
+          made this page look wrong while Estrategia didn't. */}
+      <section className="px-6 md:pl-[220px] md:pr-[38px] py-16 md:py-24">
         <p className="max-w-[676px] text-[32px] md:text-[52px] leading-[1.3] md:leading-[60px] text-azul-1 font-bold">
           Las sub-marcas de NovaVenta organizan las distintas expresiones del
           ecosistema bajo una lógica común, permitiendo diferenciar canales,
