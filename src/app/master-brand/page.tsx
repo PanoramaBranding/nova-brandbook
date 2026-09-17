@@ -146,7 +146,7 @@ export default function MasterBrandPage() {
         </SectionHeading>
         <div className="mt-8 flex flex-col gap-6 items-end">
           <Fig src="/brand/master-brand/identificador-1.png" alt="Construcción del identificador NovaVenta" aspect={4096 / 2602} />
-          <Button variant="outline">Descargar assets</Button>
+          <Button variant="outline" href="/brand/downloads/master-brand-assets.zip" download>Descargar assets</Button>
         </div>
       </section>
 

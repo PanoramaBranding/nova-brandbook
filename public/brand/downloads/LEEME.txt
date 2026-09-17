@@ -1,0 +1,10 @@
+Carpeta de descargas del brandbook (packs .zip de assets).
+
+Cada botón "Descargar ..." del manual apunta a un archivo de esta carpeta.
+
+Convención de nombres (importante — el nombre debe ser EXACTO):
+- Master Brand → "Descargar assets"  -> master-brand-assets.zip
+- (los demás botones se irán agregando aquí conforme se conecten)
+
+Para agregar un pack: comprime la carpeta de assets en un solo .zip,
+nómbralo según la lista de arriba, y déjalo en esta carpeta. Luego commit + push.

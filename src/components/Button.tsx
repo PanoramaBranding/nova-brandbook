@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 type ButtonProps = {
   children: ReactNode;
   href?: string;
+  download?: boolean;
   variant?: "outline" | "filled";
   className?: string;
   onClick?: () => void;
@@ -18,6 +19,7 @@ type ButtonProps = {
 export default function Button({
   children,
   href,
+  download,
   variant = "outline",
   className = "",
   onClick,
@@ -32,6 +34,15 @@ export default function Button({
   const classes = `${base} ${styles} ${className}`;
 
   if (href) {
+    // Descargas de archivos estáticos (packs .zip de assets): usar un <a download>
+    // real, no el Link de Next (que intentaría navegar a una página, no descargar).
+    if (download) {
+      return (
+        <a href={href} download className={classes}>
+          {children}
+        </a>
+      );
+    }
     return (
       <Link href={href} className={classes}>
         {children}
