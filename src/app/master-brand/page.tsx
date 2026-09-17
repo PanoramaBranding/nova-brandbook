@@ -119,7 +119,7 @@ export default function MasterBrandPage() {
         </p>
       </section>
 
-      <ContentsToc items={TOC} />
+      <ContentsToc items={TOC} downloadHref="/brand/downloads/master-brand-assets.zip" />
 
       <section id="background" className="px-6 md:px-[38px] py-12 md:py-16 border-t border-azul-tint scroll-mt-8">
         <SectionHeading number="2.1" title="Background">

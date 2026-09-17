@@ -15,9 +15,11 @@ export type TocItem = { number: string; label: string; id: string };
 export default function ContentsToc({
   items,
   buttonLabel = "Descargar assets",
+  downloadHref,
 }: {
   items: TocItem[];
   buttonLabel?: string;
+  downloadHref?: string;
 }) {
   const half = Math.ceil(items.length / 2);
   const columns = [items.slice(0, half), items.slice(half)];
@@ -39,7 +41,7 @@ export default function ContentsToc({
               Round 17). A wrapper div's hidden/block has no such
               conflict. */}
           <div className="hidden md:block">
-            <Button variant="outline">{buttonLabel}</Button>
+            <Button variant="outline" href={downloadHref} download={!!downloadHref}>{buttonLabel}</Button>
           </div>
         </div>
         <div className="flex flex-col md:flex-row gap-4 md:gap-[97px]">
@@ -59,7 +61,7 @@ export default function ContentsToc({
           ))}
         </div>
         <div className="self-start md:hidden">
-          <Button variant="outline">{buttonLabel}</Button>
+          <Button variant="outline" href={downloadHref} download={!!downloadHref}>{buttonLabel}</Button>
         </div>
       </div>
     </section>
