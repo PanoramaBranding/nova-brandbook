@@ -12,14 +12,18 @@ export const metadata: Metadata = { title: "05 · Sub-marcas" };
 // crop de cada imagen coinciden entre ambos breakpoints en el código de
 // Figma, solo cambia el ancho del contenedor.
 //
-// Bugs de contenido reales encontrados en Figma (no nuestros, flag para el
-// equipo de diseño):
-// 1. "Colores secundarios" de Nova Express (Express II/III, Beige, Gris
-//    Express): el HEX y el fill visual son correctos y únicos por swatch,
-//    pero CMYK/RGB/PANTONE son copy-paste literal de los swatches Azul
-//    III/II/IV/tinte-claro de la paleta principal (mismos valores exactos,
-//    swatch por swatch) — no corresponden a estos colores en absoluto.
-//    Mostrados tal cual vienen de Figma, pero marcados como no verificados.
+// Actualización 2026-09-18 (nodo 525:218, N55zKD9GQSbKa9hkHE2aq4, cuenta
+// andres.r@ ya en plan pago): el equipo de diseño CORRIGIÓ los "Colores
+// secundarios" de Nova Express y AGREGÓ dos swatches. Antes había un bug
+// (CMYK/RGB/PANTONE copy-pasteados de la paleta principal); ahora los cinco
+// campos son consistentes y únicos por swatch (RGB coincide con el HEX del
+// fill, verificado contra get_design_context de 721:1299). Quedan 6
+// secundarios en dos filas (4 + 2): Express II/III, Beige, Gris Express +
+// los nuevos Express IV (#5DCACB, texto blanco en Figma) y Express V
+// (#AEE3DA). Valores tomados literalmente de las capas de Figma, no
+// inventados. El resto del artboard es idéntico a la extracción del 09-10.
+//
+// Bugs de contenido que SIGUEN en Figma (no nuestros, flag para diseño):
 // 2. El heading de "5.3 Marcas de visibilidad interna" dice literalmente
 //    "5.2 Marcas de visibilidad externa" en Figma (mismo texto que el
 //    heading de la sección anterior) — usamos el número/label correcto
@@ -154,10 +158,12 @@ type Swatch = {
   textClass: string;
 };
 
-// HEX + fill son los valores confirmados (verificados contra el fill real
-// de Figma y el campo "HEX" propio de cada swatch). CMYK/RGB/PANTONE de
-// Express II/III/Beige/Gris Express son el bug de contenido documentado
-// arriba — mostrados tal cual vienen de Figma, no inventados ni corregidos.
+// Todos los campos (Nombre/CMYK/RGB/HEX/PANTONE) tomados literalmente de las
+// capas de texto de Figma; los fills (bg-color) verificados contra el fill
+// real de cada tarjeta en get_design_context (721:1299) — coinciden con el
+// HEX rotulado swatch por swatch. textClass sigue el color de texto de Figma:
+// blanco sobre los fondos oscuros (Express II morado, Express IV turquesa),
+// azul-3 sobre los claros.
 const COLOR_PRINCIPAL: Swatch = {
   name: "Express I",
   cmyk: "87/50/0/0",
@@ -168,10 +174,12 @@ const COLOR_PRINCIPAL: Swatch = {
 };
 
 const COLORES_SECUNDARIOS: Swatch[] = [
-  { name: "Express II", cmyk: "100/81/39/29", rgb: "8/51/94", hex: "#7b007A", pantone: "295 C", textClass: "text-white" },
-  { name: "Express III", cmyk: "93/57/0/0", rgb: "12/103/193", hex: "#CCAED3", pantone: "2145 C", textClass: "text-azul-3" },
-  { name: "Beige", cmyk: "47/10/0/0", rgb: "156/206/255", hex: "#CBC1B4", pantone: "2141 C", textClass: "text-azul-3" },
-  { name: "Gris Express", cmyk: "19/0/0/0", rgb: "220/239/255", hex: "#E5E5E5", pantone: "545 C", textClass: "text-azul-3" },
+  { name: "Express II", cmyk: "64/100/12/4", rgb: "123/0/122", hex: "#7B007A", pantone: "248C", textClass: "text-white" },
+  { name: "Express III", cmyk: "22/39/0/0", rgb: "204/174/211", hex: "#CCAED3", pantone: "264 C", textClass: "text-azul-3" },
+  { name: "Beige", cmyk: "22/22/29/4", rgb: "203/193/180", hex: "#CBC1B4", pantone: "4745", textClass: "text-azul-3" },
+  { name: "Gris Express", cmyk: "0/0/0/10", rgb: "229/229/229", hex: "#E5E5E5", pantone: "427 C", textClass: "text-azul-3" },
+  { name: "Express IV", cmyk: "69/0/31/0", rgb: "93/202/203", hex: "#5DCACB", pantone: "319 C", textClass: "text-white" },
+  { name: "Express V", cmyk: "42/0/24/0", rgb: "174/227/218", hex: "#AEE3DA", pantone: "628 C", textClass: "text-azul-3" },
 ];
 
 function SwatchRow({ label, value }: { label: string; value: string }) {
@@ -297,12 +305,22 @@ export default function SubmarcaPage() {
             <ColorCard swatch={COLOR_PRINCIPAL} />
           </div>
 
+          {/* Dos filas en Figma (721:1301 = 4 tarjetas, 721:1406 = 2). Cada
+              tarjeta es flex-1, así que la fila de 2 ocupa media pantalla
+              c/u (≈559px, igual que Figma). En mobile todas se apilan. */}
           <div className="flex flex-col gap-8">
             <p className="text-xl font-bold text-azul-1">Colores secundarios</p>
-            <div className="flex flex-col md:flex-row gap-4">
-              {COLORES_SECUNDARIOS.map((s) => (
-                <ColorCard key={s.name} swatch={s} />
-              ))}
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col md:flex-row gap-4">
+                {COLORES_SECUNDARIOS.slice(0, 4).map((s) => (
+                  <ColorCard key={s.name} swatch={s} />
+                ))}
+              </div>
+              <div className="flex flex-col md:flex-row gap-4">
+                {COLORES_SECUNDARIOS.slice(4).map((s) => (
+                  <ColorCard key={s.name} swatch={s} />
+                ))}
+              </div>
             </div>
           </div>
 
