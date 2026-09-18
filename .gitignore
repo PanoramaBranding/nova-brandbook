@@ -48,3 +48,8 @@ Captura de pantalla*.png
 
 # puppeteer screenshot verification (see screenshot.mjs)
 temporary screenshots/
+
+# packs de assets pesados — NO versionar (se hostean aparte / Drive)
+/public/brand/downloads/brand-assets.zip
+/public/brand/downloads/brand-assets/
+/public/brand/downloads/ICONOS/

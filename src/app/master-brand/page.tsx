@@ -165,7 +165,7 @@ export default function MasterBrandPage() {
             <Fig src="/brand/master-brand/versiones-color-3.png" alt="Versión de color 3" aspect={4096 / 2602} />
             <Fig src="/brand/master-brand/versiones-color-4.png" alt="Versión de color 4" aspect={4096 / 2602} />
           </div>
-          <Button variant="outline">Descargar logo</Button>
+          <Button variant="outline" href="/brand/downloads/master-brand-assets.zip" download>Descargar logo</Button>
         </div>
       </section>
 
@@ -308,7 +308,7 @@ export default function MasterBrandPage() {
         </SectionHeading>
         <div className="mt-8 flex flex-col gap-6 items-end">
           <Fig src="/brand/master-brand/simbolo-1.png" alt="El símbolo de Nova" aspect={4096 / 2602} />
-          <Button variant="outline">Descargar símbolo</Button>
+          <Button variant="outline" href="/brand/downloads/master-brand-assets.zip" download>Descargar símbolo</Button>
         </div>
       </section>
 
@@ -326,7 +326,7 @@ export default function MasterBrandPage() {
             <Fig src="/brand/master-brand/simbolo-color-3.png" alt="Símbolo versión de color 3" aspect={4096 / 2602} />
             <Fig src="/brand/master-brand/simbolo-color-4.png" alt="Símbolo versión de color 4" aspect={4096 / 2602} />
           </div>
-          <Button variant="outline">Descargar símbolo</Button>
+          <Button variant="outline" href="/brand/downloads/master-brand-assets.zip" download>Descargar símbolo</Button>
         </div>
       </section>
 

@@ -323,7 +323,7 @@ export default function AssetsPage() {
         </p>
       </section>
 
-      <ContentsToc items={TOC} />
+      <ContentsToc items={TOC} downloadHref="/brand/downloads/brand-assets.zip" />
 
       {/* Color */}
       <section
@@ -501,7 +501,7 @@ export default function AssetsPage() {
             Plus Jakarta Sans es una tipografía de uso libre disponible a través
             de Google Fonts.
           </SectionHeading>
-          <Button variant="outline">Descargar fuente</Button>
+          <Button variant="outline" href="/brand/downloads/brand-fuente.zip" download>Descargar fuente</Button>
         </div>
 
         <div className="flex flex-col gap-12 mb-[120px]">
@@ -849,7 +849,7 @@ export default function AssetsPage() {
             <h2 className="text-[28px] md:text-[32px] font-bold text-azul-2">
               3.10 Sistema iconográfico
             </h2>
-            <Button variant="outline" className="self-start">
+            <Button variant="outline" className="self-start" href="/brand/downloads/brand-iconos.zip" download>
               Descargar íconos
             </Button>
           </div>
