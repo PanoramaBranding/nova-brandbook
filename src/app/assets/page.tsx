@@ -278,10 +278,16 @@ function SectionHeading({
   number,
   title,
   children,
+  fluidBody = false,
 }: {
   number: string;
   title: string;
   children?: React.ReactNode;
+  // fluidBody: el cuerpo llena hasta el borde derecho del contenido (mismo
+  // ancho que las imágenes full-width) en vez de fijarse a 561px. Se usa en
+  // 3.5, donde el párrafo y el botón deben alinear su borde derecho con las
+  // barras de color de arriba.
+  fluidBody?: boolean;
 }) {
   return (
     <div className="flex flex-col md:flex-row md:gap-[127px] gap-8 mb-8">
@@ -289,7 +295,13 @@ function SectionHeading({
         {number} {title}
       </h2>
       {children && (
-        <div className="text-azul-3/80 leading-6 md:w-[561px] max-w-[561px]">{children}</div>
+        <div
+          className={`text-azul-3/80 leading-6 ${
+            fluidBody ? "flex-1 min-w-0" : "md:w-[561px] max-w-[561px]"
+          }`}
+        >
+          {children}
+        </div>
       )}
     </div>
   );
@@ -499,14 +511,13 @@ export default function AssetsPage() {
         id="fuentes-tipograficas"
         className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
-        {/* Body text lives in SectionHeading's own children column (matches
-            every other section) and the button sits BELOW that row,
-            right-aligned — not beside the paragraph in a justify-between
-            row like before. Confirmed via get_design_context on node
-            558:3355 (Round 17), same round that fixed the specimen sizes
-            and weight table below (also confirmed wrong). */}
-        <div className="flex flex-col md:items-end mb-16">
-          <SectionHeading number="3.5" title="Fuentes tipográficas">
+        {/* 3.5: el párrafo (cuerpo fluido) y el botón "Descargar fuente"
+            alinean su borde derecho con las barras de color full-width de
+            arriba, que ocupan todo el ancho del contenido (el <main> es
+            fluido, más ancho que la columna fija de 561px). Por eso fluidBody
+            + botón md:self-end (no un cap a 1135). */}
+        <div className="flex flex-col mb-16">
+          <SectionHeading number="3.5" title="Fuentes tipográficas" fluidBody>
             La tipografía principal de NovaVenta es Plus Jakarta Sans, seleccionada
             por su legibilidad, versatilidad y buen desempeño en aplicaciones
             impresas y digitales. El sistema utiliza sus diferentes pesos para
@@ -517,7 +528,7 @@ export default function AssetsPage() {
             Plus Jakarta Sans es una tipografía de uso libre disponible a través
             de Google Fonts.
           </SectionHeading>
-          <Button variant="outline" href="/brand/downloads/brand-fuente.zip" download>Descargar fuente</Button>
+          <Button variant="outline" className="self-start md:self-end mt-8" href="/brand/downloads/brand-fuente.zip" download>Descargar fuente</Button>
         </div>
 
         <div className="flex flex-col gap-12 mb-[120px]">
