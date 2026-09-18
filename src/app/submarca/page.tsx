@@ -141,8 +141,13 @@ function SectionHeading({
   );
 }
 
+// md:w-[447px] shrink-0 — misma columna que el <h2> de SectionHeading (Figma
+// 721:1250: la etiqueta de submarca ocupa 447px), para que el párrafo de cada
+// submarca (Nova express / Nova Clic / iNova) arranque en x=574, alineado con
+// el párrafo de la sección. Sin esto la etiqueta colapsa a su ancho de texto y
+// el párrafo se corre a la izquierda (bug de diagramación reportado).
 function SubHeading({ children }: { children: React.ReactNode }) {
-  return <p className="text-xl font-bold text-azul-1">{children}</p>;
+  return <p className="text-xl font-bold text-azul-1 md:w-[447px] shrink-0">{children}</p>;
 }
 
 function SubLabel({ children }: { children: React.ReactNode }) {
@@ -156,6 +161,11 @@ type Swatch = {
   hex: string;
   pantone: string;
   textClass: string;
+  // Fondo de la tarjeta cuando NO es el propio hex del swatch. La tarjeta
+  // "Color principal" en Figma va sobre el plum de Nova Express (#4d264c,
+  // token --color-nova-express), no sobre su azul; las secundarias sí usan su
+  // hex. Si no se define, la tarjeta usa swatch.hex.
+  fill?: string;
 };
 
 // Todos los campos (Nombre/CMYK/RGB/HEX/PANTONE) tomados literalmente de las
@@ -171,6 +181,7 @@ const COLOR_PRINCIPAL: Swatch = {
   hex: "#2B7DF6",
   pantone: "285 C",
   textClass: "text-white",
+  fill: "var(--color-nova-express)", // plum #4d264c, no el azul del hex (Figma 721:1273)
 };
 
 const COLORES_SECUNDARIOS: Swatch[] = [
@@ -195,7 +206,7 @@ function ColorCard({ swatch }: { swatch: Swatch }) {
   return (
     <div
       className={`rounded-[10px] flex-1 min-w-0 flex flex-col gap-1 px-[38px] pt-[38px] pb-[86px] ${swatch.textClass}`}
-      style={{ backgroundColor: swatch.hex }}
+      style={{ backgroundColor: swatch.fill ?? swatch.hex }}
     >
       <SwatchRow label="Nombre" value={swatch.name} />
       <SwatchRow label="CMYK" value={swatch.cmyk} />
@@ -233,7 +244,10 @@ export default function SubmarcaPage() {
         </p>
       </section>
 
-      <ContentsToc items={TOC} />
+      {/* Pack de assets de submarca (carpeta [NOVAVENTA] ASSETS: ICONOS +
+          PIEZAS + TAGS, ~515 MB). Descarga directa del sitio; gitignored por
+          tamaño (>100 MB), vive local en public/brand/downloads/. */}
+      <ContentsToc items={TOC} downloadHref="/brand/downloads/submarca-assets.zip" />
 
       <section id="arquitectura-de-marca" className="px-6 md:px-[38px] py-12 md:py-16 border-t border-azul-tint scroll-mt-8">
         <SectionHeading number="5.1" title="Arquitectura de marca">
@@ -301,7 +315,7 @@ export default function SubmarcaPage() {
           </div>
 
           <div className="flex flex-col gap-8">
-            <p className="text-xl font-bold text-azul-1">Color principal</p>
+            <p className="text-xl font-bold text-nova-express">Color principal</p>
             <ColorCard swatch={COLOR_PRINCIPAL} />
           </div>
 
@@ -309,7 +323,7 @@ export default function SubmarcaPage() {
               tarjeta es flex-1, así que la fila de 2 ocupa media pantalla
               c/u (≈559px, igual que Figma). En mobile todas se apilan. */}
           <div className="flex flex-col gap-8">
-            <p className="text-xl font-bold text-azul-1">Colores secundarios</p>
+            <p className="text-xl font-bold text-nova-express">Colores secundarios</p>
             <div className="flex flex-col gap-4">
               <div className="flex flex-col md:flex-row gap-4">
                 {COLORES_SECUNDARIOS.slice(0, 4).map((s) => (

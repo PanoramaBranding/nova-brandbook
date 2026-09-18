@@ -323,6 +323,11 @@ export default function AssetsPage() {
         </p>
       </section>
 
+      {/* Pack completo de assets (TAGS + PIEZAS + BANCO IMÁGENES) — descarga
+          directa del .zip servido por el propio sitio. ~375 MB: gitignored
+          (excede el límite de 100 MB/archivo de GitHub), vive solo en
+          public/brand/downloads/ local; viaja con la copia entregada del
+          sitio. Para un deploy en host real habría que moverlo a S3. */}
       <ContentsToc items={TOC} downloadHref="/brand/downloads/brand-assets.zip" />
 
       {/* Color */}
@@ -362,6 +367,9 @@ export default function AssetsPage() {
         </SectionHeading>
         <div className="flex flex-col gap-8">
           <p className="text-[20px] font-bold text-azul-2">Colores complementarios</p>
+          {/* 10 colores en 3 filas (4/4/2), igual que Figma (Frame 81
+              556:2996: filas 556:2998 / 556:3103 / 656:1232). Cada tarjeta es
+              flex-1, así que la fila de 2 queda a media pantalla c/u. */}
           <div className="flex flex-col gap-4">
             <div className="flex flex-col md:flex-row gap-4">
               {COMPLEMENTARY.slice(0, 4).map((s) => (
@@ -369,7 +377,12 @@ export default function AssetsPage() {
               ))}
             </div>
             <div className="flex flex-col md:flex-row gap-4">
-              {COMPLEMENTARY.slice(4).map((s) => (
+              {COMPLEMENTARY.slice(4, 8).map((s) => (
+                <SwatchCard key={s.name} swatch={s} />
+              ))}
+            </div>
+            <div className="flex flex-col md:flex-row gap-4">
+              {COMPLEMENTARY.slice(8).map((s) => (
                 <SwatchCard key={s.name} swatch={s} />
               ))}
             </div>
@@ -426,28 +439,11 @@ export default function AssetsPage() {
             </div>
           </div>
 
-          {/* "Añadir colores a la paleta cromática" — a whole subsection
-              missing entirely before, confirmed via get_design_context on
-              node 558:3347 (Round 17). */}
-          <div className="flex flex-col gap-8 pt-8 border-t border-azul-tint">
-            <div className="flex flex-col md:flex-row md:gap-[127px] gap-8">
-              <p className="text-[20px] font-bold text-azul-2 md:w-[447px] shrink-0">
-                Añadir colores a la paleta cromática
-              </p>
-              <p className="text-azul-3/80 leading-6 md:w-[561px] max-w-[561px]">
-                El sistema permite incorporar variaciones adicionales siempre que
-                se mantengan dentro de la misma familia tonal del color base.
-                Estas extensiones pueden ajustar luminosidad, saturación o
-                intensidad, pero deben conservar una relación cromática evidente
-                con el tono original. No deben introducirse colores que
-                modifiquen el carácter general de la paleta o que generen nuevas
-                familias cromáticas fuera del sistema definido.
-              </p>
-            </div>
-            <Fig src="/brand/assets/gamas-colores.png" alt="Gamas de colores derivadas de la paleta cromática" aspect={4096 / 1462} />
-          </div>
-
-          <div className="flex flex-col md:flex-row md:gap-[127px] gap-8">
+          {/* Orden según Figma (3.4 Uso del color, nodo 558:3249):
+              Contrastes básicos → Contrastes compuestos → Añadir colores a la
+              paleta cromática. "Añadir colores" se movió al final (antes iba
+              entre básicos y compuestos). */}
+          <div className="flex flex-col md:flex-row md:gap-[127px] gap-8 pt-8 border-t border-azul-tint">
             <p className="text-[20px] font-bold text-azul-2 md:w-[447px] shrink-0">Contrastes compuestos</p>
             <div className="flex flex-col gap-8 md:w-[561px] max-w-[561px]">
               <p className="text-azul-3/80 leading-6">
@@ -474,6 +470,26 @@ export default function AssetsPage() {
             <div className="pt-8 border-t border-azul-tint">
               <Fig src="/brand/assets/contraste-compuesto-3.png" alt="Ejemplo de contraste compuesto 3" aspect={4096 / 1493} />
             </div>
+          </div>
+
+          {/* "Añadir colores a la paleta cromática" — al final del 3.4, después
+              de Contrastes compuestos (orden de Figma, nodo 558:3347/3350). */}
+          <div className="flex flex-col gap-8 pt-8 border-t border-azul-tint">
+            <div className="flex flex-col md:flex-row md:gap-[127px] gap-8">
+              <p className="text-[20px] font-bold text-azul-2 md:w-[447px] shrink-0">
+                Añadir colores a la paleta cromática
+              </p>
+              <p className="text-azul-3/80 leading-6 md:w-[561px] max-w-[561px]">
+                El sistema permite incorporar variaciones adicionales siempre que
+                se mantengan dentro de la misma familia tonal del color base.
+                Estas extensiones pueden ajustar luminosidad, saturación o
+                intensidad, pero deben conservar una relación cromática evidente
+                con el tono original. No deben introducirse colores que
+                modifiquen el carácter general de la paleta o que generen nuevas
+                familias cromáticas fuera del sistema definido.
+              </p>
+            </div>
+            <Fig src="/brand/assets/gamas-colores.png" alt="Gamas de colores derivadas de la paleta cromática" aspect={4096 / 1462} />
           </div>
         </div>
       </section>

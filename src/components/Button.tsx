@@ -34,6 +34,17 @@ export default function Button({
   const classes = `${base} ${styles} ${className}`;
 
   if (href) {
+    // Enlaces externos (p.ej. carpeta de Google Drive del pack pesado de
+    // assets): abrir en pestaña nueva, sin `download` (el atributo no fuerza
+    // descarga cross-origin) y sin el Link de Next.
+    const isExternal = /^https?:\/\//.test(href);
+    if (isExternal) {
+      return (
+        <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
+          {children}
+        </a>
+      );
+    }
     // Descargas de archivos estáticos (packs .zip de assets): usar un <a download>
     // real, no el Link de Next (que intentaría navegar a una página, no descargar).
     if (download) {

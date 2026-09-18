@@ -46,19 +46,36 @@ export const SECONDARY: Swatch[] = [
   { name: "Azul (tinte claro)", cmyk: "19/0/0/0", rgb: "220/239/255", hex: "#DCEFFF", pantone: "545 C", textTone: "azul1" },
 ];
 
+// Actualizado 2026-09-18 desde la mesa de trabajo viva 03 ASSETS (N55, nodo
+// 214:273 → grid Frame 81 556:2996: fila 1 = 556:2998, fila 2 = 556:3103,
+// fila 3 = 656:1232), verificado via get_design_context. Son 10 colores en
+// 3 filas (4/4/2). La paleta se reestructuró: renombres + dos colores nuevos
+// (Moda, Fragancias). Personal Care y HotDays SIGUEN (fila 3). Orden y textos
+// TAL CUAL vienen de Figma. Anomalías señaladas al equipo de diseño (no
+// corregidas por nuestra cuenta):
+//   · Figma escribe "Depensa" (falta la "s"); corregido a "Despensa" por
+//     pedido de Andrés (2026-09-18) — único cambio nuestro sobre el texto.
+//   · El naranja #F09837 (antes "Mascotas") ahora se rotula "Despensa", y el
+//     verde #76B156 (antes "Despensa") ahora se rotula "Mascotas" — se ven
+//     intercambiados los nombres respecto de la versión anterior (se dejó
+//     como Figma, confirmado con Andrés).
+//   · Aseo Hogar: Figma trae CMYK 79/49/0/0 (la versión previa tenía el typo
+//     "799/49/0/0"); usamos el valor de Figma.
 export const COMPLEMENTARY: Swatch[] = [
-  { name: "Bienestar", cmyk: "11/55/0/0", rgb: "227/151/202", hex: "#E397CA", pantone: "2044 C", textTone: "white" },
+  { name: "Belleza", cmyk: "11/55/0/0", rgb: "227/151/202", hex: "#E397CA", pantone: "2044 C", textTone: "white" },
   { name: "Hogar", cmyk: "0/84/76/0", rgb: "232/82/66", hex: "#E85242", pantone: "178 C", textTone: "white" },
-  { name: "Mascotas", cmyk: "0/52/93/0", rgb: "240/152/55", hex: "#F09837", pantone: "137 C", textTone: "white" },
+  { name: "Despensa", cmyk: "0/52/93/0", rgb: "240/152/55", hex: "#F09837", pantone: "137 C", textTone: "white" },
   { name: "Niños", cmyk: "7/3/61/0", rgb: "252/241/142", hex: "#FCF18E", pantone: "127 C", textTone: "azul1" },
-  { name: "Despensa", cmyk: "67/7/89/0", rgb: "118/177/86", hex: "#76B156", pantone: "360 C", textTone: "white" },
-  { name: "Aseo Hogar", cmyk: "799/49/0/0", rgb: "65/132/245", hex: "#4184F5", pantone: "2172 C", textTone: "white" },
+  { name: "Mascotas", cmyk: "67/7/89/0", rgb: "118/177/86", hex: "#76B156", pantone: "360 C", textTone: "white" },
+  { name: "Moda", cmyk: "88/24/50/10", rgb: "34/135/132", hex: "#228784", pantone: "569 C", textTone: "white" },
+  { name: "Aseo Hogar", cmyk: "79/49/0/0", rgb: "65/132/245", hex: "#4184F5", pantone: "2172 C", textTone: "white" },
+  { name: "Fragancias", cmyk: "75/64/0/0", rgb: "107/107/247", hex: "#6B6BF7", pantone: "2126 C", textTone: "white" },
+  // Fila 3 (Frame 656:1232): estos dos SIGUEN en la paleta de Figma, no se
+  // removieron.
   { name: "Personal Care", cmyk: "40/50/0/0", rgb: "190/143/247", hex: "#BE8FF7", pantone: "2567 C", textTone: "white" },
-  // Figma's own HEX label for this swatch says "#2B7DF6" (Azul I's hex) but
-  // that's an internal copy-paste error: the swatch's actual fill, and its
-  // own listed RGB (228/38/48) and CMYK both agree on a red/orange, not
-  // blue. Using the color that's actually consistent across 3 of the 4
-  // values shown, not the one outlier label.
+  // Figma rotula el HEX de HotDays como "#2B7DF6" (el azul de Azul I) — mismo
+  // error de copy-paste de siempre: el fill real es #E42630 y su RGB
+  // (228/38/48) y CMYK coinciden en rojo, no azul. Usamos el valor consistente.
   { name: "HotDays", cmyk: "0/100/83/0", rgb: "228/38/48", hex: "#E42630", pantone: "2347 C", textTone: "white" },
 ];
 

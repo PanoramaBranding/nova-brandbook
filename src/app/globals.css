@@ -8,6 +8,12 @@
   --color-azul-4: #9cceff; /* Azul IV */
   --color-azul-tint: #dcefff; /* tono claro sin nombre propio en Figma (etiquetado "Azul I" por error) */
 
+  /* Submarca Nova Express (05, 5.2) — plum de marca. Usado como fill de la
+     tarjeta "Color principal" y color de las cabeceras "Color principal" /
+     "Colores secundarios". Confirmado vs get_design_context 721:1273 (bg
+     #4d264c) y 721:1272/721:1300 (text var(--express-2,#4d264c)). */
+  --color-nova-express: #4d264c;
+
   /* Neutros */
   --color-blanco: #ffffff;
   --color-gris-5: #f6f6f6;
@@ -30,6 +36,7 @@
   --color-azul-3: var(--color-azul-3);
   --color-azul-4: var(--color-azul-4);
   --color-azul-tint: var(--color-azul-tint);
+  --color-nova-express: var(--color-nova-express);
   --color-blanco: var(--color-blanco);
   --color-gris-5: var(--color-gris-5);
   --color-ink: var(--color-ink);
