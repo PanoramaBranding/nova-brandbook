@@ -44,6 +44,15 @@ const TYPO_MISUSE = [
   "No usar diferentes colores en el texto",
 ];
 
+// Pesos de Roboto Condensed que muestra Figma (656:665 y siguientes): solo los
+// altos — Bold, ExtraBold y Black — porque es tipografía de énfasis
+// promocional, no de cuerpo de texto.
+const ROBOTO_WEIGHTS: { label: string; weight: number }[] = [
+  { label: "Bold", weight: 700 },
+  { label: "ExtraBold", weight: 800 },
+  { label: "Black", weight: 900 },
+];
+
 const PHOTO_LIFESTYLE = [
   {
     title: "Situaciones familiares",
@@ -323,7 +332,7 @@ export default function AssetsPage() {
           page's own intro paragraph isn't literally the Figma "Quote"
           symbol instance the others use, but Sofia treats it as the same
           module — asked explicitly to include it here too. */}
-      <section className="px-4 md:px-[38px] py-16 md:py-[50px]">
+      <section className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 md:py-[50px]">
         {/* Caja de 905px alineada a la derecha (md:ml-auto): reproduce el Quote
             de Figma (551:2733), que es pl-297 + pr-38 dentro del frame de 1240
             → el texto mide 905px y su borde derecho cae en 1202, el mismo del
@@ -346,17 +355,22 @@ export default function AssetsPage() {
         </p>
       </section>
 
-      {/* Pack completo de assets (TAGS + PIEZAS + BANCO IMÁGENES) — descarga
-          directa del .zip servido por el propio sitio. ~375 MB: gitignored
-          (excede el límite de 100 MB/archivo de GitHub), vive solo en
-          public/brand/downloads/ local; viaja con la copia entregada del
-          sitio. Para un deploy en host real habría que moverlo a S3. */}
-      <ContentsToc items={TOC} downloadHref="/brand/downloads/brand-assets.zip" />
+      {/* Pack completo de assets (TAGS + PIEZAS + BANCO IMÁGENES, ~373 MB).
+          Pesa más de los 100 MB que admite GitHub, así que NO viaja en el
+          repo: se sirve desde Drive (carpeta pública, verificada como
+          "cualquiera con el enlace"). Apuntar esto a /brand/downloads/ da 404
+          en Vercel aunque funcione en local — fue exactamente lo que falló en
+          la demo con cliente del 2026-09-21. No volver a cambiarlo a una ruta
+          local sin subir el archivo al repo. */}
+      <ContentsToc
+        items={TOC}
+        downloadHref="https://drive.google.com/file/d/16sSZIbCpxIRWZmZeUOwviwjpK9X18xkN/view"
+      />
 
       {/* Color */}
       <section
         id="paleta-cromatica-principal"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
+        className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.1" title="Paleta cromática principal">
           La paleta cromática principal establece los colores base de NovaVenta y
@@ -380,7 +394,7 @@ export default function AssetsPage() {
 
       <section
         id="paleta-complementaria"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
+        className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.2" title="Paleta complementaria">
           La paleta cromática principal establece los colores base de NovaVenta y
@@ -415,7 +429,7 @@ export default function AssetsPage() {
 
       <section
         id="porcentajes-de-color"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
+        className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.3" title="Porcentajes de color">
           La distribución cromática organiza la presencia de cada grupo de color
@@ -429,7 +443,7 @@ export default function AssetsPage() {
 
       <section
         id="uso-de-color"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
+        className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.4" title="Uso del color">
           El sistema cromático define combinaciones de contraste que aseguran
@@ -520,7 +534,7 @@ export default function AssetsPage() {
       {/* Tipografía */}
       <section
         id="fuentes-tipograficas"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
+        className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         {/* 3.5: el párrafo (cuerpo fluido) y el botón "Descargar fuente"
             alinean su borde derecho con las barras de color full-width de
@@ -565,15 +579,102 @@ export default function AssetsPage() {
         {/* "Plus Jakarta Sans" label appears once, to the left of the whole
             table — it was repeating per-row before; sizes were 28px, real
             spec is 32px throughout (label + specimens). */}
+        {/* La muestra (ABC) arranca en 574px para alinearse con el párrafo de
+            SectionHeading, que es la columna de referencia de todo el brandbook
+            (447 del título + 127 de gap). Cuentas: etiqueta 217 + gap 13 = 230,
+            + peso 217 + gap 127 = 574. En Figma esta columna está en ~461, pero
+            Andrés pidió (2026-09-21) priorizar la consistencia con el resto de
+            las páginas por encima de la medida del artboard. */}
         <div className="flex flex-col md:flex-row gap-6 md:gap-[13px]">
           <p className="text-azul-1 font-normal text-lg md:text-[32px] md:w-[217px] shrink-0">
             Plus Jakarta Sans
           </p>
           <div className="flex flex-col gap-6 md:gap-12">
             {FONT_WEIGHTS.map((f) => (
-              <div key={f.label} className="flex flex-col md:flex-row gap-2 md:gap-3">
+              <div key={f.label} className="flex flex-col md:flex-row gap-2 md:gap-[127px]">
                 <p className="w-full md:w-[217px] shrink-0 text-azul-1 text-lg md:text-[32px]">{f.label}</p>
                 <p className="text-azul-1 text-lg md:text-[32px]" style={{ fontWeight: f.weight }}>
+                  ABCDEFGHIJKLMNOPQRSTUVWXYZ
+                  <br />
+                  abcdefghijklmnopqrstuvwxyz
+                  <br />
+                  {`!@#$%^&*()?+`}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* "Tipografía complementaria" (Roboto Condensed) — este bloque faltaba
+            por completo. Copy tomado literal de Figma (Frame 119 = 656:610 para
+            los títulos, 656:673 para el párrafo). El display promocional es
+            656:659 y los especímenes 656:665. Roboto Condensed se carga como
+            fuente variable de Google Fonts en layout.tsx y solo se aplica aquí. */}
+        {/* gap-[127px]: el párrafo va en la columna de 574px, la misma que usa
+            el párrafo de SectionHeading en todo el brandbook.
+            Nota: en Figma este párrafo (656:673) está en x=725, o sea en 461px
+            (725 − 264), con un gap real de 14px. Se optó por 127 para que la
+            columna coincida con el resto de las páginas — decisión de Andrés
+            del 2026-09-21, priorizando consistencia sobre la medida literal
+            del artboard. */}
+        <div className="flex flex-col md:flex-row md:gap-[127px] gap-8 mt-16 pt-12 border-t border-azul-1">
+          <div className="md:w-[447px] shrink-0">
+            <p className="text-[20px] font-bold text-azul-2">Tipografía complementaria</p>
+            <p className="text-[16px] font-medium text-azul-2">Roboto condensed</p>
+          </div>
+          <div className="text-azul-3 leading-6 md:w-[561px] max-w-[561px] flex flex-col gap-6">
+            <p>
+              Roboto Condensed funciona como tipografía complementaria del
+              sistema y se reserva exclusivamente para mensajes promocionales de
+              alto impacto. Su uso debe limitarse a textos muy cortos, siempre en
+              mayúsculas y utilizando sus pesos más altos, principalmente
+              ExtraBold o Black.
+            </p>
+            <p>
+              No debe emplearse en cuerpos de texto, descripciones extensas ni
+              contenidos informativos. Su función es generar énfasis puntual en
+              promociones, llamados comerciales y mensajes que requieran máxima
+              visibilidad dentro de la composición.
+            </p>
+          </div>
+        </div>
+
+        {/* Display promocional — medidas exactas de Figma (656:659): Roboto
+            Condensed Black, 128px, leading-120px, azul-1. max-w-[754px] es el
+            ancho real del nodo, que es lo que lo hace quebrar en 3 líneas
+            ("TU PRODUCTO / FAVORITO EN / PROMOCIÓN") como en el diseño. */}
+        <p
+          className="text-azul-1 uppercase text-[44px] md:text-[128px] leading-[1.05] md:leading-[120px] md:max-w-[754px] mt-12 mb-14"
+          style={{ fontFamily: "var(--font-roboto-condensed)", fontWeight: 900 }}
+        >
+          Tu producto favorito en promoción
+        </p>
+
+        {/* Especímenes — Figma 656:665: cada fila es label 217px + gap 12px +
+            muestra 676px (= 905, el ancho del bloque), todo en Roboto Condensed
+            a 32px con leading-40px. La etiqueta lateral "ROBOTO CONDENSED"
+            mide 221px (656:661). Cada fila usa su propio peso, también en la
+            etiqueta, igual que en Figma. */}
+        <div className="flex flex-col md:flex-row gap-6 md:gap-[13px]">
+          <p
+            className="text-azul-1 uppercase text-xl md:text-[32px] md:leading-[40px] md:w-[217px] shrink-0"
+            style={{ fontFamily: "var(--font-roboto-condensed)", fontWeight: 700 }}
+          >
+            Roboto Condensed
+          </p>
+          <div className="flex flex-col gap-8 md:gap-12">
+            {ROBOTO_WEIGHTS.map((f) => (
+              <div key={f.label} className="flex flex-col md:flex-row gap-2 md:gap-[127px]">
+                <p
+                  className="w-full md:w-[217px] shrink-0 text-azul-1 uppercase text-xl md:text-[32px] md:leading-[40px]"
+                  style={{ fontFamily: "var(--font-roboto-condensed)", fontWeight: f.weight }}
+                >
+                  {f.label}
+                </p>
+                <p
+                  className="text-azul-1 text-xl md:text-[32px] md:leading-[40px] md:w-[676px]"
+                  style={{ fontFamily: "var(--font-roboto-condensed)", fontWeight: f.weight }}
+                >
                   ABCDEFGHIJKLMNOPQRSTUVWXYZ
                   <br />
                   abcdefghijklmnopqrstuvwxyz
@@ -588,7 +689,7 @@ export default function AssetsPage() {
 
       <section
         id="jerarquias"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
+        className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.6" title="Jerarquías">
           La jerarquía tipográfica organiza la información de acuerdo con su nivel
@@ -649,7 +750,7 @@ export default function AssetsPage() {
 
       <section
         id="usos-incorrectos-tipografia"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
+        className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         {/* 2 middle sentences were missing — confirmed via
             get_design_context on node 562:3481 (Round 17). */}
@@ -676,7 +777,7 @@ export default function AssetsPage() {
       {/* Fotografía */}
       <section
         id="estilo-fotografico"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
+        className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.8" title="Estilo fotográfico">
           El sistema fotográfico de NovaVenta se organiza en tres tipos de
@@ -824,7 +925,7 @@ export default function AssetsPage() {
 
       <section
         id="uso-de-la-fotografia"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
+        className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.9" title="Uso de la fotografía">
           El uso de la fotografía define cómo las imágenes se integran dentro de
@@ -874,7 +975,7 @@ export default function AssetsPage() {
       {/* Iconografía */}
       <section
         id="sistema-iconografico"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
+        className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         {/* Custom title row (not the shared SectionHeading) — the
             "Descargar íconos" button sits in the title column, below the
@@ -912,12 +1013,30 @@ export default function AssetsPage() {
             <Fig src="/brand/assets/iconos-set-1.png" alt="Set de íconos NovaVenta" aspect={832 / 430} />
           </div>
         </div>
+        {/* Panel de chips por categoría (Belleza, Hogar, Despensa, Niños,
+            Mascotas, Aseo hogar, Moda, Fragancias, Cuidado). En Figma es la
+            imagen "[NOVAVENTA]-ICONOS-2" de 1135×683 (nodo 648:593); este
+            bloque NO existía en el código, faltaba por completo.
+            ⚠️ En Figma esto es un raster plano, no capas de texto + iconos, así
+            que no se puede reconstruir en código: hay que exportar el PNG. */}
         <div className="mb-10">
-          <Fig src="/brand/assets/iconos-banner.png" alt="Íconos NovaVenta" aspect={4096 / 1267} />
+          <Fig
+            src="/brand/assets/iconos-categorias.png"
+            alt="Chips de categoría: Belleza, Hogar, Despensa, Niños, Mascotas, Aseo hogar, Moda, Fragancias y Cuidado"
+            aspect={1135 / 683}
+          />
         </div>
+        {/* Se eliminó el bloque de "iconos-banner.png" (2026-09-21): era la
+            versión vieja de los chips + barra de colores y duplicaba el panel
+            nuevo. Verificado que su nodo en Figma ("ico 1", 578:4030) está
+            VACÍO — no tiene imagen —, así que era un sobrante. El archivo
+            iconos-banner.png queda sin usar en public/brand/assets/. */}
         <p className="text-[20px] font-bold text-azul-2 mb-4">Logotipo en categoría</p>
+        {/* aspect corregido a 1135/656 = la medida real del nodo de Figma
+            "[NOVAVENTA]-ICONOS-3" (648:592). Estaba en 4096/1840 (2.23), que
+            era de una exportación anterior y deformaba la imagen. */}
         <div className="mb-10">
-          <Fig src="/brand/assets/iconos-logo-categoria.png" alt="Ícono aplicado con el logotipo por categoría" aspect={4096 / 1840} />
+          <Fig src="/brand/assets/iconos-logo-categoria.png" alt="Ícono aplicado con el logotipo por categoría" aspect={1135 / 656} />
         </div>
         <p className="text-[20px] font-bold text-azul-2 mb-4">Usos incorrectos</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -939,7 +1058,7 @@ export default function AssetsPage() {
       {/* Tags */}
       <section
         id="sistema-de-tags"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
+        className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.11" title="Sistema de tags">
           El sistema de tags organiza información funcional dentro de las
@@ -977,7 +1096,7 @@ export default function AssetsPage() {
       {/* Pilares */}
       <section
         id="pilares-de-diseno"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
+        className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.12" title="Pilares de diseño">
           El sistema visual de NovaVenta está construido para mantener una
@@ -1000,7 +1119,7 @@ export default function AssetsPage() {
       {/* Retícula */}
       <section
         id="sistema-reticular"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
+        className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.13" title="Sistema reticular">
           El sistema reticular de NovaVenta establece la estructura base para

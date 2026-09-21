@@ -14,7 +14,7 @@ export default function Home() {
           Book Guidelines" alone on its own line, then "Nova"/"2026" paired
           — not the same grouping as desktop's "Nova + Brand Book
           Guidelines" / "2026" split. */}
-      <section className="bg-azul-1 flex flex-col justify-between h-svh md:h-screen py-8 md:pt-3 md:pb-9 px-4 md:px-[38px]">
+      <section className="bg-azul-1 flex flex-col justify-between h-svh md:h-screen py-8 md:pt-3 md:pb-9 px-4 md:pl-[67px] md:pr-[38px]">
         <div className="text-white text-2xl md:text-[32px] font-normal">
           <div className="flex flex-col gap-6 md:hidden">
             <Link href="/">Brand Book Guidelines</Link>
@@ -48,7 +48,7 @@ export default function Home() {
           05 being out of scope removed 2026-09-11 — it's been in since
           Round 15). 05's own entry groups into "Externas"/"Internas" in
           Figma (node 2073:915), unlike 01-04's flat rows — see nav-data.ts. */}
-      <section id="index" className="flex flex-col gap-8 md:gap-16 px-4 md:px-[38px] pt-16 pb-24">
+      <section id="index" className="flex flex-col gap-8 md:gap-16 px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] pt-16 pb-24">
         <div className="flex flex-col gap-8">
           <h1 className="text-azul-1 font-bold text-5xl md:text-[96px]">Index</h1>
           <div className="border-t border-azul-1/30" />

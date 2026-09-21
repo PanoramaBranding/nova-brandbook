@@ -102,16 +102,15 @@ export default function MasterBrandPage() {
 
           Geometría tomada del Quote de Figma (pl-297 + pr-38 dentro del frame
           de 1240): la caja de texto mide 905px y su borde derecho cae en 1202,
-          que es exactamente donde termina el botón de "Contenidos". Aquí se
-          reproduce con `md:ml-auto md:max-w-[905px]` dentro de una sección con
-          px-38: así el ancho de medida es el de Figma Y el borde derecho sigue
-          pegado al del botón aunque el contenido sea más ancho (el sitio es
-          fluido; un pl- fijo rompía una de las dos cosas).
+          justo donde termina el botón de "Contenidos". Con el contenido ya
+          fijado en 1135px (ver layout.tsx), `md:ml-auto md:max-w-[905px]` lo
+          reproduce exacto: el texto va de 230 a 1135, que es 297→1202 de Figma
+          menos los 67 de margen.
 
           Historial: antes cada página tenía un tope distinto (676px en unas,
           905px en otras) y un pl-[220px]; eso las dejaba con anchos distintos
           y sin alinear con el botón. Unificado el 2026-09-21. */}
-      <section className="px-4 md:px-[38px] py-16 md:py-[50px]">
+      <section className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 md:py-[50px]">
         <p className="md:ml-auto md:max-w-[905px] text-[32px] md:text-[52px] leading-[1.3] md:leading-[60px] text-azul-1 font-bold">
           Una marca evoluciona con la forma en que las personas se relacionan
           con ella. NovaVenta responde a ese cambio con una identidad más
@@ -126,7 +125,7 @@ export default function MasterBrandPage() {
 
       <ContentsToc items={TOC} downloadHref="/brand/downloads/master-brand-assets.zip" />
 
-      <section id="background" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="background" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="2.1" title="Background">
           El nuevo logo de NovaVenta actualiza la expresión de la marca a partir de
           un sistema más simple, contemporáneo y consistente con la nueva
@@ -142,7 +141,7 @@ export default function MasterBrandPage() {
         </div>
       </section>
 
-      <section id="identificador" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="identificador" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="2.2" title="Identificador">
           El logotipo de NovaVenta es el identificador principal del sistema de
           marca. Su construcción integra la expresión gráfica de Nova con el
@@ -155,7 +154,7 @@ export default function MasterBrandPage() {
         </div>
       </section>
 
-      <section id="versiones-de-color" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="versiones-de-color" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="2.3" title="Versiones de color">
           El logotipo de NovaVenta cuenta con versiones de color definidas para
           garantizar legibilidad, contraste y consistencia en distintos fondos y
@@ -174,7 +173,7 @@ export default function MasterBrandPage() {
         </div>
       </section>
 
-      <section id="area-de-reserva" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="area-de-reserva" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="2.4" title="Áreas de reserva">
           El área de reserva establece el espacio mínimo que debe mantenerse
           libre alrededor del logotipo de NovaVenta para garantizar su correcta
@@ -186,7 +185,7 @@ export default function MasterBrandPage() {
         </div>
       </section>
 
-      <section id="tamanos-minimos" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="tamanos-minimos" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="2.5" title="Tamaños mínimos">
           El logotipo de NovaVenta debe mantener una escala que garantice su
           legibilidad. En medios digitales se recomienda un ancho mínimo de 100
@@ -198,7 +197,7 @@ export default function MasterBrandPage() {
         </div>
       </section>
 
-      <section id="co-branding" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="co-branding" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="2.6" title="Co-Branding">
           En aplicaciones de co-branding, el logotipo de NovaVenta debe mantener
           una relación equilibrada con la marca aliada, respetando proporciones,
@@ -212,7 +211,7 @@ export default function MasterBrandPage() {
         </div>
       </section>
 
-      <section id="endoso-de-marca" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="endoso-de-marca" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="2.7" title="Endoso de marca">
           El endoso identifica la pertenencia de las marcas semi independientes
           al ecosistema Nova sin modificar su identidad principal. La firma
@@ -225,7 +224,7 @@ export default function MasterBrandPage() {
         </div>
       </section>
 
-      <section id="sub-marcas" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="sub-marcas" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="2.8" title="Sub-marcas">
           <span className="block text-[20px] font-bold text-azul-2 mb-8 md:mb-1">Marcas de nombre corto</span>
           Las submarcas de nombre corto se construyen a partir del logotipo Nova
@@ -290,7 +289,7 @@ export default function MasterBrandPage() {
         </div>
       </section>
 
-      <section id="usos-incorrectos" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="usos-incorrectos" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="2.9" title="Usos incorrectos">
           Para preservar la consistencia y el reconocimiento de NovaVenta, el
           logotipo debe utilizarse únicamente en sus versiones aprobadas. No se
@@ -301,7 +300,7 @@ export default function MasterBrandPage() {
         <MisuseGrid items={MISUSE_2_9} />
       </section>
 
-      <section id="simbolo" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="simbolo" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="2.10" title="Símbolo">
           El símbolo de Nova se construye a partir de elementos reconocibles del
           logotipo y funciona como una expresión gráfica complementaria dentro
@@ -317,7 +316,7 @@ export default function MasterBrandPage() {
         </div>
       </section>
 
-      <section id="simbolo-versiones-de-color" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="simbolo-versiones-de-color" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="2.11" title="Versiones de color">
           El símbolo cuenta con versiones de color definidas para asegurar
           contraste y legibilidad en diferentes fondos. Debe utilizarse
@@ -335,7 +334,7 @@ export default function MasterBrandPage() {
         </div>
       </section>
 
-      <section id="simbolo-area-de-reserva" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="simbolo-area-de-reserva" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="2.12" title="Áreas de reserva">
           El área de reserva establece el espacio mínimo que debe mantenerse
           libre alrededor del símbolo de NovaVenta para garantizar su correcta
@@ -347,7 +346,7 @@ export default function MasterBrandPage() {
         </div>
       </section>
 
-      <section id="simbolo-tamanos-minimos" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="simbolo-tamanos-minimos" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="2.13" title="Tamaños mínimos">
           El logotipo de NovaVenta debe mantener una escala que garantice su
           legibilidad. En medios digitales se recomienda un ancho mínimo de 100
@@ -359,7 +358,7 @@ export default function MasterBrandPage() {
         </div>
       </section>
 
-      <section id="simbolo-usos-incorrectos" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="simbolo-usos-incorrectos" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="2.14" title="Usos incorrectos">
           El símbolo de Nova está diseñado para aplicaciones en tamaños
           reducidos donde el logotipo completo pierde legibilidad. Para medios

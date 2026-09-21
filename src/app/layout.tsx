@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Plus_Jakarta_Sans, Roboto_Condensed } from "next/font/google";
 import Nav from "@/components/Nav";
 import ScrollReveal from "@/components/ScrollReveal";
 import { SITE_NAME, SITE_URL, SITE_DESCRIPTION } from "@/lib/brand-data";
@@ -7,6 +7,14 @@ import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
+  subsets: ["latin"],
+});
+
+// Tipografía complementaria del sistema (sección 3.5 de Brand Assets). Solo se
+// usa en los especímenes y en el display promocional; el resto del sitio sigue
+// en Plus Jakarta Sans. Fuente variable de Google Fonts (licencia OFL).
+const robotoCondensed = Roboto_Condensed({
+  variable: "--font-roboto-condensed",
   subsets: ["latin"],
 });
 
@@ -42,7 +50,7 @@ const WEBSITE_JSON_LD = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className={`${plusJakartaSans.variable} h-full antialiased`}>
+    <html lang="es" className={`${plusJakartaSans.variable} ${robotoCondensed.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col md:flex-row bg-white text-[color:var(--color-ink)]">
         <script
           type="application/ld+json"
@@ -54,6 +62,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
         <Nav />
         <ScrollReveal />
+        {/* OJO: no poner un max-w aquí. Se intentó md:max-w-[1240px] el
+            2026-09-21 para forzar el ancho de contenido de Figma, y rompió el
+            layout: también limita los heroes y la portada, que van a sangre
+            completa. El ancho de contenido se controla por sección, no aquí. */}
         <main className="flex-1 min-w-0">{children}</main>
       </body>
     </html>

@@ -234,7 +234,7 @@ export default function SubmarcaPage() {
           lives on the <p> — on the <section> it caps the section's own
           box (padding included) instead of just the text, which is what
           made this page look wrong while Estrategia didn't. */}
-      <section className="px-4 md:px-[38px] py-16 md:py-[50px]">
+      <section className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 md:py-[50px]">
         {/* Sin max-width: en Figma (Quote 721:1487) el párrafo es flex-1 y llena
             el espacio disponible (texto de 905px dentro del frame de 1240 con
             pl-297/pr-38). El tope de 676px que había lo partía demasiado
@@ -248,12 +248,17 @@ export default function SubmarcaPage() {
         </p>
       </section>
 
-      {/* Pack de assets de submarca (carpeta [NOVAVENTA] ASSETS: ICONOS +
-          PIEZAS + TAGS, ~515 MB). Descarga directa del sitio; gitignored por
-          tamaño (>100 MB), vive local en public/brand/downloads/. */}
-      <ContentsToc items={TOC} downloadHref="/brand/downloads/submarca-assets.zip" />
+      {/* Pack de assets de submarca (ICONOS + PIEZAS + TAGS, ~515 MB). Pesa
+          más de los 100 MB que admite GitHub, así que NO viaja en el repo: se
+          sirve desde Drive (carpeta pública, verificada como "cualquiera con
+          el enlace"). Apuntar esto a /brand/downloads/ da 404 en Vercel aunque
+          funcione en local — fue lo que falló en la demo del 2026-09-21. */}
+      <ContentsToc
+        items={TOC}
+        downloadHref="https://drive.google.com/file/d/1aWM8WKVvEeM8XB32dSYF9mlYgE3GwMTb/view"
+      />
 
-      <section id="arquitectura-de-marca" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="arquitectura-de-marca" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="5.1" title="Arquitectura de marca">
           La arquitectura de NovaVenta se organiza en tres niveles que
           permiten ordenar el ecosistema y definir con claridad la relación
@@ -273,7 +278,7 @@ export default function SubmarcaPage() {
         </div>
       </section>
 
-      <section id="marcas-de-visibilidad-externa" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="marcas-de-visibilidad-externa" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="5.2" title="Marcas de visibilidad externa">
           Las submarcas de comunicación externa están orientadas a audiencias
           fuera de la organización y se aplican en puntos de contacto
@@ -407,7 +412,7 @@ export default function SubmarcaPage() {
         </div>
       </section>
 
-      <section id="marcas-de-visibilidad-interna" className="px-4 md:px-[38px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
+      <section id="marcas-de-visibilidad-interna" className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-12 md:py-16 border-t border-azul-1 scroll-mt-8">
         <SectionHeading number="5.3" title="Marcas de visibilidad interna">
           Las submarcas de comunicación interna están dirigidas a las
           personas que hacen parte del ecosistema NovaVenta, como

@@ -206,7 +206,7 @@ export default function AplicacionesPage() {
           stopping the section short of the real content width; confirmed
           as why this page (and Submarca/Master Brand) looked wrong right
           after the pl-297 change while Estrategia didn't. */}
-      <section className="px-4 md:px-[38px] py-16 md:py-[50px]">
+      <section className="px-4 md:pl-[67px] md:pr-[38px] md:max-w-[1240px] py-16 md:py-[50px]">
         <p className="md:ml-auto md:max-w-[905px] text-[32px] md:text-[52px] leading-[1.3] md:leading-[60px] text-azul-1 font-bold">
           Las aplicaciones de la master brand muestran cómo NovaVenta se
           implementa en diferentes formatos y puntos de contacto, manteniendo
