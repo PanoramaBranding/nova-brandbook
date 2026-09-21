@@ -323,15 +323,26 @@ export default function AssetsPage() {
           page's own intro paragraph isn't literally the Figma "Quote"
           symbol instance the others use, but Sofia treats it as the same
           module — asked explicitly to include it here too. */}
-      <section className="px-4 md:pl-[220px] md:pr-[38px] py-16 md:py-[50px]">
-        <p className="max-w-[905px] text-[32px] md:text-[52px] leading-[1.2] md:leading-[60px] text-azul-1 font-bold">
-          Los brand assets reúnen los recursos visuales que construyen la
-          identidad de NovaVenta.
+      <section className="px-4 md:px-[38px] py-16 md:py-[50px]">
+        {/* Caja de 905px alineada a la derecha (md:ml-auto): reproduce el Quote
+            de Figma (551:2733), que es pl-297 + pr-38 dentro del frame de 1240
+            → el texto mide 905px y su borde derecho cae en 1202, el mismo del
+            botón "Descargar assets". Con ml-auto eso se mantiene aunque el
+            contenido sea más ancho.
+            Los <br> ocultos en móvil replican los saltos de línea que el
+            diseñador puso a mano en Figma; en móvil estorban, así que ahí el
+            texto fluye solo. */}
+        <p className="md:ml-auto md:max-w-[905px] text-[32px] md:text-[52px] leading-[1.3] md:leading-[60px] text-azul-1 font-bold">
+          Los brand assets reúnen los recursos visuales que construyen
+          <br className="hidden md:inline" />
+          la identidad de NovaVenta.
           <br />
           <br />
-          Esta sección define el uso de color, tipografía, fotografía,
-          iconografía y tags para asegurar consistencia y claridad en todas
-          las aplicaciones.
+          Esta sección define el uso de color, tipografía, fotografía, iconografía
+          <br className="hidden md:inline" />
+          y tags para asegurar consistencia
+          <br className="hidden md:inline" />
+          y claridad en todas las aplicaciones.
         </p>
       </section>
 
@@ -345,7 +356,7 @@ export default function AssetsPage() {
       {/* Color */}
       <section
         id="paleta-cromatica-principal"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.1" title="Paleta cromática principal">
           La paleta cromática principal establece los colores base de NovaVenta y
@@ -369,7 +380,7 @@ export default function AssetsPage() {
 
       <section
         id="paleta-complementaria"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.2" title="Paleta complementaria">
           La paleta cromática principal establece los colores base de NovaVenta y
@@ -404,7 +415,7 @@ export default function AssetsPage() {
 
       <section
         id="porcentajes-de-color"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.3" title="Porcentajes de color">
           La distribución cromática organiza la presencia de cada grupo de color
@@ -418,7 +429,7 @@ export default function AssetsPage() {
 
       <section
         id="uso-de-color"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.4" title="Uso del color">
           El sistema cromático define combinaciones de contraste que aseguran
@@ -441,11 +452,11 @@ export default function AssetsPage() {
                 on node 558:3249 (Round 17), previously missing entirely. */}
             <div className="flex flex-col gap-8">
               {[1, 2, 3, 4, 5, 6].map((n) => (
-                <div key={n} className={n > 1 ? "pt-8 border-t border-azul-tint" : ""}>
+                <div key={n} className={n > 1 ? "pt-8 border-t border-azul-1" : ""}>
                   <Fig src={`/brand/assets/contraste-basico-${n}.png`} alt={`Ejemplo de contraste básico ${n}`} aspect={4096 / 1410} />
                 </div>
               ))}
-              <div className="pt-8 border-t border-azul-tint">
+              <div className="pt-8 border-t border-azul-1">
                 <Fig src="/brand/assets/contraste-basico-7.png" alt="Ejemplo de contraste básico 7" aspect={1135 / 191} />
               </div>
             </div>
@@ -455,7 +466,7 @@ export default function AssetsPage() {
               Contrastes básicos → Contrastes compuestos → Añadir colores a la
               paleta cromática. "Añadir colores" se movió al final (antes iba
               entre básicos y compuestos). */}
-          <div className="flex flex-col md:flex-row md:gap-[127px] gap-8 pt-8 border-t border-azul-tint">
+          <div className="flex flex-col md:flex-row md:gap-[127px] gap-8 pt-8 border-t border-azul-1">
             <p className="text-[20px] font-bold text-azul-2 md:w-[447px] shrink-0">Contrastes compuestos</p>
             <div className="flex flex-col gap-8 md:w-[561px] max-w-[561px]">
               <p className="text-azul-3/80 leading-6">
@@ -476,17 +487,17 @@ export default function AssetsPage() {
           </div>
           <div className="flex flex-col gap-8">
             <Fig src="/brand/assets/contraste-compuesto-1.png" alt="Ejemplo de contraste compuesto 1" aspect={1057 / 347} />
-            <div className="pt-8 border-t border-azul-tint">
+            <div className="pt-8 border-t border-azul-1">
               <Fig src="/brand/assets/contraste-compuesto-2.png" alt="Ejemplo de contraste compuesto 2" aspect={4096 / 1493} />
             </div>
-            <div className="pt-8 border-t border-azul-tint">
+            <div className="pt-8 border-t border-azul-1">
               <Fig src="/brand/assets/contraste-compuesto-3.png" alt="Ejemplo de contraste compuesto 3" aspect={4096 / 1493} />
             </div>
           </div>
 
           {/* "Añadir colores a la paleta cromática" — al final del 3.4, después
               de Contrastes compuestos (orden de Figma, nodo 558:3347/3350). */}
-          <div className="flex flex-col gap-8 pt-8 border-t border-azul-tint">
+          <div className="flex flex-col gap-8 pt-8 border-t border-azul-1">
             <div className="flex flex-col md:flex-row md:gap-[127px] gap-8">
               <p className="text-[20px] font-bold text-azul-2 md:w-[447px] shrink-0">
                 Añadir colores a la paleta cromática
@@ -509,7 +520,7 @@ export default function AssetsPage() {
       {/* Tipografía */}
       <section
         id="fuentes-tipograficas"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         {/* 3.5: el párrafo (cuerpo fluido) y el botón "Descargar fuente"
             alinean su borde derecho con las barras de color full-width de
@@ -577,7 +588,7 @@ export default function AssetsPage() {
 
       <section
         id="jerarquias"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.6" title="Jerarquías">
           La jerarquía tipográfica organiza la información de acuerdo con su nivel
@@ -638,7 +649,7 @@ export default function AssetsPage() {
 
       <section
         id="usos-incorrectos-tipografia"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         {/* 2 middle sentences were missing — confirmed via
             get_design_context on node 562:3481 (Round 17). */}
@@ -665,7 +676,7 @@ export default function AssetsPage() {
       {/* Fotografía */}
       <section
         id="estilo-fotografico"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.8" title="Estilo fotográfico">
           El sistema fotográfico de NovaVenta se organiza en tres tipos de
@@ -813,7 +824,7 @@ export default function AssetsPage() {
 
       <section
         id="uso-de-la-fotografia"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.9" title="Uso de la fotografía">
           El uso de la fotografía define cómo las imágenes se integran dentro de
@@ -863,7 +874,7 @@ export default function AssetsPage() {
       {/* Iconografía */}
       <section
         id="sistema-iconografico"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         {/* Custom title row (not the shared SectionHeading) — the
             "Descargar íconos" button sits in the title column, below the
@@ -928,7 +939,7 @@ export default function AssetsPage() {
       {/* Tags */}
       <section
         id="sistema-de-tags"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.11" title="Sistema de tags">
           El sistema de tags organiza información funcional dentro de las
@@ -966,7 +977,7 @@ export default function AssetsPage() {
       {/* Pilares */}
       <section
         id="pilares-de-diseno"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.12" title="Pilares de diseño">
           El sistema visual de NovaVenta está construido para mantener una
@@ -976,7 +987,7 @@ export default function AssetsPage() {
         </SectionHeading>
         <div className="flex flex-col gap-10">
           {DESIGN_PILLARS.map((p) => (
-            <div key={p.title} className="flex flex-col md:flex-row gap-4 md:gap-8 border-t border-azul-tint pt-8">
+            <div key={p.title} className="flex flex-col md:flex-row gap-4 md:gap-8 border-t border-azul-1 pt-8">
               <p className="text-azul-1 font-bold text-3xl md:text-[48px] leading-[1.1] md:w-[500px] shrink-0">
                 {p.title}
               </p>
@@ -989,7 +1000,7 @@ export default function AssetsPage() {
       {/* Retícula */}
       <section
         id="sistema-reticular"
-        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-1 scroll-mt-8"
       >
         <SectionHeading number="3.13" title="Sistema reticular">
           El sistema reticular de NovaVenta establece la estructura base para

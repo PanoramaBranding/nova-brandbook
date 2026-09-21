@@ -89,7 +89,7 @@ const INSET = {
 
 function AplicacionesHeading() {
   return (
-    <div className="border-t border-azul-tint pt-12">
+    <div className="border-t border-azul-1 pt-12">
       <h2 className="text-[28px] md:text-[32px] font-bold text-azul-2">4.1 Aplicaciones master brand</h2>
     </div>
   );
@@ -206,8 +206,8 @@ export default function AplicacionesPage() {
           stopping the section short of the real content width; confirmed
           as why this page (and Submarca/Master Brand) looked wrong right
           after the pl-297 change while Estrategia didn't. */}
-      <section className="px-4 md:pl-[220px] md:pr-[38px] py-16 md:py-[50px]">
-        <p className="text-[32px] md:text-[52px] leading-[1.3] md:leading-[60px] text-azul-1 font-bold">
+      <section className="px-4 md:px-[38px] py-16 md:py-[50px]">
+        <p className="md:ml-auto md:max-w-[905px] text-[32px] md:text-[52px] leading-[1.3] md:leading-[60px] text-azul-1 font-bold">
           Las aplicaciones de la master brand muestran cómo NovaVenta se
           implementa en diferentes formatos y puntos de contacto, manteniendo
           una presencia visual consistente y reconocible.

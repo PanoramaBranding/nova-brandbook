@@ -128,15 +128,15 @@ export default function EstrategiaPage() {
           deliberate departure from Figma, same as the nav/footer spacing
           deviations elsewhere. Don't "correct" this back to 297 without
           re-confirming with her. */}
-      <section className="px-4 md:pl-[220px] md:pr-[38px] py-16 md:py-[50px]">
-        <p className="text-[32px] md:text-[52px] leading-[1.3] md:leading-[60px] text-azul-1 font-bold">
+      <section className="px-4 md:px-[38px] py-16 md:py-[50px]">
+        <p className="md:ml-auto md:max-w-[905px] text-[32px] md:text-[52px] leading-[1.3] md:leading-[60px] text-azul-1 font-bold">
           “Las marcas no entran a Nova, habitan en ella. Y el cliente no visita
           Nova, está en Nova.”
         </p>
       </section>
 
       <section id="brand-tree" className="px-4 md:px-[38px] pb-16 md:pb-24 scroll-mt-8">
-        <div className="flex flex-col md:flex-row md:gap-[127px] gap-8 border-t border-azul-tint pt-12">
+        <div className="flex flex-col md:flex-row md:gap-[127px] gap-8 border-t border-azul-1 pt-12">
           <h2 className="text-[28px] md:text-[32px] font-bold text-azul-2 md:w-[447px] shrink-0">1.1 Brand Tree</h2>
           <p className="text-azul-3/80 leading-6 md:w-[561px] max-w-[561px]">
             La estrategia de marca define el marco que orienta las decisiones de
@@ -154,14 +154,14 @@ export default function EstrategiaPage() {
         <section
           key={stage.id}
           id={stage.id}
-          className="px-4 md:px-[38px] pb-16 md:pb-24 scroll-mt-8 border-t border-azul-tint pt-12"
+          className="px-4 md:px-[38px] pb-16 md:pb-24 scroll-mt-8 border-t border-azul-1 pt-12"
         >
           <h3 className="text-5xl md:text-[96px] leading-[1.2] md:leading-[1.04] font-bold text-azul-1 mb-12">
             {stage.number} {stage.title}
           </h3>
 
           {stage.id === "why" ? (
-            <div className="border-t border-azul-tint pt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="border-t border-azul-1 pt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="flex gap-8 items-start">
                 <span className="text-[28px] md:text-[32px] font-bold text-azul-2">11</span>
                 <span className="text-[28px] md:text-[32px] font-bold text-azul-2">Visión</span>
@@ -177,7 +177,7 @@ export default function EstrategiaPage() {
               {stage.items.map((item) => (
                 <div
                   key={item.number}
-                  className="border-t border-azul-tint pt-8 flex flex-col md:flex-row gap-[18px] md:gap-8"
+                  className="border-t border-azul-1 pt-8 flex flex-col md:flex-row gap-[18px] md:gap-8"
                 >
                   <span className="text-[28px] md:text-[32px] font-bold text-azul-2 shrink-0">
                     {item.number}
@@ -197,7 +197,7 @@ export default function EstrategiaPage() {
         </section>
       ))}
 
-      <section className="px-4 md:px-[38px] pb-16 md:pb-24 border-t border-azul-tint pt-12">
+      <section className="px-4 md:px-[38px] pb-16 md:pb-24 border-t border-azul-1 pt-12">
         <div className="relative w-full max-w-[1134px] mx-auto" style={{ aspectRatio: 1134 / 1295 }}>
           <Image
             src="/brand/estrategia/diagrama-brand-tree.png"
