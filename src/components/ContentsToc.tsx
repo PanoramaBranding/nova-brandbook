@@ -25,7 +25,7 @@ export default function ContentsToc({
   const columns = [items.slice(0, half), items.slice(half)];
 
   return (
-    <section className="px-6 md:px-[38px] pb-16 md:pb-24 border-t border-azul-tint pt-12">
+    <section className="px-4 md:px-[38px] pb-16 md:pb-24 border-t border-azul-tint pt-12">
       <div className="flex flex-col gap-8 md:gap-16">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
           <p className="text-[28px] md:text-[32px] font-semibold md:font-bold text-azul-2 md:w-[447px]">

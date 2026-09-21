@@ -323,7 +323,7 @@ export default function AssetsPage() {
           page's own intro paragraph isn't literally the Figma "Quote"
           symbol instance the others use, but Sofia treats it as the same
           module — asked explicitly to include it here too. */}
-      <section className="px-6 md:pl-[220px] md:pr-[38px] py-16 md:py-24">
+      <section className="px-4 md:pl-[220px] md:pr-[38px] py-16 md:py-[50px]">
         <p className="max-w-[905px] text-[32px] md:text-[52px] leading-[1.2] md:leading-[60px] text-azul-1 font-bold">
           Los brand assets reúnen los recursos visuales que construyen la
           identidad de NovaVenta.
@@ -345,7 +345,7 @@ export default function AssetsPage() {
       {/* Color */}
       <section
         id="paleta-cromatica-principal"
-        className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.1" title="Paleta cromática principal">
           La paleta cromática principal establece los colores base de NovaVenta y
@@ -369,7 +369,7 @@ export default function AssetsPage() {
 
       <section
         id="paleta-complementaria"
-        className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.2" title="Paleta complementaria">
           La paleta cromática principal establece los colores base de NovaVenta y
@@ -404,7 +404,7 @@ export default function AssetsPage() {
 
       <section
         id="porcentajes-de-color"
-        className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.3" title="Porcentajes de color">
           La distribución cromática organiza la presencia de cada grupo de color
@@ -418,7 +418,7 @@ export default function AssetsPage() {
 
       <section
         id="uso-de-color"
-        className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.4" title="Uso del color">
           El sistema cromático define combinaciones de contraste que aseguran
@@ -509,7 +509,7 @@ export default function AssetsPage() {
       {/* Tipografía */}
       <section
         id="fuentes-tipograficas"
-        className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         {/* 3.5: el párrafo (cuerpo fluido) y el botón "Descargar fuente"
             alinean su borde derecho con las barras de color full-width de
@@ -577,7 +577,7 @@ export default function AssetsPage() {
 
       <section
         id="jerarquias"
-        className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.6" title="Jerarquías">
           La jerarquía tipográfica organiza la información de acuerdo con su nivel
@@ -638,7 +638,7 @@ export default function AssetsPage() {
 
       <section
         id="usos-incorrectos-tipografia"
-        className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         {/* 2 middle sentences were missing — confirmed via
             get_design_context on node 562:3481 (Round 17). */}
@@ -665,7 +665,7 @@ export default function AssetsPage() {
       {/* Fotografía */}
       <section
         id="estilo-fotografico"
-        className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.8" title="Estilo fotográfico">
           El sistema fotográfico de NovaVenta se organiza en tres tipos de
@@ -813,7 +813,7 @@ export default function AssetsPage() {
 
       <section
         id="uso-de-la-fotografia"
-        className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.9" title="Uso de la fotografía">
           El uso de la fotografía define cómo las imágenes se integran dentro de
@@ -863,7 +863,7 @@ export default function AssetsPage() {
       {/* Iconografía */}
       <section
         id="sistema-iconografico"
-        className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         {/* Custom title row (not the shared SectionHeading) — the
             "Descargar íconos" button sits in the title column, below the
@@ -928,7 +928,7 @@ export default function AssetsPage() {
       {/* Tags */}
       <section
         id="sistema-de-tags"
-        className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.11" title="Sistema de tags">
           El sistema de tags organiza información funcional dentro de las
@@ -966,7 +966,7 @@ export default function AssetsPage() {
       {/* Pilares */}
       <section
         id="pilares-de-diseno"
-        className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.12" title="Pilares de diseño">
           El sistema visual de NovaVenta está construido para mantener una
@@ -989,7 +989,7 @@ export default function AssetsPage() {
       {/* Retícula */}
       <section
         id="sistema-reticular"
-        className="px-6 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
+        className="px-4 md:px-[38px] py-16 border-t border-azul-tint scroll-mt-8"
       >
         <SectionHeading number="3.13" title="Sistema reticular">
           El sistema reticular de NovaVenta establece la estructura base para
