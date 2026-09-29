@@ -179,7 +179,7 @@ const COLOR_PRINCIPAL: Swatch = {
   cmyk: "87/50/0/0",
   rgb: "43/125/246",
   hex: "#2B7DF6",
-  pantone: "285 C",
+  pantone: "255 C", // corregido 29-sep (Andrés R): Figma decía 285 C, el correcto es 255 C
   textClass: "text-white",
   fill: "var(--color-nova-express)", // plum #4d264c, no el azul del hex (Figma 721:1273)
 };
